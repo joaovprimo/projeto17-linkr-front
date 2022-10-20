@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Post from "../Post/Post";
 
 export default function Timeline() {
   return (
@@ -16,8 +17,7 @@ export default function Timeline() {
           </form>
         </div>
         <div className="content">
-          <div className="content__post"></div>
-          <div className=" content__post"></div>
+          <Post />
         </div>
       </main>
       <aside></aside>
@@ -31,14 +31,25 @@ const Wrapper = styled.div`
 
   margin: 3rem auto 0 auto;
   position: relative;
-  form {
+
+  .container {
     width: 80%;
-    margin-left: 11vw;
-    margin-top: 2vw;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    min-height: 16rem;
+    font-family: "Lato", sans-serif;
+  }
+
+  form {
+    width: 85%;
+    min-height: 80%;
+    margin-left: 10%;
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     position: relative;
+
     label {
       font-size: 1.8rem;
       color: #707070;
@@ -70,9 +81,6 @@ const Wrapper = styled.div`
       }
     }
     button {
-      position: absolute;
-      bottom: 0;
-      right: 0rem;
       border-radius: 4px;
       background-color: #1877f2;
       color: white;
@@ -86,12 +94,7 @@ const Wrapper = styled.div`
     color: white;
     margin-bottom: 3rem;
   }
-  .container {
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    font-family: "Lato", sans-serif;
-  }
+
   .publicate {
     height: 20rem;
     width: 100%;
@@ -107,15 +110,6 @@ const Wrapper = styled.div`
       top: 2rem;
       left: 2rem;
       border-radius: 50%;
-    }
-  }
-  .content {
-    &__post {
-      height: 23rem;
-      width: 100%;
-      border-radius: 1rem;
-      background-color: #171717;
-      margin-bottom: 3rem;
     }
   }
 `;
