@@ -1,23 +1,45 @@
 import styled from "styled-components";
 import { IoChevronDownOutline } from "react-icons/io5";
+import { BsSearch } from 'react-icons/bs';
+import {DebounceInput} from 'react-debounce-input';
+import { useState } from "react";
+
+
+
 export default function Main(){
+    const [serach,setSearch]=useState('')
+    console.log(Search)
     return(
         <>
         <Container>
         <Header>
-        <Logo>Linkr</Logo>
-        <Profile>
-        <IoChevronDownOutline style={{color: 'white', fontSize: '21px'}}/>
-        <Photo src="https://i.pinimg.com/564x/79/95/eb/7995ebe5a61d943b171d33ac7c73921b.jpg" />
-        </Profile>
+            <Logo>Linkr</Logo>
+            <Search>
+                {/* <InputSearch placeholder="Search for people "></InputSearch> <DivSearch>
+                <BsSearch  style={{color: '#C6C6C6', fontSize:'23px'}}/></DivSearch> */}
+                <DebounceInput
+                id="tags"
+          minLength={3}
+          debounceTimeout={300}
+          style={styleInput}
+          onChange={(e)=>{setSearch(e.target.value);console.log(e.target.value)}} />
+
+            </Search> 
+            <Profile>
+                <IoChevronDownOutline style={{color: 'white', fontSize: '21px'}}/>
+                <Photo src="https://i.pinimg.com/564x/79/95/eb/7995ebe5a61d943b171d33ac7c73921b.jpg" />
+            </Profile>
         </Header>
         <Timeline>
-
+                
         </Timeline>
         </Container>
         </>
     )
 }
+
+const styleInput= {width:'600px'};
+
 
 
 const Container=styled.div`
@@ -56,4 +78,37 @@ margin-left:15px;
 
 const Timeline = styled.div`
 
+`
+const InputSearch=styled.input`
+    box-sizing:border-box;
+    width: 563px;
+    height: 45px;
+    background: #FFFFFF;
+    border-radius: 8px 0 0 8px;
+    outline: none;
+    border: 1px solid transparent;
+    font-family: 'Lato';
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 23px;
+    padding: 0 20px;
+    color: black;
+    ::placeholder{
+        color: #C6C6C6;
+    }
+
+`
+const DivSearch=styled.div`
+    height: 45px;
+    width: 60px;
+    box-sizing:border-box;
+    background:white;
+    border-radius: 0 8px 8px 0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+`
+const Search=styled.div`
+    display:flex;
 `
