@@ -1,10 +1,15 @@
 import styled from "styled-components";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 export default function Post({ name, description, image }) {
   return (
     <Wrapper>
       <div className="profilePic">
         <img src={image} alt="profilePost" />
+        <div>
+          <AiOutlineHeart color="white" size={20} />
+          <h4>13 likes</h4>
+        </div>
       </div>
 
       <div className="content">
@@ -28,11 +33,25 @@ const Wrapper = styled.div`
   margin-bottom: 2rem;
   .profilePic {
     width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 10rem;
+    h4 {
+      color: white;
+    }
     img {
       width: 5rem;
       height: 5rem;
       object-fit: cover;
       border-radius: 50%;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
     }
   }
   .content {
