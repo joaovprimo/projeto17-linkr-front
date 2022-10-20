@@ -12,12 +12,21 @@ export default function Timeline() {
     description: "",
     userId: 1,
   });
+  const [loading, setLoading] = useState(true);
 
   const { tasks, setTasks } = useContext(UserContext);
 
   useEffect(() => {
     const promisse = getPosts();
-    promisse.then((res) => setPosts(res.data));
+    promisse.then((res) => {
+      setPosts(res.data);
+      setLoading(false);
+    });
+    promisse.catch((error) =>
+      alert(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      )
+    );
   }, [posts]);
 
   function handleNewPost(e) {
@@ -66,7 +75,7 @@ export default function Timeline() {
           </form>
         </Publicate>
         <div className="content">
-          {posts.length === 0 ? (
+          {loading ? (
             <div className="content__search">
               {" "}
               <MagnifyingGlass
@@ -80,6 +89,8 @@ export default function Timeline() {
                 color="#151515"
               />
             </div>
+          ) : posts.length === 0 ? (
+            <div className="content__empty">There are no posts yet</div>
           ) : (
             posts.map((value, index) => (
               <Post
@@ -181,6 +192,11 @@ const Wrapper = styled.div`
   }
   .content {
     &__search {
+      display: flex;
+      justify-content: center;
+    }
+    &__empty {
+      font-size: 1.5rem;
       display: flex;
       justify-content: center;
     }
