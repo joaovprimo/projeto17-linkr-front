@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { TbEdit } from "react-icons/tb";
+import { AiOutlineDelete } from "react-icons/ai";
 
 export default function LinkPreview({ urlInfo, url }) {
   return (
     <Wrapper onClick={() => window.open(url)}>
       <div className="left">
         <h1>{urlInfo.title}</h1>
+
         <h2>{urlInfo.description}</h2>
         <h3>{urlInfo.canonical}</h3>
       </div>
