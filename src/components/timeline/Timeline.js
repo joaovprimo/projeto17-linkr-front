@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Post from "../Post/Post";
+import Post from "./Post";
 
 export default function Timeline() {
   return (
@@ -33,7 +33,7 @@ const Wrapper = styled.div`
   position: relative;
 
   .container {
-    width: 80%;
+    width: 60%;
     min-height: 100%;
     display: flex;
     flex-direction: column;
