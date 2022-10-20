@@ -10,6 +10,7 @@ export default function Timeline() {
     description: "",
     userId: 1,
   });
+  console.log(posts);
 
   useEffect(() => {
     const promisse = getPosts();
@@ -64,6 +65,7 @@ export default function Timeline() {
               name={value.name}
               description={value.description}
               image={value.image}
+              urlInfo={value.urlInfo}
             />
           ))}
         </div>
@@ -137,7 +139,7 @@ const Wrapper = styled.div`
       width: 10rem;
     }
   }
-  h1 {
+  .timeline__title {
     font-size: 3rem;
     color: white;
     margin-bottom: 3rem;

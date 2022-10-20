@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import LinkPreview from "./Linkpreview";
 
-export default function Post({ name, description, image }) {
+export default function Post({ name, description, image, urlInfo }) {
   return (
     <Wrapper>
       <div className="profilePic">
@@ -15,7 +16,7 @@ export default function Post({ name, description, image }) {
       <div className="content">
         <h2 className="content__name"> {name}</h2>
         <p className="content__description">{description}</p>
-        <div className="content__linkPreview"></div>
+        <LinkPreview urlInfo={urlInfo} />
       </div>
     </Wrapper>
   );
@@ -31,6 +32,22 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   margin-bottom: 2rem;
+  .content {
+    width: 100%;
+    min-height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__name {
+      font-size: 2rem;
+      color: white;
+    }
+    &__description {
+      font-size: 1.3rem;
+      color: #b7b7b7;
+    }
+  }
   .profilePic {
     width: 10%;
     display: flex;
@@ -52,27 +69,6 @@ const Wrapper = styled.div`
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-    }
-  }
-  .content {
-    width: 100%;
-    min-height: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    &__name {
-      font-size: 2rem;
-      color: white;
-    }
-    &__description {
-      font-size: 1.3rem;
-      color: #b7b7b7;
-    }
-    &__linkPreview {
-      min-height: 70%;
-      border: 1px solid grey;
-      border-radius: 6px;
     }
   }
 `;
