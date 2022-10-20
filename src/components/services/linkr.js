@@ -7,4 +7,9 @@ function getPosts() {
   return promisse;
 }
 
-export { getPosts };
+async function postLogin(signin){
+  const response = await axios.post(`${BASE_URL}/`,signin);
+  return response;
+}
+
+export { getPosts, postLogin };

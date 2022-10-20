@@ -3,7 +3,7 @@ import { IoChevronDownOutline } from "react-icons/io5";
 import { BsSearch } from "react-icons/bs";
 import { DebounceInput } from "react-debounce-input";
 import { useState } from "react";
-import Timeline from "./timeline/Timeline";
+import Timeline from "../components/timeline/Timeline";
 
 export default function Main() {
   const [serach, setSearch] = useState("");

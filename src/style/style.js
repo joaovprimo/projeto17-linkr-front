@@ -48,6 +48,9 @@ html{
 	font-size: 62.5%;
 	font-family: "Passion One";
 }
+*{
+	box-sizing: border-box;
+}
 `;
 
 export default GlobalStyle;
