@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export default function LinkPreview({ urlInfo }) {
+export default function LinkPreview({ urlInfo, url }) {
   return (
-    <Wrapper>
+    <Wrapper onClick={() => window.open(url)}>
       <div className="left">
         <h1>{urlInfo.title}</h1>
         <h2>{urlInfo.description}</h2>
@@ -22,6 +22,15 @@ const Wrapper = styled.div`
   color: white;
   display: flex;
   justify-content: space-between;
+  transition: all 0.5s;
+  :hover {
+    transform: scale(1.05);
+    box-shadow: 0 0.4rem 0.4rem 0.5rem rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
+  :active {
+    transform: translateY(1px);
+  }
 
   .left {
     padding: 2rem;

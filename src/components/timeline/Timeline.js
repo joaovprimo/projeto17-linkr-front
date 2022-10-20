@@ -70,6 +70,7 @@ export default function Timeline() {
               description={value.description}
               image={value.image}
               urlInfo={value.urlInfo}
+              url={value.url}
             />
           ))}
         </div>

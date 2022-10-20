@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 
-export default function Post({ name, description, image, urlInfo }) {
+export default function Post({ name, description, image, urlInfo, url }) {
   return (
     <Wrapper>
       <div className="profilePic">
@@ -16,7 +16,7 @@ export default function Post({ name, description, image, urlInfo }) {
       <div className="content">
         <h2 className="content__name"> {name}</h2>
         <p className="content__description">{description}</p>
-        <LinkPreview urlInfo={urlInfo} />
+        <LinkPreview url={url} urlInfo={urlInfo} />
       </div>
     </Wrapper>
   );
