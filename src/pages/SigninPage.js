@@ -50,10 +50,8 @@ export default function SigninPage() {
         setTasks(tokenAuthorization);
         setDisableForm(false);
         setCorEntrar(1);
-        navigate('/home');
+        navigate('/main');
     }
-
-
 
     return (
         <Container>
@@ -164,3 +162,5 @@ const GoToSingUp = styled.div`
     display: flex;
     justify-content: center;
 `
+
+export { Container,BlackContainer,GrayContainer, Title, Description, Form, Input, Entrar, ErrorMessage, GoToSingUp}

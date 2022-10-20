@@ -12,4 +12,9 @@ async function postLogin(signin){
   return response;
 }
 
-export { getPosts, postLogin };
+async function postSignup(signin){
+  const response = await axios.post(`${BASE_URL}/sign-up`,signin);
+  return response;
+}
+
+export { getPosts, postLogin, postSignup };
