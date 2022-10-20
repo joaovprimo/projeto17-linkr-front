@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { MagnifyingGlass } from "react-loader-spinner";
 import styled from "styled-components";
+import UserContext from "../../context/UserContext";
 import { getPosts, postPublicate } from "../../services/linkr";
 import Post from "./Post.js";
 
@@ -10,12 +12,13 @@ export default function Timeline() {
     description: "",
     userId: 1,
   });
-  console.log(posts);
+
+  const { tasks, setTasks } = useContext(UserContext);
 
   useEffect(() => {
     const promisse = getPosts();
     promisse.then((res) => setPosts(res.data));
-  }, []);
+  }, [posts]);
 
   function handleNewPost(e) {
     setNewPost({ ...newPost, [e.target.name]: e.target.value });
@@ -63,16 +66,32 @@ export default function Timeline() {
           </form>
         </Publicate>
         <div className="content">
-          {posts.map((value, index) => (
-            <Post
-              key={index}
-              name={value.name}
-              description={value.description}
-              image={value.image}
-              urlInfo={value.urlInfo}
-              url={value.url}
-            />
-          ))}
+          {posts.length === 0 ? (
+            <div className="content__search">
+              {" "}
+              <MagnifyingGlass
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="MagnifyingGlass-loading"
+                wrapperStyle={{}}
+                wrapperClass="MagnifyingGlass-wrapper"
+                glassColor="#333333"
+                color="#151515"
+              />
+            </div>
+          ) : (
+            posts.map((value, index) => (
+              <Post
+                key={index}
+                name={value.name}
+                description={value.description}
+                image={value.image}
+                urlInfo={value.urlInfo}
+                url={value.url}
+              />
+            ))
+          )}
         </div>
       </main>
       <aside></aside>
@@ -86,8 +105,8 @@ const Publicate = styled.div`
   background-color: white;
   margin-bottom: 3rem;
   display: flex;
-
   padding: 1rem;
+
   div {
     width: 10%;
     height: 100%;
@@ -159,6 +178,12 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     font-family: "Lato", sans-serif;
+  }
+  .content {
+    &__search {
+      display: flex;
+      justify-content: center;
+    }
   }
 
   .timeline__title {
