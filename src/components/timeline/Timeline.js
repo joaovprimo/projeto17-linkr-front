@@ -1,7 +1,15 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getPosts } from "../services/linkr";
 import Post from "./Post";
 
 export default function Timeline() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    getPosts().then((res) => setPosts(res.data));
+  }, []);
+
   return (
     <Wrapper>
       {" "}
