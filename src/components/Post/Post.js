@@ -27,10 +27,11 @@ const Wrapper = styled.div`
   width: 100%;
   border-radius: 1rem;
   background-color: #171717;
-  padding: 2rem;
+  padding: 1.5rem;
   position: relative;
   display: flex;
   .profilePic {
+    width: 10%;
     img {
       width: 5rem;
       height: 5rem;
@@ -39,10 +40,24 @@ const Wrapper = styled.div`
     }
   }
   .content {
-    background-color: red;
     width: 100%;
     min-height: 90%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+
+    &__name {
+      font-size: 1.6rem;
+      color: white;
+    }
+    &__description {
+      font-size: 1.3rem;
+      color: #b7b7b7;
+    }
+    &__linkPreview {
+      min-height: 70%;
+      border: 1px solid grey;
+      border-radius: 6px;
+    }
   }
 `;
