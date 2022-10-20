@@ -1,13 +1,10 @@
 import styled from "styled-components";
 
-export default function Post({ name, description }) {
+export default function Post({ name, description, image }) {
   return (
     <Wrapper>
       <div className="profilePic">
-        <img
-          src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
-          alt="profilePost"
-        />
+        <img src={image} alt="profilePost" />
       </div>
 
       <div className="content">

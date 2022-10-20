@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getPosts } from "../services/linkr";
+import { getPosts } from "../../services/linkr";
 import Post from "./Post.js";
 
 export default function Timeline() {
@@ -10,7 +10,6 @@ export default function Timeline() {
     const promisse = getPosts();
     promisse.then((res) => setPosts(res.data));
   }, []);
-  console.log(posts);
 
   return (
     <Wrapper>
@@ -28,7 +27,11 @@ export default function Timeline() {
         </div>
         <div className="content">
           {posts.map((value) => (
-            <Post name={value.name} description={value.description} />
+            <Post
+              name={value.name}
+              description={value.description}
+              image={value.image}
+            />
           ))}
         </div>
       </main>
