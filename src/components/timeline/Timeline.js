@@ -1,15 +1,34 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { getPosts } from "../../services/linkr";
+import { getPosts, postPublicate } from "../../services/linkr";
 import Post from "./Post.js";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState({
+    url: "",
+    description: "",
+    userId: 1,
+  });
 
   useEffect(() => {
     const promisse = getPosts();
     promisse.then((res) => setPosts(res.data));
   }, []);
+
+  function handleNewPost(e) {
+    setNewPost({ ...newPost, [e.target.name]: e.target.value });
+  }
+  function publicate(e) {
+    e.preventDefault();
+    const promisse = postPublicate(newPost);
+    promisse.then((res) => {
+      alert("Post publicado com sucesso");
+      console.log(res);
+    });
+
+    promisse.catch((e) => console.log(e));
+  }
 
   return (
     <Wrapper>
@@ -17,17 +36,31 @@ export default function Timeline() {
       <h1 className="timeline__title">timeline</h1>
       <main className="container">
         <div className="publicate">
-          <img src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg" />
-          <form>
+          <img
+            src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
+            alt="postOwnerImage"
+          />
+          <form onSubmit={publicate}>
             <label>What are you going to share today?</label>
-            <input placeholder="http://..."></input>
-            <textarea placeholder="Awesome article about #javascript"></textarea>
-            <button>Publish</button>
+            <input
+              placeholder="http://..."
+              name="url"
+              onChange={handleNewPost}
+              value={newPost.url}
+            ></input>
+            <textarea
+              placeholder="Awesome article about #javascript"
+              name="description"
+              onChange={handleNewPost}
+              value={newPost.description}
+            ></textarea>
+            <button type="submit">Publish</button>
           </form>
         </div>
         <div className="content">
-          {posts.map((value) => (
+          {posts.map((value, index) => (
             <Post
+              key={index}
               name={value.name}
               description={value.description}
               image={value.image}

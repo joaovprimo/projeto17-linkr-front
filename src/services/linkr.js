@@ -7,14 +7,19 @@ function getPosts() {
   return promisse;
 }
 
-async function postLogin(signin){
-  const response = await axios.post(`${BASE_URL}/`,signin);
+function postPublicate(body) {
+  const promisse = axios.post(`${BASE_URL}/posts`, body);
+  return promisse;
+}
+
+async function postLogin(signin) {
+  const response = await axios.post(`${BASE_URL}/`, signin);
   return response;
 }
 
-async function postSignup(signin){
-  const response = await axios.post(`${BASE_URL}/sign-up`,signin);
+async function postSignup(signin) {
+  const response = await axios.post(`${BASE_URL}/sign-up`, signin);
   return response;
 }
 
-export { getPosts, postLogin, postSignup };
+export { getPosts, postLogin, postSignup, postPublicate };
