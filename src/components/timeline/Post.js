@@ -49,6 +49,8 @@ const Wrapper = styled.div`
     }
   }
   .profilePic {
+    margin-left: -0.5rem;
+    margin-right: 1rem;
     width: 10%;
     display: flex;
     flex-direction: column;

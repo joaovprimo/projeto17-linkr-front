@@ -36,11 +36,15 @@ export default function Timeline() {
       {" "}
       <h1 className="timeline__title">timeline</h1>
       <main className="container">
-        <div className="publicate">
-          <img
-            src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
-            alt="postOwnerImage"
-          />
+        <Publicate>
+          <div>
+            {" "}
+            <img
+              src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
+              alt="postOwnerImage"
+            />
+          </div>
+
           <form onSubmit={publicate}>
             <label>What are you going to share today?</label>
             <input
@@ -57,7 +61,7 @@ export default function Timeline() {
             ></textarea>
             <button type="submit">Publish</button>
           </form>
-        </div>
+        </Publicate>
         <div className="content">
           {posts.map((value, index) => (
             <Post
@@ -74,31 +78,25 @@ export default function Timeline() {
     </Wrapper>
   );
 }
+const Publicate = styled.div`
+  height: 20rem;
+  width: 100%;
+  border-radius: 1rem;
+  background-color: white;
+  margin-bottom: 3rem;
+  display: flex;
 
-const Wrapper = styled.div`
-  width: 70vw;
-  display: block;
-
-  margin: 3rem auto 0 auto;
-  position: relative;
-
-  .container {
-    width: 60%;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    font-family: "Lato", sans-serif;
+  padding: 1rem;
+  div {
+    width: 10%;
+    height: 100%;
   }
-
   form {
-    width: 85%;
-    min-height: 80%;
-    margin-left: 10%;
-    margin-top: 2%;
+    width: 100%;
+    margin-left: 1.2rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
 
     label {
       font-size: 1.8rem;
@@ -139,27 +137,32 @@ const Wrapper = styled.div`
       width: 10rem;
     }
   }
+
+  img {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
+const Wrapper = styled.div`
+  width: 70vw;
+  display: block;
+
+  margin: 3rem auto 0 auto;
+  position: relative;
+
+  .container {
+    width: 60%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: "Lato", sans-serif;
+  }
+
   .timeline__title {
     font-size: 3rem;
     color: white;
     margin-bottom: 3rem;
-  }
-
-  .publicate {
-    height: 20rem;
-    width: 100%;
-    border-radius: 1rem;
-    background-color: white;
-    margin-bottom: 3rem;
-    position: relative;
-    img {
-      width: 5rem;
-      height: 5rem;
-      object-fit: cover;
-      position: absolute;
-      top: 2rem;
-      left: 2rem;
-      border-radius: 50%;
-    }
   }
 `;
