@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Post() {
+export default function Post({ name, description }) {
   return (
     <Wrapper>
       <div className="profilePic">
@@ -11,10 +11,8 @@ export default function Post() {
       </div>
 
       <div className="content">
-        <h2 className="content__name"> Juvenal Juvencio</h2>
-        <p className="content__description">
-          Muito maneiro esse tutorial de Material UI com React, deem uma olhada!
-        </p>
+        <h2 className="content__name"> {name}</h2>
+        <p className="content__description">{description}</p>
         <div className="content__linkPreview"></div>
       </div>
     </Wrapper>
@@ -30,6 +28,7 @@ const Wrapper = styled.div`
   padding: 1.5rem;
   position: relative;
   display: flex;
+  margin-bottom: 2rem;
   .profilePic {
     width: 10%;
     img {
@@ -47,7 +46,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
 
     &__name {
-      font-size: 1.6rem;
+      font-size: 2rem;
       color: white;
     }
     &__description {
