@@ -1,19 +1,31 @@
 import styled from "styled-components";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import LinkPreview from "./Linkpreview";
+import { TbEdit } from "react-icons/tb";
+import { AiOutlineDelete } from "react-icons/ai";
 
-export default function Post({ name, description }) {
+export default function Post({ name, description, image, urlInfo, url }) {
   return (
     <Wrapper>
       <div className="profilePic">
-        <img
-          src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
-          alt="profilePost"
-        />
+        <img src={image} alt="profilePost" />
+        <div>
+          <AiOutlineHeart color="white" size={20} />
+          <h4>13 likes</h4>
+        </div>
       </div>
 
       <div className="content">
-        <h2 className="content__name"> {name}</h2>
+        <div className="content__buttons">
+          <h2 className="content__name"> {name}</h2>
+          <div>
+            <TbEdit color="white" size={20} />
+            <AiOutlineDelete color="white" size={20} />
+          </div>
+        </div>
+
         <p className="content__description">{description}</p>
-        <div className="content__linkPreview"></div>
+        <LinkPreview url={url} urlInfo={urlInfo} />
       </div>
     </Wrapper>
   );
@@ -29,15 +41,6 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   margin-bottom: 2rem;
-  .profilePic {
-    width: 10%;
-    img {
-      width: 5rem;
-      height: 5rem;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-  }
   .content {
     width: 100%;
     min-height: 90%;
@@ -45,6 +48,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
+    &__buttons {
+      display: flex;
+      justify-content: space-between;
+    }
     &__name {
       font-size: 2rem;
       color: white;
@@ -53,10 +60,30 @@ const Wrapper = styled.div`
       font-size: 1.3rem;
       color: #b7b7b7;
     }
-    &__linkPreview {
-      min-height: 70%;
-      border: 1px solid grey;
-      border-radius: 6px;
+  }
+  .profilePic {
+    margin-left: -0.5rem;
+    margin-right: 1rem;
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 10rem;
+    h4 {
+      color: white;
+    }
+    img {
+      width: 5rem;
+      height: 5rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 `;
