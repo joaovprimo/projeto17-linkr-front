@@ -47,7 +47,7 @@ const Wrapper = styled.div`
     overflow: scroll;
   }
   .content {
-    max-width: 90% !important;
+    width: 100%;
     min-height: 90%;
     display: flex;
     flex-direction: column;
