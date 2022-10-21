@@ -30,4 +30,8 @@ async function postSignup(signin) {
   return response;
 }
 
-export { getPosts, postLogin, postSignup, postPublicate };
+function getUserSearch(search){
+  return axios.get(`${BASE_URL}/search?search=${search}`);
+}
+
+export { getPosts, postLogin, postSignup, postPublicate, getUserSearch};
