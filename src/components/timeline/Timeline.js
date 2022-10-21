@@ -5,6 +5,7 @@ import UserContext from "../../context/UserContext";
 import { device } from "../../mediaqueries/devices";
 import { getPosts, postPublicate } from "../../services/linkr";
 import Post from "./Post.js";
+import Trending from "./Trending";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -107,7 +108,9 @@ export default function Timeline() {
           )}
         </div>
       </main>
-      <aside></aside>
+      <aside>
+        <Trending />
+      </aside>
     </Wrapper>
   );
 }
@@ -189,6 +192,13 @@ const Wrapper = styled.div`
   display: block;
   margin: 3rem auto 0 auto;
   position: relative;
+
+  aside {
+    width: 35%;
+    position: absolute;
+    top: 55px;
+    right: 0;
+  }
 
   @media ${device.mobileM} {
     margin: 0;
