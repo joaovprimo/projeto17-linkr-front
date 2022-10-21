@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Grid } from 'react-loader-spinner';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { postLogin } from '../components/services/linkr.js';
@@ -14,8 +14,28 @@ export default function SigninPage() {
     const navigate = useNavigate();
     const { tasks, setTasks } = useContext(UserContext);
 
+    useEffect(()=>{
+        getLocalStorage();
+    },[])
+
+    useEffect(()=>{
+        if(tasks){
+            const userInfo = JSON.stringify(tasks);
+            localStorage.setItem('userInfo',userInfo);
+            navigate('/timeline');
+        }
+    },[tasks])
+
     function loginInfo(event) {
         event.preventDefault();
+    }
+
+    function getLocalStorage(){
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        console.log(userInfo)
+        if(userInfo){
+            setTasks(userInfo);
+        }      
     }
 
     async function userLogin() {
@@ -44,13 +64,14 @@ export default function SigninPage() {
         const tokenAuthorization = {
             headers: {
                 "Authorization": `Bearer ${token.data.token}`
-            }
+            },
+            userId: token.data.userid
         }
         console.log(tokenAuthorization);
         setTasks(tokenAuthorization);
         setDisableForm(false);
         setCorEntrar(1);
-        navigate('/main');
+        navigate('/timeline');
     }
 
     return (
