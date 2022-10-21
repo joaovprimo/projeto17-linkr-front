@@ -3,6 +3,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
+import { device } from "../../mediaqueries/devices.js";
 
 export default function Post({ name, description, image, urlInfo, url }) {
   return (
@@ -36,17 +37,24 @@ const Wrapper = styled.div`
   height: 26rem;
   width: 100%;
   border-radius: 1rem;
-  background-color: #171717;
+  background-color: rgba(23, 23, 23, 0.95);
   padding: 1.5rem;
   position: relative;
   display: flex;
   margin-bottom: 2rem;
+  @media ${device.mobileM} {
+    max-width: 100vw;
+    overflow: scroll;
+  }
   .content {
     width: 100%;
     min-height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media ${device.mobileM} {
+      max-width: 80vw;
+    }
 
     &__buttons {
       display: flex;

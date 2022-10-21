@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
+import { device } from "../../mediaqueries/devices";
 
 export default function LinkPreview({ urlInfo, url }) {
   return (
@@ -26,6 +27,11 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   transition: all 0.5s;
+  max-width: 100%;
+
+  @media ${device.mobileM} {
+    width: 100%;
+  }
   :hover {
     transform: scale(1.05);
     box-shadow: 0 0.4rem 0.4rem 0.5rem rgba(0, 0, 0, 0.15);

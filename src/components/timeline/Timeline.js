@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import styled from "styled-components";
 import UserContext from "../../context/UserContext";
+import { device } from "../../mediaqueries/devices";
 import { getPosts, postPublicate } from "../../services/linkr";
 import Post from "./Post.js";
 
@@ -118,6 +119,12 @@ const Publicate = styled.div`
   display: flex;
   padding: 1rem;
 
+  @media ${device.mobileM} {
+    div {
+      display: none;
+    }
+  }
+
   div {
     width: 10%;
     height: 100%;
@@ -179,9 +186,13 @@ const Publicate = styled.div`
 const Wrapper = styled.div`
   width: 70vw;
   display: block;
-
   margin: 3rem auto 0 auto;
   position: relative;
+
+  @media ${device.mobileM} {
+    margin: 0;
+    width: 100%;
+  }
 
   .container {
     width: 60%;
@@ -189,6 +200,9 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     font-family: "Lato", sans-serif;
+    @media ${device.mobileM} {
+      width: 100%;
+    }
   }
   .content {
     &__search {
