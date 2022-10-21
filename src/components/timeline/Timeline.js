@@ -195,16 +195,17 @@ const Wrapper = styled.div`
   }
 
   .container {
-    width: 60%;
+    max-width: 60%;
     min-height: 100%;
     display: flex;
     flex-direction: column;
     font-family: "Lato", sans-serif;
     @media ${device.mobileM} {
-      width: 100%;
+      max-width: 100%;
     }
   }
   .content {
+    max-width: 100%;
     &__search {
       display: flex;
       justify-content: center;
