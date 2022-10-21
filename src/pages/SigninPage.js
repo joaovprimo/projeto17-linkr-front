@@ -1,138 +1,101 @@
-import styled from "styled-components";
-import { Grid } from "react-loader-spinner";
-import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import { postLogin } from "../services/linkr.js";
+
+import styled from 'styled-components';
+import { Grid } from 'react-loader-spinner';
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../context/UserContext';
+import { postLogin } from '../services/linkr.js';
 
 export default function SigninPage() {
-  const [signin, setSignin] = useState({ email: "", password: "" });
-  const [disableForm, setDisableForm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [corEntrar, setCorEntrar] = useState(1);
-  const navigate = useNavigate();
-  const { tasks, setTasks } = useContext(UserContext);
+    const [signin, setSignin] = useState({ email: "", password: "" });
+    const [disableForm, setDisableForm] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [corEntrar, setCorEntrar] = useState(1);
+    const navigate = useNavigate();
+    const { tasks, setTasks } = useContext(UserContext);
 
-  useEffect(() => {
-    getLocalStorage();
-  }, []);
+    useEffect(() => {
+        getLocalStorage();
+    }, []);
 
-  useEffect(() => {
-    if (tasks) {
-      const userInfo = JSON.stringify(tasks);
-      localStorage.setItem("userInfo", userInfo);
-      navigate("/main");
+    useEffect(() => {
+        if (tasks) {
+            const userInfo = JSON.stringify(tasks);
+            localStorage.setItem("userInfo", userInfo);
+            navigate("/timeline");
+        }
+    }, [tasks]);
+
+    function getLocalStorage() {
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        if (userInfo) {
+            setTasks(userInfo);
+        }
     }
-  }, [tasks]);
 
-  function loginInfo(event) {
-    event.preventDefault();
-  }
-
-  function getLocalStorage() {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(userInfo);
-    if (userInfo) {
-      setTasks(userInfo);
+    function loginInfo(event) {
+        event.preventDefault();
     }
-  }
 
-  async function userLogin() {
-    setCorEntrar(0.8);
-    setDisableForm(true);
-    try {
-      const token = await postLogin(signin);
-      autorizado(token);
-    } catch (error) {
-      unautorized(error);
+
+    async function userLogin() {
+        setCorEntrar(0.8);
+        setDisableForm(true);
+        try {
+            const token = await postLogin(signin);
+            autorizado(token);
+        } catch (error) {
+            unautorized(error);
+        }
     }
-  }
-
-  function unautorized(error) {
-    console.log(error);
-    if (error.message === "Network Error") {
-      setErrorMessage(error.message);
-    } else {
-      setErrorMessage(error.response.data);
+    function unautorized(error) {
+        console.log(error);
+        if (error.message === "Network Error") {
+            setErrorMessage(error.message);
+        } else {
+            setErrorMessage(error.response.data);
+        }
+        setCorEntrar(1);
+        setDisableForm(false);
     }
-    setCorEntrar(1);
-    setDisableForm(false);
-  }
 
-  function autorizado(token) {
-    const tokenAuthorization = {
-      headers: {
-        Authorization: `Bearer ${token.data.token}`,
-      },
-      userId: token.data.userid,
-    };
-    console.log(tokenAuthorization);
-    setTasks(tokenAuthorization);
-    setDisableForm(false);
-    setCorEntrar(1);
-    navigate("/main");
-  }
+    function autorizado(token) {
+        const tokenAuthorization = {
+            headers: {
+                "Authorization": `Bearer ${token.data.token}`
+            },
+            userId: token.data.userid
+        }
+        console.log(tokenAuthorization);
+        setTasks(tokenAuthorization);
+        setDisableForm(false);
+        setCorEntrar(1);
+        navigate('/timeline');
+    }
 
-  return (
-    <Container>
-      <BlackContainer>
-        <Title>linkr</Title>
-        <Description>
-          save,share and discover the best links on the web
-        </Description>
-      </BlackContainer>
-      <GrayContainer>
-        <Form onSubmit={loginInfo}>
-          <Input
-            type="text"
-            placeholder=" e-mail"
-            onChange={(event) =>
-              setSignin({ ...signin, email: event.target.value })
-            }
-            disabled={disableForm}
-            required
-          />
-          <Input
-            type="password"
-            placeholder=" password"
-            onChange={(event) =>
-              setSignin({ ...signin, password: event.target.value })
-            }
-            disabled={disableForm}
-            required
-          />
-          {typeof errorMessage !== "string" ? (
-            errorMessage.map((msg) => <ErrorMessage>{msg}</ErrorMessage>)
-          ) : (
-            <ErrorMessage>{errorMessage}</ErrorMessage>
-          )}
-          <Entrar
-            disabled={disableForm}
-            cor={corEntrar}
-            onClick={userLogin}
-            type="submit"
-          >
-            {disableForm ? (
-              <div>
-                <Grid color="white" radius="10" heigth="90" width="90" />
-              </div>
-            ) : (
-              "Log In"
-            )}
-          </Entrar>
-        </Form>
-        <GoToSingUp
-          onClick={() => {
-            navigate("/sign-up");
-          }}
-        >
-          First time? Create an account!
-        </GoToSingUp>
-      </GrayContainer>
-    </Container>
-  );
+    return (
+        <Container>
+            <BlackContainer>
+                <Title>linkr</Title>
+                <Description>save,share and discover the best links on the web</Description>
+            </BlackContainer>
+            <GrayContainer>
+                <Form onSubmit={loginInfo}>
+                    <Input type="text" placeholder=' e-mail' onChange={event => setSignin({ ...signin, email: event.target.value })}
+                        disabled={disableForm} required />
+                    <Input type="password" placeholder=' password' onChange={event => setSignin({ ...signin, password: event.target.value })}
+                        disabled={disableForm} required />
+                    {typeof errorMessage !== 'string' ? errorMessage.map((msg) => <ErrorMessage>{msg}</ErrorMessage>) :
+                        <ErrorMessage>{errorMessage}</ErrorMessage>}
+                    <Entrar disabled={disableForm} cor={corEntrar} onClick={userLogin} type="submit">
+                        {disableForm ? <div><Grid color='white' radius="10" heigth="90" width="90" /></div> : "Log In"}
+                    </Entrar>
+                </Form>
+                <GoToSingUp onClick={() => { navigate('/sign-up') }}>First time? Create an account!</GoToSingUp>
+            </GrayContainer>
+        </Container>
+    )
 }
-
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -220,14 +183,14 @@ const GoToSingUp = styled.div`
 `;
 
 export {
-  Container,
-  BlackContainer,
-  GrayContainer,
-  Title,
-  Description,
-  Form,
-  Input,
-  Entrar,
-  ErrorMessage,
-  GoToSingUp,
+    Container,
+    BlackContainer,
+    GrayContainer,
+    Title,
+    Description,
+    Form,
+    Input,
+    Entrar,
+    ErrorMessage,
+    GoToSingUp,
 };
