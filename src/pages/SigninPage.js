@@ -96,8 +96,6 @@ export default function SigninPage() {
     )
 }
 
-
-
 const Container = styled.div`
   display: flex;
   width: 100%;
