@@ -6,8 +6,8 @@ import { useState } from "react";
 import Timeline from "../components/timeline/Timeline";
 
 export default function Main() {
-  const [serach, setSearch] = useState("");
-  console.log(Search);
+  const [search, setSearch] = useState("");
+
   return (
     <>
       <Container>
