@@ -4,6 +4,7 @@ import { BsSearch } from "react-icons/bs";
 import { DebounceInput } from "react-debounce-input";
 import { useState } from "react";
 import Timeline from "../components/timeline/Timeline";
+import { device } from "../mediaqueries/devices";
 
 export default function Main() {
   const [search, setSearch] = useState("");
@@ -48,6 +49,9 @@ const Container = styled.div`
   width: 100vw;
   min-height: 100vh;
   background-color: #333333;
+  @media ${device.mobileM} {
+    max-width: 100%;
+  }
 `;
 
 const Header = styled.div`
@@ -57,6 +61,10 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  @media ${device.mobileM} {
+    max-width: 100vw;
+    padding: 0 1rem;
+  }
 `;
 const Logo = styled.h1`
   font-family: "Passion One";
@@ -65,11 +73,18 @@ const Logo = styled.h1`
   font-size: 49px;
   color: #ffffff;
   margin-left: 25px;
+  @media ${device.mobileM} {
+    font-size: 30px;
+    margin-left: 0;
+  }
 `;
 const Profile = styled.div`
   display: flex;
   align-items: center;
   width: 100px;
+  @media ${device.mobileM} {
+    max-width: 100%;
+  }
 `;
 const Photo = styled.img`
   width: 55px;
@@ -93,6 +108,13 @@ const InputSearch = styled.input`
   line-height: 23px;
   padding: 0 20px;
   color: black;
+  @media ${device.mobileM} {
+    max-width: 20px;
+    height: 100%;
+    ::placeholder {
+      font-size: 15px;
+    }
+  }
   ::placeholder {
     color: #c6c6c6;
   }
@@ -107,7 +129,14 @@ const DivSearch = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  @media ${device.mobileM} {
+    height: 25px;
+    width: 20vw;
+  }
 `;
 const Search = styled.div`
   display: flex;
+  @media ${device.mobileM} {
+    max-width: 100%;
+  }
 `;
