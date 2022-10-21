@@ -2,21 +2,13 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:4000";
 
-function createHeaders() {
-  const config = JSON.parse(localStorage.getItem("userInfo"));
-
-  return config;
-}
-
 function getPosts() {
-  const headers = createHeaders();
-  let promisse = axios.get(`${BASE_URL}/posts`, headers);
+  let promisse = axios.get(`${BASE_URL}/posts`);
   return promisse;
 }
 
 function postPublicate(body) {
-  const headers = createHeaders();
-  const promisse = axios.post(`${BASE_URL}/posts`, body, headers);
+  const promisse = axios.post(`${BASE_URL}/posts`, body);
   return promisse;
 }
 
