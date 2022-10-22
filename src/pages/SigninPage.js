@@ -1,10 +1,10 @@
-
 import styled from 'styled-components';
 import { Grid } from 'react-loader-spinner';
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { postLogin } from '../services/linkr.js';
+import { device } from '../mediaqueries/devices';
 
 export default function SigninPage() {
     const [signin, setSignin] = useState({ email: "", password: "" });
@@ -12,31 +12,29 @@ export default function SigninPage() {
     const [errorMessage, setErrorMessage] = useState("");
     const [corEntrar, setCorEntrar] = useState(1);
     const navigate = useNavigate();
-    const { tasks, setTasks } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     useEffect(() => {
-        getLocalStorage();
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        console.log(userInfo)
+        console.log(userInfo,'19')
+        if (userInfo) {
+            setUser(userInfo);
+        }
     }, []);
 
     useEffect(() => {
-        if (tasks) {
-            const userInfo = JSON.stringify(tasks);
+        console.log(user)
+        if (user) {
+            const userInfo = JSON.stringify(user);
             localStorage.setItem("userInfo", userInfo);
-            navigate("/timeline");
+            navigate("/main");
         }
-    }, [tasks]);
-
-    function getLocalStorage() {
-        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        if (userInfo) {
-            setTasks(userInfo);
-        }
-    }
+    }, [user]);
 
     function loginInfo(event) {
         event.preventDefault();
     }
-
 
     async function userLogin() {
         setCorEntrar(0.8);
@@ -67,10 +65,10 @@ export default function SigninPage() {
             userId: token.data.userid
         }
         console.log(tokenAuthorization);
-        setTasks(tokenAuthorization);
+        setUser(tokenAuthorization);
         setDisableForm(false);
         setCorEntrar(1);
-        navigate('/timeline');
+        navigate('/main');
     }
 
     return (
@@ -100,6 +98,10 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   height: 100vh;
+
+  @media ${device.mobileM} {
+    display: unset;
+  }
 `;
 const BlackContainer = styled.div`
   width: 60%;
@@ -109,6 +111,13 @@ const BlackContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   padding-left: 10%;
+
+  @media ${device.mobileM} {
+    width: 100%;
+    height: 30vh;
+    align-items: center;
+    padding-left: 0;
+  }
 `;
 const GrayContainer = styled.div`
   width: 40%;
@@ -116,17 +125,34 @@ const GrayContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media ${device.mobileM} {
+    width: 100%;
+    height: 70vh;
+    justify-content: start;
+    padding-top: 10%;
+  }
 `;
 const Title = styled.div`
   font-size: 106px;
   font-weight: 700;
   width: 442px;
+  @media ${device.mobileM} {
+    font-size: 76px;
+    display: flex;
+    justify-content: center;
+  }
 `;
 const Description = styled.div`
   font-size: 43px;
   font-weight: 700;
   width: 442px;
   display: flex;
+  overflow-x: auto;
+  @media ${device.mobileM} {
+    text-align:center;
+    font-size: 23px;
+    width: 237px;
+  }
 `;
 const Form = styled.form`
   display: flex;
@@ -143,6 +169,9 @@ const Input = styled.input`
   font-size: 20px;
   font-weight: 700;
   font-family: "Oswald";
+  @media ${device.mobileM} {
+    height: 55px;
+  }
 `;
 const Entrar = styled.button`
   width: 80%;
@@ -163,6 +192,9 @@ const Entrar = styled.button`
     align-items: center;
     height: 30px;
     overflow: hidden;
+  }
+  @media ${device.mobileM} {
+    height: 55px;
   }
 `;
 const ErrorMessage = styled.div`
