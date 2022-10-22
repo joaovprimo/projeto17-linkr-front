@@ -13,7 +13,7 @@ export default function Timeline() {
   const [newPost, setNewPost] = useState({
     url: "",
     description: "",
-    userId: 1,
+    userId: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +25,12 @@ export default function Timeline() {
       }
     }
   }, []);
+
+  useEffect(()=>{
+    setNewPost({...newPost,userId: user?.userId})
+  },[user])
+
+
 
   useEffect(() => {
     const promisse = getPosts();
@@ -47,10 +53,15 @@ export default function Timeline() {
     const promisse = postPublicate(newPost);
     promisse.then((res) => {
       alert("Post publicado com sucesso");
-      console.log(res);
+      setNewPost({
+        url: "",
+        description: "",
+        userId: 4,
+      })
+   
     });
 
-    promisse.catch((e) => console.log(e));
+    promisse.catch((e) => {console.log(e); alert(e.response.data)});
   }
 
   return (
@@ -128,7 +139,7 @@ const Publicate = styled.div`
   background-color: white;
   margin-bottom: 3rem;
   display: flex;
-  padding: 1rem;
+  padding: 1rem ;
 
   @media ${device.mobileM} {
     div {
@@ -142,7 +153,6 @@ const Publicate = styled.div`
   }
   form {
     width: 100%;
-    margin-left: 1.2rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
