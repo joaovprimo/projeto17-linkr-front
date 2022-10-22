@@ -27,8 +27,8 @@ export default function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       )
     );
-  }, [posts]);
-
+  }, []);
+//tinha um posts dentro dos colchetes na linha acima que estava fazendo com que tivesse um loop innfinito
   function handleNewPost(e) {
     setNewPost({ ...newPost, [e.target.name]: e.target.value });
   }
@@ -100,6 +100,7 @@ export default function Timeline() {
                 image={value.image}
                 urlInfo={value.urlInfo}
                 url={value.url}
+                id={value.id}
               />
             ))
           )}

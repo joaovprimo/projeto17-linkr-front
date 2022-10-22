@@ -3,6 +3,8 @@ import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
 
 export default function LinkPreview({ urlInfo, url }) {
+  console.log(urlInfo)
+  console.log(url)
   return (
     <Wrapper onClick={() => window.open(url)}>
       <div className="left">

@@ -9,12 +9,13 @@ import SignupPage from "../pages/SignupPage.js";
 
 export default function App() {
     const [tasks, setTasks] = useState();
+    const [user, setUser] = useState("");
 
     return (
         <>
             <GlobalStyle />
             <BrowserRouter>
-                <UserContext.Provider value={{ tasks, setTasks }}>
+                <UserContext.Provider value={{ tasks, setTasks,user, setUser }}>
                     <Routes>
                         <Route path="/" element={<SigninPage />} />
                         <Route path="/sign-up" element={<SignupPage />} />

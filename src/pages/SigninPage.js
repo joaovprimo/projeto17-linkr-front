@@ -22,7 +22,7 @@ export default function SigninPage() {
         if (tasks) {
             const userInfo = JSON.stringify(tasks);
             localStorage.setItem('userInfo', userInfo);
-            navigate('/timeline');
+            navigate('/');
         }
     }, [tasks])
 
@@ -73,7 +73,7 @@ export default function SigninPage() {
             setTasks(tokenAuthorization);
             setDisableForm(false);
             setCorEntrar(1);
-            navigate('/timeline');
+            navigate('/Main');
         }
 
         return (
