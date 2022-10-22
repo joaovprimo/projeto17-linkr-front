@@ -3,6 +3,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
+import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext } from "react";
 import { getLikesPost, GetUser, postLike} from "../../services/linkr";
@@ -81,15 +82,17 @@ function likePost(id){
       </div>
 
       <div className="content">
-        <div className="content__buttons">
-          <h2 className="content__name"> {name}</h2>
+        <div className="content__headers">
+        <div className="content__headers-buttons">
+          <h2 className="content__headers-name"> {name}</h2>
           <div>
             <TbEdit color="white" size={20} />
             <AiOutlineDelete color="white" size={20} />
           </div>
         </div>
 
-        <p className="content__description">{description}</p>
+        <p className="content__headers-description">{description}</p>
+        </div>
         <LinkPreview url={url} urlInfo={urlInfo} />
       </div>
     </Wrapper>
@@ -98,33 +101,56 @@ function likePost(id){
 
 const Wrapper = styled.div`
   box-sizing: border-box;
-  height: 26rem;
-  width: 100%;
+min-height: 25vh;
+  min-width: 100%;
+  max-width: 100%;
   border-radius: 1rem;
-  background-color: #171717;
+  background-color: rgba(23, 23, 23, 0.95);
   padding: 1.5rem;
   position: relative;
   display: flex;
   margin-bottom: 2rem;
+  @media ${device.mobileM} {
+    max-width: 100vw;
+    overflow: scroll;
+  }
   .content {
-    width: 100%;
+    min-width: 100%;
+    min-width: 90%;
     min-height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    &__buttons {
+    @media ${device.mobileM} {
+      max-width: 80vw;
+    }
+    &__headers{
+display: flex;
+flex-direction: column;
+min-height: 6vh;
+justify-content: space-around;
+max-width: 100%;
+word-break: break-all;
+      &-buttons {
       display: flex;
       justify-content: space-between;
     }
-    &__name {
+    &-name {
       font-size: 2rem;
       color: white;
+      @media ${device.mobileM} {
+      font-size: 1.5rem;
     }
-    &__description {
+    }
+    &-description {
       font-size: 1.3rem;
       color: #b7b7b7;
+      margin: 1rem 0;
     }
+    }
+
+    
   }
   .profilePic {
     margin-left: -0.5rem;
@@ -135,6 +161,7 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     height: 10rem;
+    
     h4 {
       color: white;
     }

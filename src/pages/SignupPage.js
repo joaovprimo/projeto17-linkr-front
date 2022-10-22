@@ -63,6 +63,7 @@ export default function SignupPage() {
     navigate("/");
   }
 
+  
   return (
     <Container>
       <BlackContainer>
