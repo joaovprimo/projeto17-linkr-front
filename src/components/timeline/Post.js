@@ -4,15 +4,81 @@ import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
 import { device } from "../../mediaqueries/devices.js";
+import ReactTooltip from "react-tooltip";
+import { useEffect, useState,useContext } from "react";
+import { getLikesPost, GetUser, postLike} from "../../services/linkr";
+import UserContext from "../../context/UserContext";
 
-export default function Post({ name, description, image, urlInfo, url }) {
+
+export default function Post({ name, description, image, urlInfo, url,id }) {
+  const [likesPost, setLikesPost] = useState("");
+  const [userr, setUserr] = useState("")
+
+  
+  const { user, setUser } = useContext(UserContext);
+  let likes,usr, indice, sec, first, tamanho, lisklength;
+ useEffect(()=> {
+  getLikesPost(id).then((resp)=> {
+  console.log(resp.data);   
+    setLikesPost(resp.data)
+  }).catch(()=>console.log("nada"));
+
+  GetUser(user?.userId).then((resp)=>{
+    console.log(resp.data);
+    setUserr(resp.data.username)
+  }).catch((err)=>console.log(err.message))
+ }, []);
+
+function likePost(id){
+  postLike(id, user.userId).then((resp)=>{
+    setLikesPost(resp.data)
+  }).catch((err)=>console.log(err.message))
+}
+
+ if(typeof likesPost === "object"){
+  likes = likesPost.map(lik=>lik.username);
+  console.log(likes)
+  lisklength = likes.length;
+  let find = (likes.filter((ele)=>ele === userr))
+  console.log(find)
+  if(find.length>0){
+    indice = likes.indexOf(userr);
+    usr = userr;
+    if(indice+1>=likes.length){
+      console.log("aqui1")
+      sec =(likes[indice-1]);
+    }else{
+      console.log("aqui2")
+      sec =(likes[indice+1])
+    }
+    
+  }else{
+    first =(likes[0]);
+    sec = likes[1];
+    
+  }
+  if( likes.length-2<0){
+    tamanho = 0;
+  }else{
+    tamanho = (likes.length-2);
+  }
+ }
+
   return (
     <Wrapper>
       <div className="profilePic">
         <img src={image} alt="profilePost" />
         <div>
-          <AiOutlineHeart color="white" size={20} />
-          <h4>13 likes</h4>
+          {usr ? 
+          <>
+           <AiFillHeart color="red" size={20} data-for="main" data-tip={`${user}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true" onClick={()=>likePost(id)}/>
+          <h4 data-for="main" data-tip={`${user}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true">{lisklength}</h4> </> 
+          :
+          <>
+           <AiFillHeart color="white" size={20} data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true" onClick={()=>likePost(id)}/>
+          <h4 data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true">{lisklength}</h4>
+          </>}
+          <ReactTooltip id="main" place={"bottom"} type={"light"} effect={"float"} multiline={"true"}/>
         </div>
       </div>
 

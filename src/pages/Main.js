@@ -5,8 +5,7 @@ import Top from "./Top";
 
 
 export default function Main() {
-
-  return (
+return (
     <>
       <Container>
         <Top/>

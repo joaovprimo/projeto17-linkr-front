@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { device } from "../../mediaqueries/devices";
 
 export default function LinkPreview({ urlInfo, url }) {
-  if(urlInfo === undefined) urlInfo = {title: "Link quebrado", description: "Link quebrado, refaça a postagem", canonical: "",image: "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"}
+
+if(urlInfo === undefined) urlInfo = {title: "Link quebrado", description: "Link quebrado, refaça a postagem", canonical: "",image: "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"}
 if(urlInfo.image === "") urlInfo.image = "https://user-images.githubusercontent.com/24848110/33519396-7e56363c-d79d-11e7-969b-09782f5ccbab.png"
+
 
   return (
     <Wrapper onClick={() => window.open(url)}>
