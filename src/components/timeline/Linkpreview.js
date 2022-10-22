@@ -23,7 +23,8 @@ if(urlInfo.image === "") urlInfo.image = "https://user-images.githubusercontent.
 const Wrapper = styled.div`
   min-height: 15vh;
   max-height: 15vh;
-  min-width: 20vw;
+  min-width: 30vw;
+  max-width: 40vw;
   overflow: hidden;
   color: white;
   display: flex;
@@ -31,7 +32,7 @@ const Wrapper = styled.div`
   transition: all 0.5s;  
 
   @media ${device.mobileM} {
-    width: 100%;
+    min-width: 100%;
   }
   :hover {
     transform: scale(1.05);
@@ -61,7 +62,7 @@ const Wrapper = styled.div`
     }
   }
   h1 {
-    font-size: 1.5rem !important;
+    font-size: 1.4rem !important;
     margin: 0;
     color: #cecece;
     @media ${device.mobileM} {
@@ -69,14 +70,14 @@ const Wrapper = styled.div`
     }
   }
   h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #9b9595;
     @media ${device.mobileM} {
       font-size: 1rem !important;
     }
   }
   h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #cecece;
     max-width: 100%;
     @media ${device.mobileM} {
