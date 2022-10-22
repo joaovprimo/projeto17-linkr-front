@@ -8,14 +8,19 @@ import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext } from "react";
 import { getLikesPost, GetUser, postLike} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
+import Modal from '../../pages/Modal';
+
 
 
 export default function Post({ name, description, image, urlInfo, url,id }) {
   const [likesPost, setLikesPost] = useState("");
-  const [userr, setUserr] = useState("")
-
+  const [userr, setUserr] = useState("");
   
-  const { user, setUser } = useContext(UserContext);
+
+const openModal = ()=>{setIdPost(id)
+  setIsOpened(true)};
+
+  const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
   let likes,usr, indice, sec, first, tamanho, lisklength;
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
@@ -88,7 +93,7 @@ function likePost(id){
           <h2 className="content__headers-name"> {name}</h2>
           <div>
             <TbEdit color="white" size={20} />
-            <AiOutlineDelete color="white" size={20} />
+            <AiOutlineDelete color="white" size={20} onClick={openModal}/>
           </div>
         </div>
 

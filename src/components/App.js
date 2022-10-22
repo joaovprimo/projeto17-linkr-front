@@ -9,10 +9,13 @@ import SignupPage from "../pages/SignupPage.js";
 
 export default function App() {
     const [user, setUser] = useState(null);
+    const [isOpened, setIsOpened] = useState(false)
+    const[idPost, setIdPost] = useState();
+    const[loading,setLoading] = useState(false)
 
     return (
         <>
-            <UserContext.Provider value={{ user, setUser }}>
+            <UserContext.Provider value={{ user, setUser,isOpened, setIsOpened, idPost, setIdPost,loading,setLoading }}>
                 <GlobalStyle />
                 <BrowserRouter>
                     <Routes>

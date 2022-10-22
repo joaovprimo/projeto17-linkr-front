@@ -1,9 +1,12 @@
 import axios from "axios";
+import {useContext} from "react";
+import UserContext from "../context/UserContext";
 
 const BASE_URL = "http://localhost:5000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(config)
   return config;
 }
 
@@ -66,5 +69,11 @@ async function logoutUser(token) {
   return response;
 }
 
-export { getPosts, postLogin, postSignup, postPublicate, getUserSearch, getUserInfo, logoutUser, getLikesPost, GetUser, postLike};
+async function deletePost(id){
+  const headers = createHeaders();
+  const response = await axios.delete(`${BASE_URL}/posts/${id}`,headers);
+  return response;
+}
+
+export { getPosts, postLogin, postSignup, postPublicate, getUserSearch, getUserInfo, logoutUser, getLikesPost, GetUser, postLike, deletePost};
 
