@@ -5,13 +5,7 @@ import Top from "./Top";
 
 
 export default function Main() {
-<<<<<<< HEAD
-  const [search, setSearch] = useState("");
-  console.log(search);
-=======
-
->>>>>>> main
-  return (
+return (
     <>
       <Container>
         <Top/>

@@ -41,6 +41,7 @@ return response
 }
 
 async function postLike(id, idusr){
+   console.log(id, idusr)
   const response =  await axios.post(`${BASE_URL}/posts/likes/${id}/${idusr}`);
 return response
 }

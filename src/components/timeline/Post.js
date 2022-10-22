@@ -12,9 +12,10 @@ import UserContext from "../../context/UserContext";
 
 export default function Post({ name, description, image, urlInfo, url,id }) {
   const [likesPost, setLikesPost] = useState("");
+  const [userr, setUserr] = useState("")
 
   
-  const { tasks, setTasks, user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   let likes,usr, indice, sec, first, tamanho, lisklength;
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
@@ -22,14 +23,14 @@ export default function Post({ name, description, image, urlInfo, url,id }) {
     setLikesPost(resp.data)
   }).catch(()=>console.log("nada"));
 
-  GetUser(tasks.userId).then((resp)=>{
+  GetUser(user?.userId).then((resp)=>{
     console.log(resp.data);
-    setUser(resp.data.username)
+    setUserr(resp.data.username)
   }).catch((err)=>console.log(err.message))
  }, []);
 
 function likePost(id){
-  postLike(id, tasks.userId).then((resp)=>{
+  postLike(id, user.userId).then((resp)=>{
     setLikesPost(resp.data)
   }).catch((err)=>console.log(err.message))
 }
@@ -38,11 +39,11 @@ function likePost(id){
   likes = likesPost.map(lik=>lik.username);
   console.log(likes)
   lisklength = likes.length;
-  let find = (likes.filter((ele)=>ele === user))
+  let find = (likes.filter((ele)=>ele === userr))
   console.log(find)
   if(find.length>0){
-    indice = likes.indexOf(user);
-    usr = user;
+    indice = likes.indexOf(userr);
+    usr = userr;
     if(indice+1>=likes.length){
       console.log("aqui1")
       sec =(likes[indice-1]);
