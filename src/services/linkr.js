@@ -4,7 +4,6 @@ const BASE_URL = "http://localhost:4000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));
-
   return config;
 }
 

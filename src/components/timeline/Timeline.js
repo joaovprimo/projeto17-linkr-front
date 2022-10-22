@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { MagnifyingGlass } from "react-loader-spinner";
+import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
@@ -13,8 +13,9 @@ export default function Timeline() {
   const [newPost, setNewPost] = useState({
     url: "",
     description: "",
-    userId: 1,
+    userId: "",
   });
+  const [isPublicating, setIsPublicating] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +26,10 @@ export default function Timeline() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    setNewPost({ ...newPost, userId: user?.userId });
+  }, [user]);
 
   useEffect(() => {
     const promisse = getPosts();
@@ -45,12 +50,21 @@ export default function Timeline() {
   function publicate(e) {
     e.preventDefault();
     const promisse = postPublicate(newPost);
+    setIsPublicating(true);
     promisse.then((res) => {
       alert("Post publicado com sucesso");
-      console.log(res);
+      setNewPost({
+        url: "",
+        description: "",
+        userId: user?.userId,
+      });
+      setIsPublicating(false);
     });
 
-    promisse.catch((e) => console.log(e));
+    promisse.catch((e) => {
+      alert(e.response.data);
+      setIsPublicating(false);
+    });
   }
 
   return (
@@ -74,14 +88,16 @@ export default function Timeline() {
               name="url"
               onChange={handleNewPost}
               value={newPost.url}
+              disabled={isPublicating}
             ></input>
             <textarea
               placeholder="Awesome article about #javascript"
               name="description"
               onChange={handleNewPost}
               value={newPost.description}
+              disabled={isPublicating}
             ></textarea>
-            <button type="submit">Publish</button>
+            <button type="submit" disabled={isPublicating}>{isPublicating ?" Publishing..." : "Publish"} </button>
           </form>
         </Publicate>
         <div className="content">
@@ -142,7 +158,6 @@ const Publicate = styled.div`
   }
   form {
     width: 100%;
-    margin-left: 1.2rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -184,6 +199,7 @@ const Publicate = styled.div`
       border: none;
       height: 2.5rem;
       width: 10rem;
+      position: relative;
     }
   }
 
@@ -213,17 +229,16 @@ const Wrapper = styled.div`
   }
 
   .container {
-    max-width: 60%;
+    width: 60%;
     min-height: 100%;
     display: flex;
     flex-direction: column;
     font-family: "Lato", sans-serif;
     @media ${device.mobileM} {
-      max-width: 100%;
+      width: 100%;
     }
   }
   .content {
-    max-width: 100%;
     &__search {
       display: flex;
       justify-content: center;
