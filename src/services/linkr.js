@@ -30,4 +30,24 @@ async function postSignup(signin) {
   return response;
 }
 
-export { getPosts, postLogin, postSignup, postPublicate };
+function getUserSearch(search){
+  return axios.get(`${BASE_URL}/search?search=${search}`);
+}
+
+async function getUserInfo(token){
+  const config = {
+    headers: token
+  }
+  const response = await axios.get(`${BASE_URL}/userinfo`,config);
+  return response;
+}
+
+async function logoutUser(token) {
+  const config = {
+    headers: token
+  }
+  const response = await axios.post(`${BASE_URL}/logout`,"", config);
+  return response;
+}
+
+export { getPosts, postLogin, postSignup, postPublicate, getUserSearch, getUserInfo, logoutUser};
