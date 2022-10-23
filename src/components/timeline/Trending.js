@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
+import { device } from "../../mediaqueries/devices";
 
 const ranking = [
   "javascript",
@@ -42,6 +43,9 @@ const Wrapper = styled.main`
   font-family: "Lato", sans-serif;
   background-color: #171717;
   border-radius: 16px;
+  @media ${device.mobileM} {
+    display: none
+  }
   h1 {
     font-size: 27px;
     font-weight: bold;
