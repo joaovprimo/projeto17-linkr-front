@@ -18,6 +18,7 @@ export default function Timeline() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(user)
     if (!user) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if (userInfo) {
