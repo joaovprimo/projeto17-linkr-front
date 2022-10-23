@@ -128,6 +128,7 @@ const SerachRender=styled.div`
     position: absolute;
     z-index: ;
     top: 54px;
+    border-radius: 0 0 8px 8px;
 `
 const Users=styled.div`
     height: 50px;

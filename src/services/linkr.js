@@ -34,4 +34,8 @@ function getUserSearch(search){
   return axios.get(`${BASE_URL}/search?search=${search}`);
 }
 
-export { getPosts, postLogin, postSignup, postPublicate, getUserSearch};
+function getUserId(id){
+  return axios.get(`${BASE_URL}/search/${id}`); 
+}
+
+export { getPosts, postLogin, postSignup, postPublicate, getUserSearch,getUserId};
