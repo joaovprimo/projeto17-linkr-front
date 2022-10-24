@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import TimelineUsers from "../components/timelineUsers.js/TimelineUsers";
+import TimelineUser from "../components/timelineUser/TimelineUser";
 import { device } from "../mediaqueries/devices";
 import Top from "./Top";
 
@@ -10,7 +10,7 @@ export default function Users() {
     <>
       <Container>
         <Top/>
-        <TimelineUsers/>
+        <TimelineUser/>
       </Container>
     </>
   );

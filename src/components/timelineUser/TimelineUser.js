@@ -8,12 +8,12 @@ import { useParams } from "react-router-dom";
 import Post from "./Post.js";
 import Trending from "./Trending";
 
-export default function Timeline() {
+export default function TimelineUser() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const {id}=useParams();
   const { user, setUser } = useContext(UserContext);
-  const [name,setName] = useState('');
+  const [name,setName] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -29,7 +29,7 @@ export default function Timeline() {
 
         getNameUser(id,user.headers).then((e)=>{
           setName(e.data[0].username);
-          console.log(e);
+          // console.log(e);
         }).catch((e)=>{
           console.log(e);
         });

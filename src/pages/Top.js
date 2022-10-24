@@ -6,6 +6,7 @@ import { useEffect, useState, useContext } from "react";
 import { getUserInfo, getUserSearch, logoutUser } from "../services/linkr";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
+import { device } from "../mediaqueries/devices";
 
 export default function Top() {
     const navigate = useNavigate();
@@ -177,11 +178,18 @@ const DivSearch = styled.div`
 const Search = styled.div`
     display: flex;
     flex-direction: column;
+    @media ${device.mobileM} {
+        max-width: 70%;
+      }
 `;
 const SearchUser = styled.div`
     display:flex;
     position:relative;
     z-index: 2;
+    margin-left:20px;
+    @media ${device.mobileM} {
+        max-width: 70%;
+      }
 `
 const SerachRender = styled.div`
     box-sizing: border-box;
@@ -192,6 +200,10 @@ const SerachRender = styled.div`
     z-index: 1;
     top: 54px;
     border-radius: 0 0 8px 8px;
+    margin-left:20px;
+    @media ${device.mobileM} {
+        max-width: 49%;
+      }
 `
 const Users = styled.div`
     height: 50px;

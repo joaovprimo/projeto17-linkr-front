@@ -91,10 +91,6 @@ async function deletePost(id){
   return response;
 }
 
-function getUserId(id){
-  return axios.get(`${BASE_URL}/search/${id}`); 
-}
-
 export { getPosts, postLogin, postSignup, postPublicate, getUserSearch,
    getUserInfo, logoutUser, getLikesPost, GetUser, postLike, deletePost,
    getNameUser, getUserId
