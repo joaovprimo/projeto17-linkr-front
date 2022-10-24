@@ -24,7 +24,8 @@ export default function Post({ name, description, image, urlInfo, url, id }) {
   });
   const [disable, setDisable] = useState(false);
   const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
-  let likes,usr, indice, sec, first, tamanho, lisklength, tam;
+  let likes,usr, indice, sec,tamanho, lisklength, tam;
+  let first = 0;
     const navigate = useNavigate();
   const ref = useRef();
 
@@ -73,7 +74,6 @@ function likePost(id){
     }else{
       first = likes[0];
     }
-     console.log(first)
     tamanho = 0;
     sec= null
   }else{
