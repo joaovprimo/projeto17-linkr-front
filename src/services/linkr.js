@@ -86,18 +86,13 @@ async function deletePost(id) {
   return response;
 }
 
-export {
-  getPosts,
-  postLogin,
-  postSignup,
-  postPublicate,
-  getUserSearch,
-  getUserInfo,
-  logoutUser,
-  getLikesPost,
-  GetUser,
-  postLike,
-  deletePost,
-  getTrendPosts,
-  getTrendRanking,
-};
+async function editPost(id,description){
+  const headers = createHeaders();
+  const response = await axios.post(`${BASE_URL}/posts/edit/${id}`, description, headers);
+  return response;
+}
+
+
+export { getPosts, postLogin, postSignup, postPublicate, getUserSearch, getUserInfo, logoutUser, getLikesPost, GetUser, postLike, deletePost, editPost,getTrendPosts, getTrendRanking};
+
+
