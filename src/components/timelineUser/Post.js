@@ -8,13 +8,11 @@ import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext } from "react";
 import { getLikesPost, GetUser, postLike} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url,id,userId }) {
+export default function Post({ name, description, image, urlInfo, url,id }) {
   const [likesPost, setLikesPost] = useState("");
-  const [userr, setUserr] = useState("");
-  const navigate=useNavigate();
+  const [userr, setUserr] = useState("")
 
   
   const { user, setUser } = useContext(UserContext);
@@ -67,10 +65,7 @@ function likePost(id){
  }
 
   return (
-    <Wrapper onClick={() => {
-      navigate(`/user/${userId}`);
-      window.location.reload();
-  }}>
+    <Wrapper>
       <div className="profilePic">
         <img src={image} alt="profilePost" />
         <div>
