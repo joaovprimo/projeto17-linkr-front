@@ -34,11 +34,13 @@ async function postSignup(signin) {
 }
 
 async function getLikesPost(id){
+  console.log(id)
   const response =  await axios.get(`${BASE_URL}/posts/likes/${id}`);
   return response;
 }
 
 async function GetUser(id){
+  console.log(id)
   const response =  await axios.get(`${BASE_URL}/user/${id}`);
 return response
 }
@@ -75,5 +77,12 @@ async function deletePost(id){
   return response;
 }
 
-export { getPosts, postLogin, postSignup, postPublicate, getUserSearch, getUserInfo, logoutUser, getLikesPost, GetUser, postLike, deletePost};
+async function editPost(id,description){
+  const headers = createHeaders();
+  const response = await axios.post(`${BASE_URL}/posts/edit/${id}`, description, headers);
+  return response;
+}
+
+
+export { getPosts, postLogin, postSignup, postPublicate, getUserSearch, getUserInfo, logoutUser, getLikesPost, GetUser, postLike, deletePost, editPost};
 

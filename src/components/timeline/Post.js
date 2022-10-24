@@ -5,10 +5,11 @@ import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
-import { useEffect, useState,useContext } from "react";
-import { getLikesPost, GetUser, postLike} from "../../services/linkr";
+import { useEffect, useState,useContext} from "react";
+import { getLikesPost, GetUser, postLike, editPost} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
 import Modal from '../../pages/Modal';
+import { useRef } from "react";
 
 
 
@@ -16,7 +17,21 @@ export default function Post({ name, description, image, urlInfo, url,id }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
-  
+  const [editing, setEditing]= useState(false)
+  const [descriptionEdited, setDescriptionEdited] = useState ({
+    description: ""
+  })
+  const [disable, setDisable] = useState(false)
+  const ref = useRef();
+
+  useEffect(()=>{
+    ref.current?.focus();
+  }, [editing])
+    
+  console.log(userr)
+  function newDescription (e){
+    setDescriptionEdited({ ...descriptionEdited, [e.target.name]: e.target.value });
+  }
 
 const openModal = ()=>{setIdPost(id)
   setIsOpened(true)};
@@ -28,10 +43,9 @@ const openModal = ()=>{setIdPost(id)
   console.log(resp.data);   
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
-  }).catch(()=>console.log("nada"));
+  }).catch((err)=>console.log(err.message));
 
   GetUser(user?.userId).then((resp)=>{
-    console.log(resp.data);
     setUserr(resp.data.username)
   }).catch((err)=>console.log(err.message))
  }, []);
@@ -42,25 +56,43 @@ function likePost(id){
     setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message))
 }
-console.log(likesPost, size)
  if(typeof likesPost === "object"){
   likes = likesPost.map(lik=>lik.username);
-  console.log(likes)
-  console.log(size)
   let find = (likes.filter((ele)=>ele === userr))
-  console.log(find)
   if(find.length>0){
     usr = userr;
   }
-  first = likes[0];
-  sec = likes[1]
-  console.log(first, sec)
+ 
+ 
   if(size-2<0){
+    first = likes[0];
     tamanho = 0;
+    sec= null
   }else{
+    first = likes[0];
     tamanho = (size-2);
+    sec = likes[1]
   }
  }
+
+
+function press(e){
+  console.log(e.key)
+if(e.key === 'Enter'){
+  const promisse = editPost(id,descriptionEdited);
+  setDisable(true)
+  promisse.then(()=>{
+    setDisable(false)
+    setEditing(false)
+  }).catch((err)=>{
+    console.log(err);
+    alert("Edition was not saved, please try again")
+  })
+}
+if(e.key === 'Escape'){
+  setEditing(false)
+}
+}
 
   return (
     <Wrapper>
@@ -85,12 +117,30 @@ console.log(likesPost, size)
         <div className="content__headers-buttons">
           <h2 className="content__headers-name"> {name}</h2>
           <div>
-            <TbEdit color="white" size={20} />
+            <TbEdit color="white" size={20} onClick={()=>{
+              if(name === userr){
+                setEditing(true)
+              }else{
+                alert("you are not allowed to edit!")
+              }
+              }}/>
             <AiOutlineDelete color="white" size={20} onClick={openModal}/>
           </div>
         </div>
-
-        <p className="content__headers-description">{description}</p>
+          {editing? 
+          <input 
+          onKeyDown={press}
+          ref={ref} 
+          onFocus={(e)=>e.persist()}
+          name="description"
+          onChange={newDescription}
+          value={descriptionEdited.description}
+          isDesabled={disable? true : false}
+          />
+          : 
+            <p  className="content__headers-description" >{description}</p>
+          }
+        
         </div>
         <LinkPreview url={url} urlInfo={urlInfo} />
       </div>
@@ -99,6 +149,14 @@ console.log(likesPost, size)
 }
 
 const Wrapper = styled.div`
+input{
+      border: none;
+      height: 2rem;
+      border-radius: 3px;
+      background-color: #efefef;
+      padding-left: 1rem;
+      color: #949494;
+    }
   box-sizing: border-box;
 min-height: 25vh;
   min-width: 100%;
