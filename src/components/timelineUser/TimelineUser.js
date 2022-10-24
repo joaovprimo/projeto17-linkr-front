@@ -1,105 +1,47 @@
 import { useContext, useEffect, useState } from "react";
-import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
+import { MagnifyingGlass} from "react-loader-spinner";
 import styled from "styled-components";
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
-import { getPosts, postPublicate } from "../../services/linkr";
+import { getNameUser, getUserId } from "../../services/linkr";
+import { useParams } from "react-router-dom";
 import Post from "./Post.js";
 import Trending from "./Trending";
 
-export default function Timeline() {
-  const { user, setUser } = useContext(UserContext);
+export default function TimelineUser() {
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState({
-    url: "",
-    description: "",
-    userId: "",
-  });
-  const [isPublicating, setIsPublicating] = useState(false);
   const [loading, setLoading] = useState(true);
+  const {id}=useParams();
+  const { user, setUser } = useContext(UserContext);
+  const [name,setName] = useState("");
 
   useEffect(() => {
-    if (!user) {
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      if (userInfo) {
-        setUser(userInfo);
-      }
-    }
-  }, []);
+    if (user) {
+        getUserId(id,user.headers).then((e)=>{
+          setPosts(e.data);
+          setLoading(false);
+        }).catch((err)=>{
+          console.log(err);
+          alert(
+            "An error occured while trying to fetch the posts, please refresh the page"
+          );
+        });
 
-  useEffect(() => {
-    setNewPost({ ...newPost, userId: user?.userId });
-  }, [user]);
-
-  useEffect(() => {
-    const promisse = getPosts();
-    promisse.then((res) => {
-      setPosts(res.data);
-      setLoading(false);
-    });
-    promisse.catch((error) =>
-      alert(
-        "An error occured while trying to fetch the posts, please refresh the page"
-      )
-    );
-  }, []);
-
-  function handleNewPost(e) {
-    setNewPost({ ...newPost, [e.target.name]: e.target.value });
-  }
-  function publicate(e) {
-    e.preventDefault();
-    const promisse = postPublicate(newPost);
-    setIsPublicating(true);
-    promisse.then((res) => {
-      alert("Post publicado com sucesso");
-      setNewPost({
-        url: "",
-        description: "",
-        userId: user?.userId,
-      });
-      setIsPublicating(false);
-    });
-
-    promisse.catch((e) => {
-      alert(e.response.data);
-      setIsPublicating(false);
-    });
-  }
-
+        getNameUser(id,user.headers).then((e)=>{
+          setName(e.data[0].username);
+          // console.log(e);
+        }).catch((e)=>{
+          console.log(e);
+        });
+    };
+}, [user]);
+  
   return (
     <Wrapper>
       {" "}
-      <h1 className="timeline__title">timeline</h1>
+      <h1 className="timeline__title">{name}'s Posts</h1>
       <main className="container">
-        <Publicate>
-          <div>
-            {" "}
-            <img
-              src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
-              alt="postOwnerImage"
-            />
-          </div>
 
-          <form onSubmit={publicate}>
-            <label>What are you going to share today?</label>
-            <input
-              placeholder="http://..."
-              name="url"
-              onChange={handleNewPost}
-              value={newPost.url}
-              disabled={isPublicating}
-            ></input>
-            <textarea
-              placeholder="Awesome article about #javascript"
-              name="description"
-              onChange={handleNewPost}
-              value={newPost.description}
-              disabled={isPublicating}
-            ></textarea>
-            <button type="submit" disabled={isPublicating}>{isPublicating ?" Publishing..." : "Publish"} </button>
-          </form>
-        </Publicate>
         <div className="content">
           {loading ? (
             <div className="content__search">
@@ -127,7 +69,6 @@ export default function Timeline() {
                 urlInfo={value.urlInfo}
                 url={value.url}
                 id={value.id}
-                userId={value.userId}
               />
             ))
           )}
@@ -138,7 +79,7 @@ export default function Timeline() {
       </aside>
     </Wrapper>
   );
-};
+}
 const Publicate = styled.div`
   height: 20rem;
   width: 100%;

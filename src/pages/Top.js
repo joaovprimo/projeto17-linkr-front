@@ -3,9 +3,10 @@ import { IoChevronDownOutline, IoChevronUpSharp } from "react-icons/io5";
 import { BsSearch } from "react-icons/bs";
 import { DebounceInput } from "react-debounce-input";
 import { useEffect, useState, useContext } from "react";
-import { getUserInfo, getUserSearch, logoutUser } from "../services/linkr";
+import { getAllUserSearch, getUserInfo, getUserSearch, logoutUser } from "../services/linkr";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
+import { device } from "../mediaqueries/devices";
 
 export default function Top() {
     const navigate = useNavigate();
@@ -14,14 +15,16 @@ export default function Top() {
     const [users, setUsers] = useState([]);
     const { user, setUser } = useContext(UserContext);
     const [userInfo,setUserInfo] = useState({email:"",id:null,pictureUrl:"",username:""})
+    const [header,setHeader] = useState("");
+    const { searchs, setSearchs } = useContext(UserContext);
 
     useEffect(() => {
         if (!user) {
             const storageUserInfo = JSON.parse(localStorage.getItem("userInfo"));
             if (storageUserInfo) {
                 setUser(storageUserInfo);
-            }
-        }
+            };
+        };
     }, []);
 
     useEffect(() => {
@@ -29,9 +32,9 @@ export default function Top() {
             const promisse = getUserInfo(user.headers);
             promisse.then(authorized);
             promisse.catch(unauthorized);
-
-        }
-    }, [user])
+            setHeader(user.headers);
+        };
+    }, [user]);
 
     function authorized(response){
         setUserInfo(response.data);
@@ -45,30 +48,35 @@ export default function Top() {
         setSearch(e.target.value);
     };
     function logoutIcon() {
-        console.log(logoutClick)
+        console.log(logoutClick);
         if (logoutClick === 'down') {
-            setlogoutClick('up')
+            setlogoutClick('up');
         }
         if (logoutClick === 'up') {
-            setlogoutClick('down')
+            setlogoutClick('down');
         }
     }
     async function logout() {
         setlogoutClick('down');
         try {
-            console.log(user.headers)
+            // console.log(user.headers)
             await logoutUser(user.headers);
             localStorage.removeItem("userInfo");
             setUser(undefined);
             navigate('/')
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             alert(error?.response.data);
         }
     }
     useEffect(() => {
-        getUserSearch(search).then((e) => {
+        getUserSearch(search,header).then((e) => {
             setUsers(e.data);
+        }).catch((e) => {
+            console.log(e);
+        });
+        getAllUserSearch(search,header).then((e) => {
+            setSearchs(e.data);
         }).catch((e) => {
             console.log(e);
         });
@@ -81,7 +89,7 @@ export default function Top() {
                 <DebounceInput name="searchUser" placeholder="Search for people"
                     minLength={3} debounceTimeout={300} style={styleInput} onChange={(e) => { handleForm(e) }}
                 />
-                <DivSearch onClick={() => { navigate(`/search=${search}`) }}>
+                <DivSearch onClick={() => { navigate(`/search?users=${search}`) }}>
                     <BsSearch style={{ color: "#C6C6C6", fontSize: "23px" }} />
                 </DivSearch>
             </SearchUser>
@@ -89,8 +97,8 @@ export default function Top() {
                 {(search.length >= 3) ?
                     users.map((e, i) => (
                         <Users key={i} onClick={() => {
-                            navigate(`/${e.username}/${e.id}`);
-                            ;
+                            navigate(`/user/${e.id}`);
+                            window.location.reload();
                         }}>
                             <img src={e.pictureUrl} />
                             <h1>{e.username}</h1>
@@ -174,11 +182,17 @@ const DivSearch = styled.div`
 const Search = styled.div`
     display: flex;
     flex-direction: column;
+    @media ${device.mobileM} {
+        max-width: 50%;
+    }
 `;
 const SearchUser = styled.div`
     display:flex;
     position:relative;
     z-index: 2;
+    @media ${device.mobileM} {
+        max-width: 70%;
+      }
 `
 const SerachRender = styled.div`
     box-sizing: border-box;
@@ -188,6 +202,10 @@ const SerachRender = styled.div`
     position: absolute;
     z-index: 1;
     top: 54px;
+    border-radius: 0 0 8px 8px;
+    @media ${device.mobileM} {
+        max-width: 35%;
+    }
 `
 const Users = styled.div`
     height: 50px;

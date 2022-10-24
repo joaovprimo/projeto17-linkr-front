@@ -14,7 +14,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id }) {
+export default function Post({ name, description, image, urlInfo, url, id ,userId}){
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -103,7 +103,10 @@ if(e.key === 'Escape'){
 }
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => {
+      navigate(`/user/${userId}`);
+      window.location.reload();
+  }}>
       <div className="profilePic">
         <img src={image} alt="profilePost" />
         <div>
