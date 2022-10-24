@@ -13,7 +13,7 @@ import Modal from "../../pages/Modal.js";
 export default function Trendpage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { isOpened, setIsOpened } = useContext(UserContext);
+  const { isOpened } = useContext(UserContext);
 
   const { hashtag } = useParams();
 
@@ -27,7 +27,7 @@ export default function Trendpage() {
       .catch((err) => {
         console.log(err);
       });
-  }, [posts]);
+  }, []);
 
   console.log(posts);
 
