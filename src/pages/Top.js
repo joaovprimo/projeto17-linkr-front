@@ -3,9 +3,10 @@ import { IoChevronDownOutline, IoChevronUpSharp } from "react-icons/io5";
 import { BsSearch } from "react-icons/bs";
 import { DebounceInput } from "react-debounce-input";
 import { useEffect, useState, useContext } from "react";
-import { getUserInfo, getUserSearch, logoutUser } from "../services/linkr";
+import { getAllUserSearch, getUserInfo, getUserSearch, logoutUser } from "../services/linkr";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext.js";
+import { device } from "../mediaqueries/devices";
 
 export default function Top() {
     const navigate = useNavigate();
@@ -71,6 +72,10 @@ export default function Top() {
     useEffect(() => {
         getUserSearch(search,header).then((e) => {
             setUsers(e.data);
+        }).catch((e) => {
+            console.log(e);
+        });
+        getAllUserSearch(search,header).then((e) => {
             setSearchs(e.data);
         }).catch((e) => {
             console.log(e);
@@ -177,6 +182,9 @@ const DivSearch = styled.div`
 const Search = styled.div`
     display: flex;
     flex-direction: column;
+    @media ${device.mobileM} {
+        max-width: 50%;
+    }
 `;
 const SearchUser = styled.div`
     display:flex;
@@ -192,6 +200,9 @@ const SerachRender = styled.div`
     z-index: 1;
     top: 54px;
     border-radius: 0 0 8px 8px;
+    @media ${device.mobileM} {
+        max-width: 50%;
+    }
 `
 const Users = styled.div`
     height: 50px;

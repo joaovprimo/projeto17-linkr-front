@@ -91,8 +91,15 @@ async function deletePost(id){
   return response;
 }
 
+function getAllUserSearch(search,token){
+  const config = {
+    headers: token
+  };   
+  return axios.get(`${BASE_URL}/searchs?search=${search}`,config);
+};
+
 export { getPosts, postLogin, postSignup, postPublicate, getUserSearch,
    getUserInfo, logoutUser, getLikesPost, GetUser, postLike, deletePost,
-   getNameUser, getUserId
+   getNameUser, getUserId, getAllUserSearch
   };
 
