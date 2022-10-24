@@ -42,7 +42,7 @@ export default function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       )
     );
-  }, []);
+  }, [posts]);
 
   function handleNewPost(e) {
     setNewPost({ ...newPost, [e.target.name]: e.target.value });

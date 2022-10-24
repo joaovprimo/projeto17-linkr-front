@@ -11,11 +11,14 @@ import Search from "../pages/search.js";
 
 export default function App() {
     const [user, setUser] = useState(null);
+    const [isOpened, setIsOpened] = useState(false);
+    const[idPost, setIdPost] = useState();
+    const[loading,setLoading] = useState(false);
     const [searchs, setSearchs] = useState(undefined);
 
     return (
         <>
-            <UserContext.Provider value={{ user, setUser, searchs,setSearchs }}>
+            <UserContext.Provider value={{ user, setUser,isOpened, setIsOpened, idPost, setIdPost,loading,setLoading, searchs,setSearchs }}>
                 <GlobalStyle />
                 <BrowserRouter>
                     <Routes>

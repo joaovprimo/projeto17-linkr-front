@@ -9,6 +9,8 @@ import { useEffect, useState,useContext } from "react";
 import { getLikesPost, GetUser, postLike} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import Modal from '../../pages/Modal';
+
 
 
 export default function Post({ name, description, image, urlInfo, url,id,userId }) {
@@ -16,13 +18,19 @@ export default function Post({ name, description, image, urlInfo, url,id,userId 
   const [userr, setUserr] = useState("");
   const navigate=useNavigate();
 
+  const [size, setSize] = useState(0);
   
-  const { user, setUser } = useContext(UserContext);
+
+const openModal = ()=>{setIdPost(id)
+  setIsOpened(true)};
+
+  const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
   let likes,usr, indice, sec, first, tamanho, lisklength;
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
   console.log(resp.data);   
-    setLikesPost(resp.data)
+    setLikesPost(resp.data.likesarray)
+    setSize(resp.data.likeslength)
   }).catch(()=>console.log("nada"));
 
   GetUser(user?.userId).then((resp)=>{
@@ -33,36 +41,27 @@ export default function Post({ name, description, image, urlInfo, url,id,userId 
 
 function likePost(id){
   postLike(id, user.userId).then((resp)=>{
-    setLikesPost(resp.data)
+    setLikesPost(resp.data.likesarray)
+    setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message))
 }
-
+console.log(likesPost, size)
  if(typeof likesPost === "object"){
   likes = likesPost.map(lik=>lik.username);
   console.log(likes)
-  lisklength = likes.length;
+  console.log(size)
   let find = (likes.filter((ele)=>ele === userr))
   console.log(find)
   if(find.length>0){
-    indice = likes.indexOf(userr);
     usr = userr;
-    if(indice+1>=likes.length){
-      console.log("aqui1")
-      sec =(likes[indice-1]);
-    }else{
-      console.log("aqui2")
-      sec =(likes[indice+1])
-    }
-    
-  }else{
-    first =(likes[0]);
-    sec = likes[1];
-    
   }
-  if( likes.length-2<0){
+  first = likes[0];
+  sec = likes[1]
+  console.log(first, sec)
+  if(size-2<0){
     tamanho = 0;
   }else{
-    tamanho = (likes.length-2);
+    tamanho = (size-2);
   }
  }
 
@@ -76,12 +75,12 @@ function likePost(id){
         <div>
           {usr ? 
           <>
-           <AiFillHeart color="red" size={20} data-for="main" data-tip={`${user}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true" onClick={()=>likePost(id)}/>
-          <h4 data-for="main" data-tip={`${user}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true">{lisklength}</h4> </> 
+           <AiFillHeart color="red" size={20} data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true" onClick={()=>likePost(id)}/>
+          <h4 data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true">{size}</h4> </> 
           :
           <>
            <AiFillHeart color="white" size={20} data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true" onClick={()=>likePost(id)}/>
-          <h4 data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true">{lisklength}</h4>
+          <h4 data-for="main" data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`} data-iscapture="true">{size}</h4>
           </>}
           <ReactTooltip id="main" place={"bottom"} type={"light"} effect={"float"} multiline={"true"}/>
         </div>
@@ -93,7 +92,7 @@ function likePost(id){
           <h2 className="content__headers-name"> {name}</h2>
           <div>
             <TbEdit color="white" size={20} />
-            <AiOutlineDelete color="white" size={20} />
+            <AiOutlineDelete color="white" size={20} onClick={openModal}/>
           </div>
         </div>
 
