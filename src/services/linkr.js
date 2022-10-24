@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "http://localhost:5000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));

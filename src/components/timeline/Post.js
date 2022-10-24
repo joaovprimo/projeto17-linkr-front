@@ -14,7 +14,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id ,userId}){
+export default function Post({ name, description, image, urlInfo, url, id }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -66,7 +66,6 @@ function likePost(id){
   if(find.length>0){
     usr = userr;
   }
- 
   if(size-2<0){
     first = likes[0];
     tamanho = 0;
@@ -103,10 +102,7 @@ if(e.key === 'Escape'){
 }
 
   return (
-    <Wrapper onClick={() => {
-      navigate(`/user/${userId}`);
-      window.location.reload();
-  }}>
+    <Wrapper>
       <div className="profilePic">
         <img src={image} alt="profilePost" />
         <div>
@@ -185,14 +181,9 @@ if(e.key === 'Escape'){
           />
           : 
            <p className="content__headers-description">
-            <ReactTagify
-              tagStyle={tagStyle}
-              tagClicked={(hashtag) =>
-                navigate(`/hashtag/${hashtag.replace("#", "")}`)
-              }
-            >
+          
               {description}
-            </ReactTagify>
+            
           </p>
           }
         
@@ -203,6 +194,13 @@ if(e.key === 'Escape'){
   );
 }
 
+/*<ReactTagify
+tagStyle={tagStyle}
+tagClicked={(hashtag) =>
+  navigate(`/hashtag/${hashtag.replace("#", "")}`)
+}
+>
+</ReactTagify>*/
 const Wrapper = styled.div`
 input{
       border: none;
