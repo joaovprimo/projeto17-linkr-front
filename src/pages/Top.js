@@ -14,8 +14,8 @@ export default function Top() {
     const [logoutClick, setlogoutClick] = useState("down");
     const [users, setUsers] = useState([]);
     const { user, setUser } = useContext(UserContext);
-    const [userInfo,setUserInfo] = useState({email:"",id:null,pictureUrl:"",username:""})
-    const [header,setHeader] = useState("");
+    const [userInfo, setUserInfo] = useState({ email: "", id: null, pictureUrl: "", username: "" })
+    const [header, setHeader] = useState("");
     const { searchs, setSearchs } = useContext(UserContext);
     // const [render,setRender] = useState(false)
 
@@ -37,26 +37,32 @@ export default function Top() {
         };
     }, [user]);
 
-    function authorized(response){
+    function authorized(response) {
         setUserInfo(response.data);
     }
 
-    function unauthorized(error){
+    function unauthorized(error) {
         alert(error.message);
     }
 
     function handleForm(e) {
         setSearch(e.target.value);
     };
-    function logoutIcon() {
-        console.log(logoutClick);
-        if (logoutClick === 'down') {
-            setlogoutClick('up');
+
+    function logoutIcon(logo) {
+        if (logo === 'arrow') {
+            if (logoutClick === 'down') {
+                setlogoutClick('up');
+            }
+            if (logoutClick === 'up') {
+                setlogoutClick('down');
+            }
         }
-        if (logoutClick === 'up') {
+        if (logo === 'menu') {
             setlogoutClick('down');
         }
     }
+
     async function logout() {
         setlogoutClick('down');
         try {
@@ -71,12 +77,12 @@ export default function Top() {
         }
     }
     useEffect(() => {
-        getUserSearch(search,header).then((e) => {
+        getUserSearch(search, header).then((e) => {
             setUsers(e.data);
         }).catch((e) => {
             console.log(e);
         });
-        getAllUserSearch(search,header).then((e) => {
+        getAllUserSearch(search, header).then((e) => {
             setSearchs(e.data);
         }).catch((e) => {
             console.log(e);
@@ -84,8 +90,9 @@ export default function Top() {
     }, [search], [users]);
 
     return (<Header>
-        <Logo>Linkr</Logo>
-        <Search>
+        <Logo  onClick={() => { logoutIcon('menu') }}>Linkr</Logo>
+        <EmptySpace onClick={() => { logoutIcon('menu') }}>.</EmptySpace>
+        <Search  onClick={() => { logoutIcon('menu') }} >
             <SearchUser>
                 <DebounceInput name="searchUser" placeholder="Search for people"
                     minLength={3} debounceTimeout={300} style={styleInput} onChange={(e) => { handleForm(e) }}
@@ -107,16 +114,17 @@ export default function Top() {
                     )) : ''}
             </SerachRender>
         </Search>
+        <EmptySpace onClick={() => { logoutIcon('menu') }}>.</EmptySpace>
         <Profile>
-            {logoutClick === 'down' ? <IoChevronUpSharp onClick={logoutIcon}
+            {logoutClick === 'down' ? <IoChevronUpSharp onClick={() => { logoutIcon('arrow') }}
                 style={{ color: "white", fontSize: "21px" }} />
                 :
                 <>
-                    <IoChevronDownOutline onClick={logoutIcon}
+                    <IoChevronDownOutline onClick={() => { logoutIcon('arrow') }}
                         style={{ color: "white", fontSize: "21px" }} />
                     <Logout onClick={logout}>Logout</Logout>
                 </>}
-            <Photo src={userInfo.pictureUrl} />
+            <Photo  onClick={() => { logoutIcon('menu') }} src={userInfo.pictureUrl} />
         </Profile>
     </Header>);
 };
@@ -240,3 +248,9 @@ const Logout = styled.div`
     align-items: center;
     font-size: 17px;
 `
+
+const EmptySpace = styled.div`
+    width: 100%;
+    height: 100%;
+`
+
