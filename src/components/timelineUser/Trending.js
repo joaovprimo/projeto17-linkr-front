@@ -1,26 +1,34 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { device } from "../../mediaqueries/devices";
-import { getTrendRanking } from "../../services/linkr";
-import { useNavigate } from "react-router-dom";
+
+const ranking = [
+  "javascript",
+  "react",
+  "css",
+  "python",
+  "django",
+  "c++",
+  "ruby",
+  "pascal",
+  "mobile",
+  "sql",
+  "a",
+  "b",
+  "x",
+  "c",
+];
 
 export default function Trending() {
-  const [trends, setTrends] = useState([]);
-  const promisse = getTrendRanking();
-  promisse.then((res) => {
-    setTrends(res.data);
-  });
-  const navigate = useNavigate();
-
   return (
     <Wrapper>
       <h1>trending</h1>
       <div className="divisor"></div>
       <ul>
-        {trends.map((e, i) => {
+        {ranking.map((e, i) => {
           return (
             <li key={i}>
-              <p onClick={() => navigate(`/hashtag/${e.name}`)}># {e.name}</p>
+              <p># {e}</p>
             </li>
           );
         })}
@@ -36,7 +44,7 @@ const Wrapper = styled.main`
   background-color: #171717;
   border-radius: 16px;
   @media ${device.mobileM} {
-    display: none;
+    display: none
   }
   h1 {
     font-size: 27px;
