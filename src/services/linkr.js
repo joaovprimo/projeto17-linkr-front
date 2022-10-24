@@ -55,8 +55,8 @@ async function GetUser(id) {
 }
 
 async function postLike(id, idusr) {
-  console.log(id, idusr);
-  const response = await axios.post(`${BASE_URL}/posts/likes/${id}/${idusr}`);
+  const headers = createHeaders();
+  const response = await axios.post(`${BASE_URL}/posts/likes/${id}/${idusr}`, headers);
   return response;
 }
 
