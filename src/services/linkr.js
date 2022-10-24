@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "http://localhost:5000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));
@@ -55,8 +55,8 @@ async function GetUser(id) {
 }
 
 async function postLike(id, idusr) {
-  console.log(id, idusr);
-  const response = await axios.post(`${BASE_URL}/posts/likes/${id}/${idusr}`);
+  const headers = createHeaders();
+  const response = await axios.post(`${BASE_URL}/posts/likes/${id}/${idusr}`, headers);
   return response;
 }
 

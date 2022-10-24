@@ -14,7 +14,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id ,userId}){
+export default function Post({ name, description, image, urlInfo, url, id }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -23,6 +23,8 @@ export default function Post({ name, description, image, urlInfo, url, id ,userI
     description: ""
   });
   const [disable, setDisable] = useState(false);
+  const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
+  let likes,usr, indice, sec, first, tamanho, lisklength, tam;
     const navigate = useNavigate();
   const ref = useRef();
 
@@ -40,8 +42,7 @@ export default function Post({ name, description, image, urlInfo, url, id ,userI
   };
 
 
-  const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
-  let likes,usr, indice, sec, first, tamanho, lisklength;
+ 
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
   console.log(resp.data);   
@@ -66,12 +67,17 @@ function likePost(id){
   if(find.length>0){
     usr = userr;
   }
- 
   if(size-2<0){
-    first = likes[0];
+    if(size===0){
+      first = 0;
+    }else{
+      first = likes[0];
+    }
+     console.log(first)
     tamanho = 0;
     sec= null
   }else{
+    tam = size;
     first = likes[0];
     tamanho = (size-2);
     sec = likes[1]
@@ -103,16 +109,15 @@ if(e.key === 'Escape'){
 }
 
   return (
-    <Wrapper onClick={() => {
-      navigate(`/user/${userId}`);
-      window.location.reload();
-  }}>
+    <Wrapper>
       <div className="profilePic">
         <img src={image} alt="profilePost" />
         <div>
           {usr ? (
             <>
-              <AiFillHeart
+            {tam ? (
+              <>
+            <AiFillHeart
                 color="red"
                 size={20}
                 data-for="main"
@@ -127,10 +132,31 @@ if(e.key === 'Escape'){
               >
                 {size}
               </h4>{" "}
+              </>) : 
+              (<>
+              <AiFillHeart
+                color="red"
+                size={20}
+                data-for="main"
+                data-tip={`${first}`}
+                data-iscapture="true"
+                onClick={() => likePost(id)}
+              />
+              <h4
+                data-for="main"
+                data-tip={`${first}`}
+                data-iscapture="true"
+              >
+                {size}
+              </h4>{" "}
+              </>)}
+              
             </>
           ) : (
             <>
-              <AiFillHeart
+            {tam? 
+            (<>
+                <AiFillHeart
                 color="white"
                 size={20}
                 data-for="main"
@@ -145,6 +171,26 @@ if(e.key === 'Escape'){
               >
                 {size}
               </h4>
+            </>)
+          :
+          (<>
+             <AiFillHeart
+                color="white"
+                size={20}
+                data-for="main"
+                data-tip={`${first}`}
+                data-iscapture="true"
+                onClick={() => likePost(id)}
+              />
+              <h4
+                data-for="main"
+                data-tip={`${first}`}
+                data-iscapture="true"
+              >
+                {size}
+              </h4>
+            </>)}
+              
             </>
           )}
           <ReactTooltip
@@ -185,14 +231,9 @@ if(e.key === 'Escape'){
           />
           : 
            <p className="content__headers-description">
-            <ReactTagify
-              tagStyle={tagStyle}
-              tagClicked={(hashtag) =>
-                navigate(`/hashtag/${hashtag.replace("#", "")}`)
-              }
-            >
+          
               {description}
-            </ReactTagify>
+            
           </p>
           }
         
@@ -203,6 +244,13 @@ if(e.key === 'Escape'){
   );
 }
 
+/*<ReactTagify
+tagStyle={tagStyle}
+tagClicked={(hashtag) =>
+  navigate(`/hashtag/${hashtag.replace("#", "")}`)
+}
+>
+</ReactTagify>*/
 const Wrapper = styled.div`
 input{
       border: none;
