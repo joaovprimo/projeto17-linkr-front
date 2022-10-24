@@ -17,6 +17,7 @@ export default function Top() {
     const [userInfo,setUserInfo] = useState({email:"",id:null,pictureUrl:"",username:""})
     const [header,setHeader] = useState("");
     const { searchs, setSearchs } = useContext(UserContext);
+    // const [render,setRender] = useState(false)
 
     useEffect(() => {
         if (!user) {
