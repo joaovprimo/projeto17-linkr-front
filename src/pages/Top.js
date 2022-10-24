@@ -190,7 +190,6 @@ const SearchUser = styled.div`
     display:flex;
     position:relative;
     z-index: 2;
-    margin-left:20px;
     @media ${device.mobileM} {
         max-width: 70%;
       }
@@ -205,7 +204,7 @@ const SerachRender = styled.div`
     top: 54px;
     border-radius: 0 0 8px 8px;
     @media ${device.mobileM} {
-        max-width: 50%;
+        max-width: 35%;
     }
 `
 const Users = styled.div`
