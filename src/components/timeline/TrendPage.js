@@ -3,7 +3,7 @@ import { device } from "../../mediaqueries/devices";
 import UserContext from "../../context/UserContext.js";
 import { useEffect, useState, useContext } from "react";
 import Trending from "./Trending";
-import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
+import { MagnifyingGlass } from "react-loader-spinner";
 import Post from "./Post.js";
 import { getTrendPosts } from "../../services/linkr";
 import { useParams } from "react-router-dom";
@@ -13,7 +13,7 @@ import Modal from "../../pages/Modal.js";
 export default function Trendpage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { isOpened, setIsOpened } = useContext(UserContext);
+  const { isOpened } = useContext(UserContext);
 
   const { hashtag } = useParams();
 
