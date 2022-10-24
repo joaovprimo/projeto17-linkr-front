@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from "react";
-import { MagnifyingGlass} from "react-loader-spinner";
+import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
-import { getNameUser, getUserId } from "../../services/linkr";
-import { useParams } from "react-router-dom";
 import Post from "./Post.js";
 import Trending from "./Trending";
+import { getNameUser, getUserId } from "../../services/linkr";
+import { useParams } from "react-router-dom";
 
 export default function TimelineUser() {
+  const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {id}=useParams();
-  const { user, setUser } = useContext(UserContext);
   const [name,setName] = useState("");
+  const {id}=useParams()
 
   useEffect(() => {
     if (user) {
@@ -29,19 +29,19 @@ export default function TimelineUser() {
 
         getNameUser(id,user.headers).then((e)=>{
           setName(e.data[0].username);
-          // console.log(e);
+          // console.log(e.data[0].username);   
         }).catch((e)=>{
           console.log(e);
         });
     };
-}, [user]);
-  
+  }, [user]);
+ 
   return (
     <Wrapper>
       {" "}
-      <h1 className="timeline__title">{name}'s Posts</h1>
+      <h1 className="timeline__title">{name}'s posts</h1>
       <main className="container">
-
+        
         <div className="content">
           {loading ? (
             <div className="content__search">
@@ -69,6 +69,7 @@ export default function TimelineUser() {
                 urlInfo={value.urlInfo}
                 url={value.url}
                 id={value.id}
+                userId={value.userId}
               />
             ))
           )}
@@ -79,7 +80,7 @@ export default function TimelineUser() {
       </aside>
     </Wrapper>
   );
-}
+};
 const Publicate = styled.div`
   height: 20rem;
   width: 100%;
