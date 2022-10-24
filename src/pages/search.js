@@ -37,7 +37,9 @@ const Container = styled.div`
 `;
 const DivUsers=styled.div`
     display:flex;
+    flex-direction:column;
     justify-content:center;
+    align-items: center;
     padding: 30px;
 `;
 const DivUser=styled.div`
@@ -49,6 +51,10 @@ const DivUser=styled.div`
     display:flex;
     align-items:center;
     padding: 0 15px;
+    margin-bottom:20px;
+    @media ${device.mobileM} {
+        max-width: 70%;
+    }
     img{
         width:65px;
         heigth:65px;
