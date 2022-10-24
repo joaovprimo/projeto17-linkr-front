@@ -27,7 +27,7 @@ export default function Trendpage() {
       .catch((err) => {
         console.log(err);
       });
-  }, [posts]);
+  }, []);
 
   console.log(posts);
 
