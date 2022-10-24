@@ -2,15 +2,29 @@ import styled from "styled-components";
 import Timeline from "../components/timeline/Timeline";
 import { device } from "../mediaqueries/devices";
 import Top from "./Top";
+import {useContext} from "react";
+import UserContext from "../context/UserContext";
+import Modal from "./Modal"
 
 
 export default function Main() {
-
-  return (
+  const {isOpened, setIsOpened } = useContext(UserContext);
+  
+return (
     <>
       <Container>
+        {isOpened? 
+        <>
+        <Modal/>
         <Top/>
         <Timeline />
+        
+        </>
+        : 
+        <>
+        <Top/>
+        <Timeline />
+        </>}
       </Container>
     </>
   );
@@ -25,3 +39,4 @@ const Container = styled.div`
     max-width: 100%;
   }
 `;
+

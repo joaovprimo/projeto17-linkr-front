@@ -2,28 +2,34 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "../style/style.js";
 import Main from "../pages/Main.js";
 import SigninPage from "../pages/SigninPage.js";
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import UserContext from '../context/UserContext.js';
 import SignupPage from "../pages/SignupPage.js";
 import Users from "../pages/Users.js";
+import Search from "../pages/search.js";
 
 
 export default function App() {
-    const [tasks, setTasks] = useState();
+    const [user, setUser] = useState(null);
+    const [isOpened, setIsOpened] = useState(false);
+    const[idPost, setIdPost] = useState();
+    const[loading,setLoading] = useState(false);
+    const [searchs, setSearchs] = useState(undefined);
 
     return (
         <>
-            <GlobalStyle />
-            <BrowserRouter>
-                <UserContext.Provider value={{ tasks, setTasks }}>
+            <UserContext.Provider value={{ user, setUser,isOpened, setIsOpened, idPost, setIdPost,loading,setLoading, searchs,setSearchs }}>
+                <GlobalStyle />
+                <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<SigninPage />} />
                         <Route path="/sign-up" element={<SignupPage />} />
                         <Route path="/main" element={<Main />} />
-                        <Route path="/:user/:id" element={<Users/> }/>
+                        <Route path="/user/:id" element={<Users/>}/>
+                        <Route path="/search" element={<Search/>}/>
                     </Routes>
-                </UserContext.Provider>
-            </BrowserRouter>
+                </BrowserRouter>
+            </UserContext.Provider>
         </>
     )
 }
