@@ -3,13 +3,14 @@ import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
-import { getPosts, postPublicate } from "../../services/linkr";
+import { getPosts, postPublicate, getUserInfo } from "../../services/linkr";
 import Post from "./Post.js";
 import Trending from "./Trending";
 
 export default function Timeline() {
   const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState({ email: "", id: null, pictureUrl: "", username: "" })
   const [newPost, setNewPost] = useState({
     url: "",
     description: "",
@@ -19,6 +20,7 @@ export default function Timeline() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(user)
     if (!user) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if (userInfo) {
@@ -26,6 +28,22 @@ export default function Timeline() {
       }
     }
   }, []);
+  
+  useEffect(()=>{
+    if (user) {
+      const promisse = getUserInfo(user.headers);
+      promisse.then(authorized);
+      promisse.catch(unauthorized);
+  };
+  },[user])
+
+  function authorized(response) {
+    setUserInfo(response.data);
+}
+
+function unauthorized(error) {
+    alert(error.message);
+}
 
   useEffect(() => {
     setNewPost({ ...newPost, userId: user?.userId });
@@ -76,7 +94,7 @@ export default function Timeline() {
           <div>
             {" "}
             <img
-              src="https://br.mundo.com/fotos/201506/animal-selfie-1-600x400.jpg"
+              src={userInfo.pictureUrl}
               alt="postOwnerImage"
             />
           </div>
