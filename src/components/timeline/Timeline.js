@@ -28,7 +28,7 @@ export default function Timeline() {
       }
     }
   }, []);
-
+  
   useEffect(()=>{
     if (user) {
       const promisse = getUserInfo(user.headers);
