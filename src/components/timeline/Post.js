@@ -76,12 +76,13 @@ function likePost(id){
     tamanho = (size-2);
     sec = likes[1]
   }
-  const tagStyle = {
-    color: "white",
-    fontWeight: 700,
-    cursor: "pointer",
-  };
-
+ }
+ 
+ const tagStyle = {
+  color: "white",
+  fontWeight: 700,
+  cursor: "pointer",
+};
 
 function press(e){
   console.log(e.key)
@@ -287,4 +288,5 @@ input{
       justify-content: space-between;
     }
   }
-`;
+
+`
