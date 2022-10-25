@@ -41,12 +41,9 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     setIdPost(id);
     setIsOpened(true);
   };
-
-
  
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
-  console.log(resp.data);   
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message));
@@ -199,10 +196,10 @@ if(e.key === 'Escape'){
           )}
           <ReactTooltip
             id="main"
-            place={"bottom"}
-            type={"light"}
-            effect={"float"}
-            multiline={"true"}
+            place="bottom"
+            type="light"
+            effect="float"
+            multiline={true}
           />
         </div>
       </div>

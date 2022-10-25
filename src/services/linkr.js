@@ -2,11 +2,10 @@ import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "http://localhost:5000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));
-  console.log(config);
   return config;
 };
 
@@ -114,6 +113,17 @@ async function editPost(id,description){
   return response;
 }
 
+async function getIsFollowed(userId){
+  const config = createHeaders();
+  const response = await axios.get(`${BASE_URL}/isFollowed/${userId}`,config);
+  return response;
+}
+
+async function updateFollowUnfollow(userId){
+  const config = createHeaders();
+  const response = await axios.get(`${BASE_URL}/followUnfollow/${userId}`,config);
+  return response;  
+}
 
 export { 
   getPosts, 
@@ -132,7 +142,9 @@ export {
   getTrendRanking,
   getAllUserSearch,
   getNameUser,
-  getUserId
+  getUserId,
+  getIsFollowed,
+  updateFollowUnfollow
   };
 
 

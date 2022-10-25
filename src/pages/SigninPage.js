@@ -16,15 +16,12 @@ export default function SigninPage() {
 
     useEffect(() => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        console.log(userInfo)
-        console.log(userInfo,'19')
         if (userInfo) {
             setUser(userInfo);
         }
     }, []);
 
     useEffect(() => {
-        console.log(user)
         if (user) {
             const userInfo = JSON.stringify(user);
             localStorage.setItem("userInfo", userInfo);
