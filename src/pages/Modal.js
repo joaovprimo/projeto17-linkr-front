@@ -93,7 +93,7 @@ background-color:rgba(255, 255, 255, 0.9);
 display:flex;
 justify-content:center;
 align-items:center;
-position:absolute;
+position: fixed;
 z-index:3
 `
 const Container = styled.div`
