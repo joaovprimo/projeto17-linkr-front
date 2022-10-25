@@ -15,7 +15,11 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
+<<<<<<< HEAD
 export default function Post({ name, description, image, urlInfo, url, id, reposterId }) {
+=======
+export default function Post({ name, description, image, urlInfo, url, id, userId }) {
+>>>>>>> d5da41a50acd868e4b03070b63be5e1e737f2769
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
