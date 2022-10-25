@@ -10,6 +10,7 @@ import Modal from "./Modal"
 export default function Main() {
   const {isOpened, setIsOpened } = useContext(UserContext);
   
+  
 return (
     <>
       <Container>
