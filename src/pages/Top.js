@@ -17,6 +17,7 @@ export default function Top() {
     const [userInfo, setUserInfo] = useState({ email: "", id: null, pictureUrl: "", username: "" })
     const [header, setHeader] = useState("");
     const { searchs, setSearchs } = useContext(UserContext);
+    // const [render,setRender] = useState(false)
 
     useEffect(() => {
         if (!user) {
@@ -123,7 +124,7 @@ export default function Top() {
                         style={{ color: "white", fontSize: "21px" }} />
                     <Logout onClick={logout}>Logout</Logout>
                 </>}
-            <Photo  onClick={() => { logoutIcon('menu') }} src={userInfo.pictureUrl} />
+            <Photo  onClick={() => { logoutIcon('menu'); navigate(`/user/${user.userId}`) }} src={userInfo.pictureUrl} />
         </Profile>
     </Header>);
 };
@@ -155,6 +156,7 @@ const Header = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding:0 25px;
 `;
 const Logo = styled.h1`
     font-family: "Passion One";
@@ -162,7 +164,6 @@ const Logo = styled.h1`
     font-weight: 700;
     font-size: 49px;
     color: #ffffff;
-    margin-left: 25px;
 `;
 const Profile = styled.div`
     display: flex;
@@ -175,6 +176,7 @@ const Photo = styled.img`
     border-radius: 26.5px;
     margin-left: 15px;
     object-fit: cover;
+    cursor: pointer;
 `;
 const DivSearch = styled.div`
     height: 45px;

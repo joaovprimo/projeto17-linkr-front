@@ -15,7 +15,11 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
+<<<<<<< HEAD
 export default function Post({ name, description, image, urlInfo, url, id, reposterId }) {
+=======
+export default function Post({ name, description, image, urlInfo, url, id, userId }) {
+>>>>>>> d5da41a50acd868e4b03070b63be5e1e737f2769
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -110,9 +114,9 @@ if(e.key === 'Escape'){
 }
 
   return (
-    <Wrapper>
+    <Wrapper >
       <div className="profilePic">
-        <img src={image} alt="profilePost" />
+        <img src={image} alt="profilePost" onClick={(e)=>{navigate(`/user/${userId}`)}} />
         <div>
           {usr ? (
             <>
@@ -120,6 +124,7 @@ if(e.key === 'Escape'){
               <>
             <AiFillHeart
                 color="red"
+                cursor="pointer"
                 size={20}
                 data-for="main"
                 data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
@@ -137,6 +142,7 @@ if(e.key === 'Escape'){
               (<>
               <AiFillHeart
                 color="red"
+                cursor="pointer"
                 size={20}
                 data-for="main"
                 data-tip={`${first}`}
@@ -159,6 +165,7 @@ if(e.key === 'Escape'){
             (<>
                 <AiFillHeart
                 color="white"
+                cursor="pointer"
                 size={20}
                 data-for="main"
                 data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
@@ -177,6 +184,7 @@ if(e.key === 'Escape'){
           (<>
              <AiFillHeart
                 color="white"
+                cursor="pointer"
                 size={20}
                 data-for="main"
                 data-tip={`${first}`}
@@ -216,16 +224,16 @@ if(e.key === 'Escape'){
         <div className="content__headers">
 
         <div className="content__headers-buttons">
-          <h2 className="content__headers-name"> {name}</h2>
+          <h2 className="content__headers-name"  onClick={(e)=>{navigate(`/user/${userId}`)}}> {name} </h2>
           <div>
-            <TbEdit color="white" size={20} onClick={()=>{
+            <TbEdit color="white" size={20} cursor="pointer" onClick={()=>{
               if(name === userr){
                 setEditing(true)
               }else{
                 alert("you are not allowed to edit!")
               }
               }}/>
-            <AiOutlineDelete color="white" size={20} onClick={openModal}/>
+            <AiOutlineDelete color="white" size={20} cursor="pointer" onClick={openModal}/>
           </div>
         </div>
           {editing? 
@@ -352,6 +360,7 @@ const Wrapper = styled.div`
       height: 5rem;
       object-fit: cover;
       border-radius: 50%;
+      cursor: pointer;
     }
     div {
       display: flex;
