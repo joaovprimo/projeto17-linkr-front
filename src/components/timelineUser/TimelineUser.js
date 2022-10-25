@@ -20,6 +20,7 @@ export default function TimelineUser() {
   const [displayFollow,setDisplayFollow] = useState('auto');
 
   useEffect(() => {
+    console.log(user)
     if(user){
       if(user.userId==id){
         setDisplayFollow('none');

@@ -49,7 +49,7 @@ export default function Top() {
         setSearch(e.target.value);
     };
 
-    function logoutIcon(logo) {
+    function logoutIcon(logo,goToMain) {
         if (logo === 'arrow') {
             if (logoutClick === 'down') {
                 setlogoutClick('up');
@@ -60,6 +60,9 @@ export default function Top() {
         }
         if (logo === 'menu') {
             setlogoutClick('down');
+        }
+        if(goToMain){
+            navigate('/main');
         }
     }
 
@@ -92,7 +95,7 @@ export default function Top() {
     }, [search], [users]);
 
     return (<Header>
-        <Logo onClick={() => { logoutIcon('menu') }}>Linkr</Logo>
+        <Logo onClick={() => { logoutIcon('menu',true) }}>Linkr</Logo>
         <EmptySpace onClick={() => { logoutIcon('menu') }}>.</EmptySpace>
         <Search onClick={() => { logoutIcon('menu') }} >
             <SearchUser>

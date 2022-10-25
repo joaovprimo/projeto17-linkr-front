@@ -18,6 +18,7 @@ export default function Timeline() {
   });
   const [isPublicating, setIsPublicating] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [postMessage, setPostMessage] = useState("Message");
 
   useEffect(() => {
     if (!user) {
@@ -27,22 +28,26 @@ export default function Timeline() {
       }
     }
   }, []);
-  
-  useEffect(()=>{
+
+  useEffect(() => {
+    console.log(posts)
+  }, [posts])
+
+  useEffect(() => {
     if (user) {
       const promisse = getUserInfo(user.headers);
       promisse.then(authorized);
       promisse.catch(unauthorized);
-  };
-  },[user])
+    };
+  }, [user])
 
   function authorized(response) {
     setUserInfo(response.data);
-}
+  }
 
-function unauthorized(error) {
+  function unauthorized(error) {
     alert(error.message);
-}
+  }
 
   useEffect(() => {
     setNewPost({ ...newPost, userId: user?.userId });
@@ -51,8 +56,21 @@ function unauthorized(error) {
   useEffect(() => {
     const promisse = getPosts();
     promisse.then((res) => {
-      setPosts(res.data);
-      setLoading(false);
+      console.log(res.data)
+      if (res.data === 'no follows') {
+        setPosts([]);
+        setLoading(false);
+        setPostMessage('You dont follow anyone yet. Search for new friends')
+        return
+      }
+      if (res.data === 'no posts') {
+        setPosts([]);
+        setLoading(false);
+        setPostMessage('No posts found from your friends')
+        return
+      }
+        setPosts(res.data);
+        setLoading(false);
     });
     promisse.catch((error) =>
       alert(
@@ -114,7 +132,7 @@ function unauthorized(error) {
               value={newPost.description}
               disabled={isPublicating}
             ></textarea>
-            <button type="submit" disabled={isPublicating}>{isPublicating ?" Publishing..." : "Publish"} </button>
+            <button type="submit" disabled={isPublicating}>{isPublicating ? " Publishing..." : "Publish"} </button>
           </form>
         </Publicate>
         <div className="content">
@@ -133,7 +151,7 @@ function unauthorized(error) {
               />
             </div>
           ) : posts.length === 0 ? (
-            <div className="content__empty">There are no posts yet</div>
+            <div className="content__empty">{postMessage}</div>
           ) : (
             posts.map((value, index) => (
               <Post
