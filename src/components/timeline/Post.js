@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
+import {BiRepost} from "react-icons/bi"
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext} from "react";
@@ -44,6 +45,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
  
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
+  console.log(resp.data);   
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message));
@@ -88,7 +90,7 @@ function likePost(id){
 };
 
 function press(e){
-  console.log(e.key)
+
 if(e.key === 'Enter'){
   const promisse = editPost(id,descriptionEdited);
   setDisable(true)
@@ -202,6 +204,14 @@ if(e.key === 'Escape'){
             multiline={true}
           />
         </div>
+        <div className="profilePic__icon profilePic__icon-comentary">
+        <AiOutlineComment size={20} color={"white"}/>
+        <h3>3 comment</h3>
+        </div>
+        <div className="profilePic__icon profilePic__icon-repost">
+          <BiRepost size={20} color={"white"}/>
+          <h3>3 repost</h3>
+        </div>
       </div>
 
       <div className="content">
@@ -253,14 +263,6 @@ tagClicked={(hashtag) =>
 >
 </ReactTagify>*/
 const Wrapper = styled.div`
-input{
-      border: none;
-      height: 2rem;
-      border-radius: 3px;
-      background-color: #efefef;
-      padding-left: 1rem;
-      color: #949494;
-    }
   box-sizing: border-box;
   min-height: 25vh;
   min-width: 100%;
@@ -271,6 +273,14 @@ input{
   position: relative;
   display: flex;
   margin-bottom: 2rem;
+  input{
+      border: none;
+      height: 2rem;
+      border-radius: 3px;
+      background-color: #efefef;
+      padding-left: 1rem;
+      color: #949494;
+    }
   span {
     font-weight: bold;
   }
@@ -322,7 +332,19 @@ input{
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 10rem;
+    height: 20vh;
+
+
+    &__icon{
+      color: white;
+      transition: all .3s;
+      :hover{
+        cursor: pointer;
+      transform: scale(1.05);
+      }
+    }
+
+
 
     h4 {
       color: white;
