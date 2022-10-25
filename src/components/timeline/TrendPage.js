@@ -14,7 +14,7 @@ export default function Trendpage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isOpened } = useContext(UserContext);
-
+  const { user, setUser } = useContext(UserContext);
   const { hashtag } = useParams();
 
   useEffect(() => {
@@ -28,8 +28,6 @@ export default function Trendpage() {
         console.log(err);
       });
   }, []);
-
-  console.log(posts);
 
   return (
     <Container>
@@ -74,6 +72,7 @@ export default function Trendpage() {
                   urlInfo={value.urlInfo}
                   url={value.url}
                   id={value.id}
+                  userId={value.userId}
                 />
               ))
             )}
