@@ -146,6 +146,7 @@ function unauthorized(error) {
                 url={value.url}
                 id={value.id}
                 userId={value.userId}
+                reposterId={value.reposterId}
               />
             ))
           )}
