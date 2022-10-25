@@ -5,43 +5,94 @@ import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
 import Post from "./Post.js";
 import Trending from "./Trending";
-import { getNameUser, getUserId } from "../../services/linkr";
+import { getIsFollowed, getNameUser, getUserId, updateFollowUnfollow } from "../../services/linkr";
 import { useParams } from "react-router-dom";
 
 export default function TimelineUser() {
   const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [name,setName] = useState("");
-  const {id}=useParams()
+  const [name, setName] = useState("");
+  const { id } = useParams();
+  const [followColor, setFollowColor] = useState('#AAAAAA');
+  const [disableFollow, setDisableFollow] = useState(true);
+  const [follow, setFollow] = useState('Loading...');
+  const [displayFollow,setDisplayFollow] = useState('auto');
 
   useEffect(() => {
+    if(user){
+      if(user.userId==id){
+        setDisplayFollow('none');
+      }
+    }
     if (user) {
-        getUserId(id,user.headers).then((e)=>{
-          setPosts(e.data);
-          setLoading(false);
-        }).catch((err)=>{
-          console.log(err);
-          alert(
-            "An error occured while trying to fetch the posts, please refresh the page"
-          );
-        });
+      getUserId(id, user.headers).then((e) => {
+        setPosts(e.data);
+        setLoading(false);
+      }).catch((err) => {
+        console.log(err);
+        alert(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+      });
 
-        getNameUser(id,user.headers).then((e)=>{
-          setName(e.data[0].username);
-          // console.log(e.data[0].username);   
-        }).catch((e)=>{
-          console.log(e);
-        });
+      getNameUser(id, user.headers).then((e) => {
+        setName(e.data[0].username);
+        // console.log(e.data[0].username);   
+      }).catch((e) => {
+        console.log(e);
+      });
     };
   }, [user]);
- 
+
+  useEffect(()=>{
+    setDisableFollow(true);
+    const promisse = getIsFollowed(id);
+    promisse.then((res)=>{
+      console.log(res.data)
+      if(!res.data){
+        setFollow('Follow');
+        setFollowColor('#1877F2') 
+      } 
+      if(res.data) {
+        setFollow('Unfollow');
+        setFollowColor('#FFFFFF')  
+      }
+    })
+    promisse.catch((error)=>{alert(error.message)})
+    setDisableFollow(false);
+  },[])
+  
+
+  function addFollowed() {
+    setDisableFollow(true);
+    const promisse = updateFollowUnfollow(id);
+    promisse.then((res)=>{
+      console.log(res.data)
+      if(res.data==='Unfollowed'){
+        setFollow('Follow');
+        setFollowColor('#1877F2')
+      } else {
+        setFollow('Unfollow');
+        setFollowColor('#FFFFFF') 
+      }
+    })
+    promisse.catch((error)=>{alert(error.message)})
+    setDisableFollow(false);
+  }
+
   return (
     <Wrapper>
       {" "}
-      <h1 className="timeline__title">{name}'s posts</h1>
+      <UserContent>
+        <h1 className="timeline__title">{name}'s posts</h1>
+        <FollowButton display={displayFollow} 
+                      disabled={disableFollow} color={followColor} onClick={addFollowed}>
+          {follow}
+        </FollowButton>
+      </UserContent>
       <main className="container">
-        
+
         <div className="content">
           {loading ? (
             <div className="content__search">
@@ -154,6 +205,7 @@ const Publicate = styled.div`
     border-radius: 50%;
   }
 `;
+
 const Wrapper = styled.div`
   width: 70vw;
   display: block;
@@ -199,4 +251,18 @@ const Wrapper = styled.div`
     color: white;
     margin-bottom: 3rem;
   }
-`;
+`
+const FollowButton = styled.button`
+    background-color: ${props => props.color};
+    width: 112px;
+    height: 31px;
+    border-radius: 5px;
+    border: none;
+    display: ${props=>props.display};
+`
+const UserContent = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`
+  ;

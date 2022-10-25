@@ -6,10 +6,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function Trending() {
   const [trends, setTrends] = useState([]);
-  const promisse = getTrendRanking();
-  promisse.then((res) => {
-    setTrends(res.data);
-  });
+
+  useEffect(()=>{
+    const promisse = getTrendRanking();
+    promisse.then((res) => {
+      setTrends(res.data);
+    });
+  },[])
+
   const navigate = useNavigate();
 
   return (

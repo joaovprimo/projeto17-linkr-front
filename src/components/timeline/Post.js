@@ -15,11 +15,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
-<<<<<<< HEAD
-export default function Post({ name, description, image, urlInfo, url, id, reposterId }) {
-=======
 export default function Post({ name, description, image, urlInfo, url, id, userId }) {
->>>>>>> d5da41a50acd868e4b03070b63be5e1e737f2769
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -46,12 +42,10 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     setIdPost(id);
     setIsOpened(true);
   };
-
-
  
  useEffect(()=> {
   getLikesPost(id).then((resp)=> {
-
+  console.log(resp.data);   
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message));
@@ -204,10 +198,10 @@ if(e.key === 'Escape'){
           )}
           <ReactTooltip
             id="main"
-            place={"bottom"}
-            type={"light"}
-            effect={"float"}
-            multiline={"true"}
+            place="bottom"
+            type="light"
+            effect="float"
+            multiline={true}
           />
         </div>
         <div className="profilePic__icon profilePic__icon-comentary">

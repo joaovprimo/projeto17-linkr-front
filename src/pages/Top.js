@@ -77,22 +77,24 @@ export default function Top() {
         }
     }
     useEffect(() => {
-        getUserSearch(search, header).then((e) => {
-            setUsers(e.data);
-        }).catch((e) => {
-            console.log(e);
-        });
-        getAllUserSearch(search, header).then((e) => {
-            setSearchs(e.data);
-        }).catch((e) => {
-            console.log(e);
-        });
+        if (search !== "") {
+            getUserSearch(search, header).then((e) => {
+                setUsers(e.data);
+            }).catch((e) => {
+                console.log(e);
+            });
+            getAllUserSearch(search, header).then((e) => {
+                setSearchs(e.data);
+            }).catch((e) => {
+                console.log(e);
+            });
+        }
     }, [search], [users]);
 
     return (<Header>
-        <Logo  onClick={() => { logoutIcon('menu') }}>Linkr</Logo>
+        <Logo onClick={() => { logoutIcon('menu') }}>Linkr</Logo>
         <EmptySpace onClick={() => { logoutIcon('menu') }}>.</EmptySpace>
-        <Search  onClick={() => { logoutIcon('menu') }} >
+        <Search onClick={() => { logoutIcon('menu') }} >
             <SearchUser>
                 <DebounceInput name="searchUser" placeholder="Search for people"
                     minLength={3} debounceTimeout={300} style={styleInput} onChange={(e) => { handleForm(e) }}
@@ -124,7 +126,7 @@ export default function Top() {
                         style={{ color: "white", fontSize: "21px" }} />
                     <Logout onClick={logout}>Logout</Logout>
                 </>}
-            <Photo  onClick={() => { logoutIcon('menu'); navigate(`/user/${user.userId}`) }} src={userInfo.pictureUrl} />
+            <Photo onClick={() => { logoutIcon('menu'); navigate(`/user/${user.userId}`) }} src={userInfo.pictureUrl} />
         </Profile>
     </Header>);
 };
