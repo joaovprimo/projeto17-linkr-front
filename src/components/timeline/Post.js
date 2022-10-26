@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -9,9 +9,7 @@ import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext} from "react";
 import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
-import Modal from '../../pages/Modal';
 import { useRef } from "react";
-import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
@@ -25,8 +23,8 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   });
   const [repostsCount, setRepostsCount] = useState(0)
   const [disable, setDisable] = useState(false);
-  const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
-  let likes,usr, indice, sec,tamanho, lisklength, tam;
+  const { user, setIsOpened, setIdPost } = useContext(UserContext);
+  let likes,usr, sec,tamanho, tam;
   let first = 0;
     const navigate = useNavigate();
   const ref = useRef();
@@ -109,11 +107,11 @@ function likePost(id){
   }
  }
  
- const tagStyle = {
-  color: "white",
-  fontWeight: 700,
-  cursor: "pointer",
-};
+//  const tagStyle = {
+//   color: "white",
+//   fontWeight: 700,
+//   cursor: "pointer",
+// };
 
 function press(e){
 
@@ -135,8 +133,9 @@ if(e.key === 'Escape'){
 
   return (
     <>
-    <RepostBox className="repostBox"> <BiRepost size={20} color={"white"}/>
-    <h3>Re-posted by <span>vini</span></h3>
+    <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}> 
+        <BiRepost size={20} color={"white"}/>
+        <h3>Re-posted by <span>vini</span></h3>
     </RepostBox>
     <Wrapper >
       
@@ -301,7 +300,7 @@ height: 3.5rem;
 margin-bottom: -.5rem;
 border-top-left-radius: 1rem;
 border-top-right-radius: 1rem;
-display: flex;
+display: ${props=>props.isOriginalPost? "none": "flex"};
 padding: 1rem;
 align-items: center;
 font-size: 1.1rem;
