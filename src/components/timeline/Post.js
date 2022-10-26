@@ -7,7 +7,7 @@ import {BiRepost} from "react-icons/bi"
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext} from "react";
-import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost} from "../../services/linkr";
+import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost, getNameUser} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   });
   const [repostsCount, setRepostsCount] = useState(0)
   const [disable, setDisable] = useState(false);
+  const [reposterName, setReposterName] = useState("")
   const { user, setIsOpened, setIdPost } = useContext(UserContext);
   let likes,usr, sec,tamanho, tam;
   let first = 0;
@@ -38,6 +39,15 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
 repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> alert(error.response.data))
 
   },[])
+
+useEffect(()=>{
+if(!isOriginalPost()){
+  const promisse = getNameUser(reposterId, user.token);
+  promisse.then(res=>{setReposterName(res.data[0].username);console.log(res.data[0])}).catch(error=>console.log(error))
+}
+
+
+},[])
 
   function postRepostOnClick(){
     let body = {idPost: "", reposterId: user.userId};
@@ -135,7 +145,7 @@ if(e.key === 'Escape'){
     <>
     <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}> 
         <BiRepost size={20} color={"white"}/>
-        <h3>Re-posted by <span>vini</span></h3>
+        <h3>Re-posted by <span>{reposterName? reposterName : "Loading.."}</span></h3>
     </RepostBox>
     <Wrapper >
       
