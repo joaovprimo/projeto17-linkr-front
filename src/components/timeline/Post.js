@@ -7,7 +7,7 @@ import {BiRepost} from "react-icons/bi"
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext} from "react";
-import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById} from "../../services/linkr";
+import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
 import Modal from '../../pages/Modal';
 import { useRef } from "react";
@@ -15,7 +15,7 @@ import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id, userId }) {
+export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId}) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -31,17 +31,29 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     const navigate = useNavigate();
   const ref = useRef();
 
+  const isOriginalPost = () => { return originPostId === null}
+
   useEffect(()=>{
-    const repostsCountPromisse = getRepostsCountById(id);
+    let idToFetch
+    isOriginalPost()? idToFetch = id : idToFetch = originPostId
+    const repostsCountPromisse = getRepostsCountById(idToFetch);
 repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> alert(error.response.data))
 
   },[])
 
-  function postRepost(){
-    const body = {idPost: id, reposterId: user.userId}
-    if(window.confirm("Are you sure to repost this?")) return console.log("confirmou")
-    // const promisse = postRepost(body);
-    // promisse.then(res=>)
+  function postRepostOnClick(){
+    let body = {idPost: "", reposterId: user.userId};
+if(!originPostId && !reposterId) { //POST ORIGINAL
+  body = {...body, idPost: id }
+}
+   else{
+    body = {...body, idPost: originPostId}
+   }
+   
+    if(window.confirm("Are you sure to repost this?")) { 
+      const promisse = postRepost(body);
+      promisse.then(res=>console.log("repost feito com sucesso")).catch(error=>console.log(error.response.data))}
+   
   }
 
   useEffect(()=>{
@@ -124,7 +136,8 @@ if(e.key === 'Escape'){
   return (
     <>
     <RepostBox className="repostBox"> <BiRepost size={20} color={"white"}/>
-    <h3>Re-posted by <span>vini</span></h3></RepostBox>
+    <h3>Re-posted by <span>vini</span></h3>
+    </RepostBox>
     <Wrapper >
       
       <div className="profilePic">
@@ -226,8 +239,8 @@ if(e.key === 'Escape'){
         <AiOutlineComment size={20} color={"white"}/>
         <h3>3 comment</h3>
         </div>
-        <div className="profilePic__icon profilePic__icon-repost">
-          <BiRepost size={20} color={"white"} onClick={postRepost}/>
+        <div className="profilePic__icon profilePic__icon-repost" onClick={postRepostOnClick}>
+          <BiRepost size={20} color={"white"} />
           <h3>{repostsCount} reposts</h3>
         </div>
       </div>
