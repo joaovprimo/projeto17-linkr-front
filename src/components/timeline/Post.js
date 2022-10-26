@@ -43,7 +43,7 @@ repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(er
 useEffect(()=>{
 if(!isOriginalPost()){
   const promisse = getNameUser(reposterId, user.token);
-  promisse.then(res=>{setReposterName(res.data[0].username);console.log(res.data[0])}).catch(error=>console.log(error))
+  promisse.then(res=>{setReposterName(res.data[0].username)}).catch(error=>console.log(error))
 }
 
 
@@ -145,7 +145,7 @@ if(e.key === 'Escape'){
     <>
     <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}> 
         <BiRepost size={20} color={"white"}/>
-        <h3>Re-posted by <span>{reposterName? reposterName : "Loading.."}</span></h3>
+        <h3>Re-posted by <span>{reposterId === user.userId? "you": reposterName? reposterName : "Loading.."}</span></h3>
     </RepostBox>
     <Wrapper >
       
