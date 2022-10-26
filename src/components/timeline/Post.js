@@ -7,7 +7,7 @@ import {BiRepost} from "react-icons/bi"
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext} from "react";
-import { getLikesPost, GetUser, postLike, editPost} from "../../services/linkr";
+import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
 import Modal from '../../pages/Modal';
 import { useRef } from "react";
@@ -23,12 +23,26 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   const [descriptionEdited, setDescriptionEdited] = useState ({
     description: ""
   });
+  const [repostsCount, setRepostsCount] = useState(0)
   const [disable, setDisable] = useState(false);
   const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
   let likes,usr, indice, sec,tamanho, lisklength, tam;
   let first = 0;
     const navigate = useNavigate();
   const ref = useRef();
+
+  useEffect(()=>{
+    const repostsCountPromisse = getRepostsCountById(id);
+repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> alert(error.response.data))
+
+  },[])
+
+  function postRepost(){
+    const body = {idPost: id, reposterId: user.userId}
+    if(window.confirm("Are you sure to repost this?")) return console.log("confirmou")
+    // const promisse = postRepost(body);
+    // promisse.then(res=>)
+  }
 
   useEffect(()=>{
     ref.current?.focus();
@@ -108,7 +122,11 @@ if(e.key === 'Escape'){
 }
 
   return (
+    <>
+    <RepostBox className="repostBox"> <BiRepost size={20} color={"white"}/>
+    <h3>Re-posted by <span>vini</span></h3></RepostBox>
     <Wrapper >
+      
       <div className="profilePic">
         <img src={image} alt="profilePost" onClick={(e)=>{navigate(`/user/${userId}`)}} />
         <div>
@@ -209,8 +227,8 @@ if(e.key === 'Escape'){
         <h3>3 comment</h3>
         </div>
         <div className="profilePic__icon profilePic__icon-repost">
-          <BiRepost size={20} color={"white"}/>
-          <h3>3 repost</h3>
+          <BiRepost size={20} color={"white"} onClick={postRepost}/>
+          <h3>{repostsCount} reposts</h3>
         </div>
       </div>
 
@@ -252,6 +270,7 @@ if(e.key === 'Escape'){
         <LinkPreview url={url} urlInfo={urlInfo} />
       </div>
     </Wrapper>
+    </>
   );
 }
 
@@ -262,6 +281,28 @@ tagClicked={(hashtag) =>
 }
 >
 </ReactTagify>*/
+const RepostBox = styled.div`
+background-color: #1E1E1E;
+color: white;
+height: 3.5rem;
+margin-bottom: -.5rem;
+border-top-left-radius: 1rem;
+border-top-right-radius: 1rem;
+display: flex;
+padding: 1rem;
+align-items: center;
+font-size: 1.1rem;
+h3{
+  margin-left: .4rem;
+}
+span{
+  font-weight: 900;
+
+}
+
+
+` 
+
 const Wrapper = styled.div`
   box-sizing: border-box;
   min-height: 25vh;
