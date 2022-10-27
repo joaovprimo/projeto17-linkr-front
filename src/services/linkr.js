@@ -11,7 +11,7 @@ function createHeaders() {
 
 function getPosts() {
   const headers = createHeaders();
-  let promisse = axios.get(`${BASE_URL}/posts`, headers);
+  let promisse =  axios.get(`${BASE_URL}/posts`, headers);
   return promisse;
 };
 
