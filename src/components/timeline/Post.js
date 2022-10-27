@@ -145,7 +145,10 @@ if(e.key === 'Escape'){
     <>
     <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}> 
         <BiRepost size={20} color={"white"}/>
-        <h3>Re-posted by <span>{reposterId === user.userId? "you": reposterName? reposterName : "Loading.."}</span></h3>
+        {user ? <h3>Re-posted by 
+          <span>
+            {reposterId === user.userId? "you": reposterName? reposterName : "Loading.."}
+          </span></h3> : <></>}
     </RepostBox>
     <Wrapper >
       
