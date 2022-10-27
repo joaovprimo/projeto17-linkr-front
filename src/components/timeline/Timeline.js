@@ -164,6 +164,7 @@ export default function Timeline() {
                 id={value.id}
                 userId={value.userId}
                 reposterId={value.reposterId}
+                originPostId={value.originPostId}
               />
             ))
           )}
