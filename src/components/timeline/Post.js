@@ -322,6 +322,7 @@ h3{
 }
 span{
   font-weight: 900;
+  margin-left: .2rem;
 
 }
 
