@@ -32,6 +32,18 @@ function postPublicate(body) {
   return promisse;
 };
 
+function postRepost(body){
+  const headers = createHeaders();
+  const promisse = axios.post(`${BASE_URL}/reposts`, body, headers);
+  return promisse
+}
+function getRepostsCountById(id){
+const headers = createHeaders();
+const promisse = axios.get(`${BASE_URL}/reposts/${id}`, headers);
+return promisse;
+
+}
+
 async function postLogin(signin) {
   const response = await axios.post(`${BASE_URL}/`, signin);
   return response;
@@ -130,6 +142,8 @@ export {
   postLogin, 
   postSignup, 
   postPublicate, 
+  postRepost,
+  getRepostsCountById,
   getUserSearch, 
   getUserInfo, 
   logoutUser, 
