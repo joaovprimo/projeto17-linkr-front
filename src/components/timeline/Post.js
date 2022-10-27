@@ -36,7 +36,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     let idToFetch
     isOriginalPost()? idToFetch = id : idToFetch = originPostId
     const repostsCountPromisse = getRepostsCountById(idToFetch);
-repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> alert(error.response.data))
+repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> setRepostsCount(0))
 
   },[])
 
@@ -78,8 +78,7 @@ if(!originPostId && !reposterId) { //POST ORIGINAL
   };
  
  useEffect(()=> {
-  getLikesPost(id).then((resp)=> {
-  console.log(resp.data);   
+  getLikesPost(id).then((resp)=> { 
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message));
@@ -90,6 +89,7 @@ if(!originPostId && !reposterId) { //POST ORIGINAL
  }, []);
 
 function likePost(id){
+  if(!isOriginalPost())return
   postLike(id, user.userId).then((resp)=>{
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
