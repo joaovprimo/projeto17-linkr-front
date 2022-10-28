@@ -144,7 +144,6 @@ const Description = styled.div`
   font-weight: 700;
   width: 442px;
   display: flex;
-  overflow-x: auto;
   @media ${device.mobileM} {
     text-align:center;
     font-size: 23px;
@@ -184,6 +183,7 @@ const Entrar = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor:pointer;
   div {
     display: flex;
     align-items: center;
@@ -209,6 +209,7 @@ const GoToSingUp = styled.div`
   color: white;
   display: flex;
   justify-content: center;
+  cursor: pointer;
 `;
 
 export {

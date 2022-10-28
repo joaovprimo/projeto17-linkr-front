@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { device } from "../mediaqueries/devices";
 import UserContext from "../context/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Top from "./Top";
 import { useNavigate } from "react-router-dom";
 

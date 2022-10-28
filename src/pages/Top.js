@@ -154,11 +154,11 @@ export default function Top() {
         <EmptySpace onClick={() => { logoutIcon('menu') }}>.</EmptySpace>
         <Profile>
             {logoutClick === 'down' ? <IoChevronUpSharp onClick={() => { logoutIcon('arrow') }}
-                style={{ color: "white", fontSize: "21px" }} />
+                style={{ color: "white", fontSize: "21px",cursor: "pointer"  }} />
                 :
                 <>
                     <IoChevronDownOutline onClick={() => { logoutIcon('arrow') }}
-                        style={{ color: "white", fontSize: "21px" }} />
+                        style={{ color: "white", fontSize: "21px",cursor: "pointer" }} />
                     <Logout onClick={logout}>Logout</Logout>
                 </>}
             <Photo onClick={() => { logoutIcon('menu'); navigate(`/user/${user.userId}`) }} src={userInfo.pictureUrl} />
@@ -204,6 +204,7 @@ const Logo = styled.h1`
     font-weight: 700;
     font-size: 49px;
     color: #ffffff;
+    cursor: pointer
 `;
 const Profile = styled.div`
     display: flex;
@@ -292,6 +293,7 @@ const Users = styled.div`
 const Logout = styled.div`
     width: 150px;
     height: 47px;
+    cursor:pointer;
     border-radius: 0 0 20px 20px;
     position: absolute;
     right: 0px;
