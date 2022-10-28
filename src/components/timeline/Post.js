@@ -56,7 +56,7 @@ export default function Post({
   const [repostsCount, setRepostsCount] = useState(0);
   const [disable, setDisable] = useState(false);
   const [reposterName, setReposterName] = useState("");
-  const { user, setIsOpened, setIdPost } = useContext(UserContext);
+  const { user, setIsOpened,isOpened, setIdPost } = useContext(UserContext);
 
   let likes, sec, tamanho, tam, usr;
   let first = 0;
@@ -143,8 +143,6 @@ export default function Post({
       .catch((err) => console.log(err.message));
   }, []);
 
-  console.log(likesPost);
-  console.log(size);
   function likePost(id) {
     if (!isOriginalPost()) id = originPostId;
     postLike(id, user.userId)
