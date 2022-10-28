@@ -8,6 +8,7 @@ import { getPosts, postPublicate, getUserInfo } from "../../services/linkr";
 import Post from "./Post.js";
 import Trending from "./Trending";
 import { FiRefreshCcw } from "react-icons/fi";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Timeline() {
   const { user, setUser } = useContext(UserContext);
@@ -26,6 +27,7 @@ export default function Timeline() {
   let lastPosts =  posts.length;
   let pts = [];
   const [attTrending, setAttTrending] = useState(0);
+
 
   useEffect(() => {
     if (!user) {
@@ -185,7 +187,8 @@ export default function Timeline() {
           ) : posts.length === 0 ? (
             <div className="content__empty">{postMessage}</div>
           ) : (
-            posts.map((value, index) => (
+            <>
+            {posts.map((value, index) => (
               <Post
                 key={index}
                 name={value.name}
@@ -198,7 +201,8 @@ export default function Timeline() {
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
               />
-            ))
+            ))}
+            </>
           )}
         </div>
       </main>
