@@ -53,7 +53,10 @@ export default function Post(
     }
 
 
-  }, [])
+  }, []);
+
+  useEffect(()=>{},[])
+
   useEffect(() => {
     setDescriptionState(description)
   }, [description])
@@ -101,13 +104,14 @@ export default function Post(
     GetUser(user?.userId).then((resp) => {
       setUserr(resp.data.username)
     }).catch((err) => console.log(err.message))
-  }, [newsPosts]);
+  }, []);
 
   function likePost(id) {
     if (!isOriginalPost()) id = originPostId;
     postLike(id, user.userId).then((resp) => {
-      setLikesPost(resp.data.likesarray)
-      setSize(resp.data.likeslength)
+      setLikesPost(resp.data.likesarray);
+      setAttTrending(attTrending+1);
+      setSize(resp.data.likeslength);
     }).catch((err) => console.log(err.message))
 
     if (typeof likesPost === "object") {
