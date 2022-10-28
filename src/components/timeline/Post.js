@@ -33,6 +33,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   const isOriginalPost = () => { return originPostId === null}
 
   useEffect(()=>{
+ 
     let idToFetch
     isOriginalPost()? idToFetch = id : idToFetch = originPostId
     const repostsCountPromisse = getRepostsCountById(idToFetch);

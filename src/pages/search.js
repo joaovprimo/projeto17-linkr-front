@@ -7,14 +7,17 @@ import { useNavigate } from "react-router-dom";
 
 export default function Search() {
     const { searchs, setSearchs } = useContext(UserContext);
+    const { search, setSearch } = useContext(UserContext);
     const navigate=useNavigate();
-    console.log( searchs );
 return (
     <>
-      <Container>
+      <Container onClick={()=>{setSearch("")}}>
         <Top/>
         <DivUsers>
-            {searchs.map((e)=>(
+            {(searchs===undefined || searchs.length===0)? 
+            <h3>No user found</h3>
+             : 
+            searchs.map((e)=>(
                         <DivUser onClick={()=>{navigate(`/user/${e.id}`)}}>
                         <img src={e.pictureUrl}/>
                             <h1>{e.username}</h1>
@@ -41,6 +44,11 @@ const DivUsers=styled.div`
     justify-content:center;
     align-items: center;
     padding: 30px;
+    h3{
+        font-size: 40px;
+        color:white;
+        margin-top: 40px;
+    };
 `;
 const DivUser=styled.div`
     width: 611px;
@@ -52,6 +60,7 @@ const DivUser=styled.div`
     align-items:center;
     padding: 0 15px;
     margin-bottom:20px;
+    cursor: pointer;
     @media ${device.mobileM} {
         max-width: 70%;
     }
