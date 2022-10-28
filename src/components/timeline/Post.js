@@ -13,7 +13,10 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId }) {
+
+export default function Post(
+  { name, description, image, urlInfo, url, id, userId,
+    reposterId, originPostId,openModalRepost, setBodyToRepost,setAttTrending, attTrending }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -31,6 +34,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   let first = 0;
   const navigate = useNavigate();
   const ref = useRef();
+  
 
   const isOriginalPost = () => { return originPostId === null }
 
@@ -50,7 +54,10 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     }
 
 
-  }, [])
+  }, []);
+
+  useEffect(()=>{},[])
+
   useEffect(() => {
     setDescriptionState(description)
   }, [description])
@@ -63,11 +70,14 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     else {
       body = { ...body, idPost: originPostId }
     }
+    setBodyToRepost(body);
+    openModalRepost();
 
-    if (window.confirm("Are you sure to repost this?")) {
-      const promisse = postRepost(body);
-      promisse.then(res => console.log("repost feito com sucesso")).catch(error => console.log(error.response.data))
-    }
+
+    // if (window.confirm("Are you sure to repost this?")) {
+    //   const promisse = postRepost(body);
+    //   promisse.then(res => console.log("repost feito com sucesso")).catch(error => console.log(error.response.data))
+    // }
 
   }
 
@@ -85,6 +95,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   };
 
   useEffect(() => {
+    if (!isOriginalPost()) id = originPostId;
     getLikesPost(id).then((resp) => {
       console.log(resp.data);
       setLikesPost(resp.data.likesarray)
@@ -99,10 +110,11 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   console.log(likesPost)
   console.log(size)
   function likePost(id) {
-    if (!isOriginalPost()) return
+    if (!isOriginalPost()) id = originPostId;
     postLike(id, user.userId).then((resp) => {
-      setLikesPost(resp.data.likesarray)
-      setSize(resp.data.likeslength)
+      setLikesPost(resp.data.likesarray);
+      setAttTrending(attTrending+1);
+      setSize(resp.data.likeslength);
     }).catch((err) => console.log(err.message))
    
   }
@@ -149,6 +161,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
       const promisse = editPost(id, descriptionEdited);
       setDisable(true)
       promisse.then(() => {
+        setAttTrending(attTrending+1)
         setDisable(false)
         setEditing(false)
         setDescriptionState(descriptionEdited.description);

@@ -102,7 +102,6 @@ export default function Top() {
             });
         }
     }, [search], [users]);
-    console.log(followed)
     users.map((e)=>{
         if(followed.includes(e.id)){
             console.log(`inclui elemento ${e.id}`)

@@ -9,6 +9,7 @@ import Post from "./Post.js";
 import Trending from "./Trending";
 import { FiRefreshCcw } from "react-icons/fi";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Modal from "../../pages/Modal.js";
 
 export default function Timeline() {
   const { user, setUser } = useContext(UserContext);
@@ -27,6 +28,8 @@ export default function Timeline() {
   let lastPosts =  posts.length;
   let pts = [];
   const [attTrending, setAttTrending] = useState(0);
+  const [isOpenedRepost, setIsOpenedRepost] = useState(false)
+  const [bodyToRepost, setBodyToRepost] = useState({})
 
 
   useEffect(() => {
@@ -62,12 +65,16 @@ export default function Timeline() {
     setNewsPosts(0)
     getPosts().then((res)=>{
       pts = res.data;
+      if(pts==='no posts'){
+        pts = '';
+      }
       setNewsPosts(pts.length - lastPosts) ;
       setFindPosts(true);
       console.log(newsPosts);
     }).catch((err)=> console.log(err))}
 
-  //useInterval(()=>getNewPosts() ,15000)
+  useInterval(()=>getNewPosts() ,15000)
+
 
   function loadNewPosts(){
     setFindPosts(false);
@@ -130,8 +137,12 @@ export default function Timeline() {
     });
   }
 
+  const openModalRepost = () => setIsOpenedRepost(true);
+  const closeModalRepost = () => setIsOpenedRepost(false);
+
   return (
     <>
+    <Modal type="repost" isOpenedRepost={isOpenedRepost} setIsOpenedRepost={setIsOpenedRepost} closeModalRepost={closeModalRepost} bodyToRepost={bodyToRepost}/>
     <Wrapper>
       {" "}
       <h1 className="timeline__title">timeline</h1>
@@ -201,6 +212,11 @@ export default function Timeline() {
                 userId={value.userId}
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
+                openModalRepost={openModalRepost}
+                setBodyToRepost={setBodyToRepost}
+                newsPosts={newsPosts}
+                setAttTrending={setAttTrending}
+                attTrending={attTrending}
               />
             ))}
             </>
