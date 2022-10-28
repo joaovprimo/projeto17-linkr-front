@@ -70,6 +70,7 @@ export default function Timeline() {
         setPostMessage('No posts found from your friends')
         return
       }
+        console.log(res.data);
         setPosts(res.data);
         setLoading(false);
     });
