@@ -8,6 +8,7 @@ import SignupPage from "../pages/SignupPage.js";
 import Users from "../pages/Users.js";
 import Search from "../pages/search.js";
 import Trendpage from "./timeline/TrendPage.js";
+import TesteScroll from "../pages/teste.scroll.js";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="/hashtag/:hashtag" element={<Trendpage />} />
             <Route path="/user/:id" element={<Users/>}/>
             <Route path="/search" element={<Search/>}/>
+            <Route path="/teste" element={<TesteScroll/>}/>
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>

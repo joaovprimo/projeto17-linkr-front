@@ -102,19 +102,25 @@ export default function Top() {
             });
         }
     }, [search], [users]);
-    console.log(followed)
-    users.map((e)=>{
-        if(followed.includes(e.id)){
-            console.log(`inclui elemento ${e.id}`)
+    
+    function handleKeyPress(e) {
+        if (e.key === "Enter") {
+        //   e.preventDefault();
+          if(searchs!=undefined){
+            navigate(`/search?users=${e.target.value}`);
+            setTimeout(()=>{setSearch("")},10);
+        }else{
+            alert("search for a user (minimum 3 characters)");
         }
-    })
+        }
+      }
 
     return (<Header onClick={()=>{setSearch("")}}>
         <Logo onClick={() => { logoutIcon('menu',true) }}>Linkr</Logo>
         <EmptySpace onClick={() => { logoutIcon('menu') }}>.</EmptySpace>
         <Search onClick={() => { logoutIcon('menu') }} >
             <SearchUser>
-                <DebounceInput name="searchUser" placeholder="Search for people"
+                <DebounceInput onKeyPress={(e) => handleKeyPress(e)} name="searchUser" placeholder="Search for people"
                     minLength={3} debounceTimeout={300} style={styleInput} onChange={(e) => { handleForm(e) }}
                 />
                 <DivSearch onClick={() => { clickSearch() }}>

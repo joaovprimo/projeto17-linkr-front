@@ -8,7 +8,7 @@ import UserContext from "../context/UserContext";
 
 export default function Users() {
   const { search, setSearch } = useContext(UserContext);
-
+  
   return (
     <>
       <Container onClick={()=>{setSearch("")}}>
