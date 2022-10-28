@@ -13,7 +13,6 @@ import {
   postLike,
   editPost,
   getRepostsCountById,
-  postRepost,
   getNameUser,
   getComments,
 } from "../../services/linkr";
