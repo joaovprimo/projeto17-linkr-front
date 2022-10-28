@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import UserContext from "../context/UserContext";
 import { deletePost, postRepost } from "../services/linkr";
 import { RotatingLines } from "react-loader-spinner";
@@ -10,8 +10,12 @@ export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeMo
     const {isOpened, setIsOpened, idPost, setIdPost,  loading, setLoading } = useContext(UserContext);
     const closeModal = ()=>setIsOpened(false);
 
+
+useEffect(()=>{console.log(type)},[])
+
     function isRepost(){
-        return type === "repost"
+        if(type === "repost")return true;
+        return false
     }
  
     function deletingPost(){
@@ -45,7 +49,7 @@ export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeMo
     }
 
     return(
-        <Wrapper isOpenedRepost={isOpenedRepost}>
+        <Wrapper isOpenedRepost={isOpenedRepost} isOpened={isOpened}>
         <ModalBackground>
         <Container>
         <Header>
@@ -66,10 +70,10 @@ export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeMo
             </> 
             :
              <>
-            <Button1 variant="secondary" onClick={isRepost? closeModalRepost: closeModal}>
+            <Button1 variant="secondary" onClick={type === "repost"? closeModalRepost: closeModal}>
                 <p>{isRepost()?"No, cancel" : "No, go back"}</p>
             </Button1>
-            <Button2 variant="primary" onClick={isRepost? repostPost: deletingPost}>
+            <Button2 variant="primary" onClick={type === "repost"? repostPost: deletingPost}>
                 <p>{isRepost()?"Yes, share!" : "Yes, delete it"}</p>
             </Button2>
             </>}
@@ -82,7 +86,7 @@ export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeMo
 }
 
 const Wrapper = styled.div`
-display: ${props=>props.isOpenedRepost? "flex": "none"};
+display: ${props=>props.isOpenedRepost? "flex" : props.isOpened ? "flex": "none"};
 `
 const Button1 = styled.button`
 width: 134px;

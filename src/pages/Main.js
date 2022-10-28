@@ -17,7 +17,7 @@ return (
       <Container onClick={()=>{setSearch("")}}>
         {isOpened? 
         <>
-        <Modal/>
+        <Modal type="delete"/>
         
         <Top/>
         <Timeline />

@@ -8,11 +8,11 @@ import { getPosts, postPublicate, getUserInfo } from "../../services/linkr";
 import Post from "./Post.js";
 import Trending from "./Trending";
 import { FiRefreshCcw } from "react-icons/fi";
-import InfiniteScroll from "react-infinite-scroll-component";
+
 import Modal from "../../pages/Modal.js";
 
 export default function Timeline() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, isOpened,setIsOpened } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [userInfo, setUserInfo] = useState({ email: "", id: null, pictureUrl: "", username: "" })
   const [newPost, setNewPost] = useState({
@@ -142,7 +142,8 @@ export default function Timeline() {
 
   return (
     <>
-    <Modal type="repost" isOpenedRepost={isOpenedRepost} setIsOpenedRepost={setIsOpenedRepost} closeModalRepost={closeModalRepost} bodyToRepost={bodyToRepost}/>
+    {isOpened? "" : isOpenedRepost?
+    <Modal type="repost" isOpenedRepost={isOpenedRepost} setIsOpenedRepost={setIsOpenedRepost} closeModalRepost={closeModalRepost} bodyToRepost={bodyToRepost}/>: ""}
     <Wrapper>
       {" "}
       <h1 className="timeline__title">timeline</h1>
