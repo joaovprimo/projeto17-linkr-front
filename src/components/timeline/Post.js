@@ -3,303 +3,316 @@ import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
-import {BiRepost} from "react-icons/bi"
+import { BiRepost } from "react-icons/bi"
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
-import { useEffect, useState,useContext} from "react";
-import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost, getNameUser} from "../../services/linkr";
+import { useEffect, useState, useContext } from "react";
+import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost, getNameUser } from "../../services/linkr";
 import UserContext from "../../context/UserContext";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId}) {
+export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
-  const [editing, setEditing]= useState(false);
-  const [descriptionEdited, setDescriptionEdited] = useState ({
+  const [editing, setEditing] = useState(false);
+  const [descriptionEdited, setDescriptionEdited] = useState({
     description: ""
   });
+  const [descriptionState, setDescriptionState] = useState(description);
   const [repostsCount, setRepostsCount] = useState(0)
   const [disable, setDisable] = useState(false);
   const [reposterName, setReposterName] = useState("")
   const { user, setIsOpened, setIdPost } = useContext(UserContext);
-  let likes,usr, sec,tamanho, tam;
+  let likes, usr, sec, tamanho, tam;
   let first = 0;
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const ref = useRef();
 
-  const isOriginalPost = () => { return originPostId === null}
+  const isOriginalPost = () => { return originPostId === null }
 
-  useEffect(()=>{
- 
+  useEffect(() => {
+
     let idToFetch
-    isOriginalPost()? idToFetch = id : idToFetch = originPostId
+    isOriginalPost() ? idToFetch = id : idToFetch = originPostId
     const repostsCountPromisse = getRepostsCountById(idToFetch);
-repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> setRepostsCount(0))
+    repostsCountPromisse.then(res => setRepostsCount(res.data.repostsNumber)).catch(error => setRepostsCount(0))
 
-  },[])
+  }, [])
 
-useEffect(()=>{
-if(!isOriginalPost()){
-  const promisse = getNameUser(reposterId, user.token);
-  promisse.then(res=>{setReposterName(res.data[0].username)}).catch(error=>console.log(error))
-}
+  useEffect(() => {
+    if (!isOriginalPost()) {
+      const promisse = getNameUser(reposterId, user.token);
+      promisse.then(res => { setReposterName(res.data[0].username) }).catch(error => console.log(error))
+    }
 
 
-},[])
+  }, [])
+  useEffect(() => {
+    setDescriptionState(description)
+  }, [description])
 
-  function postRepostOnClick(){
-    let body = {idPost: "", reposterId: user.userId};
-if(!originPostId && !reposterId) { //POST ORIGINAL
-  body = {...body, idPost: id }
-}
-   else{
-    body = {...body, idPost: originPostId}
-   }
-   
-    if(window.confirm("Are you sure to repost this?")) { 
+  function postRepostOnClick() {
+    let body = { idPost: "", reposterId: user.userId };
+    if (!originPostId && !reposterId) { //POST ORIGINAL
+      body = { ...body, idPost: id }
+    }
+    else {
+      body = { ...body, idPost: originPostId }
+    }
+
+    if (window.confirm("Are you sure to repost this?")) {
       const promisse = postRepost(body);
-      promisse.then(res=>console.log("repost feito com sucesso")).catch(error=>console.log(error.response.data))}
-   
+      promisse.then(res => console.log("repost feito com sucesso")).catch(error => console.log(error.response.data))
+    }
+
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     ref.current?.focus();
   }, [editing])
-    
-  function newDescription (e){
+
+  function newDescription(e) {
     setDescriptionEdited({ ...descriptionEdited, [e.target.name]: e.target.value });
   }
-  
+
   const openModal = () => {
     setIdPost(id);
     setIsOpened(true);
   };
- 
- useEffect(()=> {
-  getLikesPost(id).then((resp)=> { 
-    setLikesPost(resp.data.likesarray)
-    setSize(resp.data.likeslength)
-  }).catch((err)=>console.log(err.message));
 
-  GetUser(user?.userId).then((resp)=>{
-    setUserr(resp.data.username)
-  }).catch((err)=>console.log(err.message))
- }, []);
+  useEffect(() => {
+    getLikesPost(id).then((resp) => {
+      console.log(resp.data);
+      setLikesPost(resp.data.likesarray)
+      setSize(resp.data.likeslength)
+    }).catch((err) => console.log(err.message));
 
-function likePost(id){
-  if(!isOriginalPost())return
-  postLike(id, user.userId).then((resp)=>{
-    setLikesPost(resp.data.likesarray)
-    setSize(resp.data.likeslength)
-  }).catch((err)=>console.log(err.message))
-}
- if(typeof likesPost === "object"){
-  likes = likesPost.map(lik=>lik.username);
-  let find = (likes.filter((ele)=>ele === userr))
-  if(find.length>0){
-    usr = userr;
-  }
-  if(size-2<0){
-    if(size===0){
-      first = 0;
-    }else{
-      first = likes[0];
+    GetUser(user?.userId).then((resp) => {
+      setUserr(resp.data.username)
+    }).catch((err) => console.log(err.message))
+  }, []);
+
+  function likePost(id) {
+    if (!isOriginalPost()) return
+    postLike(id, user.userId).then((resp) => {
+      setLikesPost(resp.data.likesarray)
+      setSize(resp.data.likeslength)
+    }).catch((err) => console.log(err.message))
+
+    if (typeof likesPost === "object") {
+      likes = likesPost.map(lik => lik.username);
+      let find = (likes.filter((ele) => ele === userr))
+      if (find.length > 0) {
+        usr = userr;
+      }
+      if (typeof likesPost === "object") {
+        likes = likesPost.map(lik => lik.username);
+        let find = (likes.filter((ele) => ele === userr))
+        if (find.length > 0) {
+          usr = userr;
+        }
+        if (size - 2 < 0) {
+          if (size === 0) {
+            first = 0;
+          } else {
+            first = likes[0];
+          }
+          tamanho = 0;
+          sec = null
+        } else {
+          tam = size;
+          first = likes[0];
+          tamanho = (size - 2);
+          sec = likes[1]
+        }
+      }
     }
-    tamanho = 0;
-    sec= null
-  }else{
-    tam = size;
-    first = likes[0];
-    tamanho = (size-2);
-    sec = likes[1]
   }
- }
- 
-//  const tagStyle = {
-//   color: "white",
-//   fontWeight: 700,
-//   cursor: "pointer",
-// };
+  //  const tagStyle = {
+  //   color: "white",
+  //   fontWeight: 700,
+  //   cursor: "pointer",
+  // };
 
-function press(e){
-
-if(e.key === 'Enter'){
-  const promisse = editPost(id,descriptionEdited);
-  setDisable(true)
-  promisse.then(()=>{
-    setDisable(false)
-    setEditing(false)
-  }).catch((err)=>{
-    console.log(err);
-    alert("Edition was not saved, please try again")
-  })
-}
-if(e.key === 'Escape'){
-  setEditing(false)
-}
-}
+  function press(event) {
+    if (event.key === 'Enter') {
+      const promisse = editPost(id, descriptionEdited);
+      setDisable(true)
+      promisse.then(() => {
+        setDisable(false)
+        setEditing(false)
+        setDescriptionState(descriptionEdited.description);
+        alert("Post was saved");
+      }).catch((err) => {
+        console.log(err);
+        alert("Edition was not saved, please try again")
+      })
+    }
+    if (event.key === 'Escape') {
+      setEditing(false)
+    }
+  }
 
   return (
     <>
-    <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}> 
-        <BiRepost size={20} color={"white"}/>
-        {user ? <h3>Re-posted by 
+      <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}>
+        <BiRepost size={20} color={"white"} />
+        {user ? <h3>Re-posted by
           <span>
-            {reposterId === user.userId? "you": reposterName? reposterName : "Loading.."}
+            {reposterId === user.userId ? "you" : reposterName ? reposterName : "Loading.."}
           </span></h3> : <></>}
-    </RepostBox>
-    <Wrapper >
-      
-      <div className="profilePic">
-        <img src={image} alt="profilePost" onClick={(e)=>{navigate(`/user/${userId}`)}} />
-        <div>
-          {usr ? (
-            <>
-            {tam ? (
-              <>
-            <AiFillHeart
-                color="red"
-                cursor="pointer"
-                size={20}
-                data-for="main"
-                data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
-                data-iscapture="true"
-                onClick={() => likePost(id)}
-              />
-              <h4
-                data-for="main"
-                data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
-                data-iscapture="true"
-              >
-                {size}
-              </h4>{" "}
-              </>) : 
-              (<>
-              <AiFillHeart
-                color="red"
-                cursor="pointer"
-                size={20}
-                data-for="main"
-                data-tip={`${first}`}
-                data-iscapture="true"
-                onClick={() => likePost(id)}
-              />
-              <h4
-                data-for="main"
-                data-tip={`${first}`}
-                data-iscapture="true"
-              >
-                {size}
-              </h4>{" "}
-              </>)}
-              
-            </>
-          ) : (
-            <>
-            {tam? 
-            (<>
-                <AiFillHeart
-                color="white"
-                cursor="pointer"
-                size={20}
-                data-for="main"
-                data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
-                data-iscapture="true"
-                onClick={() => likePost(id)}
-              />
-              <h4
-                data-for="main"
-                data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
-                data-iscapture="true"
-              >
-                {size}
-              </h4>
-            </>)
-          :
-          (<>
-             <AiFillHeart
-                color="white"
-                cursor="pointer"
-                size={20}
-                data-for="main"
-                data-tip={`${first}`}
-                data-iscapture="true"
-                onClick={() => likePost(id)}
-              />
-              <h4
-                data-for="main"
-                data-tip={`${first}`}
-                data-iscapture="true"
-              >
-                {size}
-              </h4>
-            </>)}
-              
-            </>
-          )}
-          <ReactTooltip
-            id="main"
-            place="bottom"
-            type="light"
-            effect="float"
-            multiline={true}
-          />
-        </div>
-        <div className="profilePic__icon profilePic__icon-comentary">
-        <AiOutlineComment size={20} color={"white"}/>
-        <h3>3 comment</h3>
-        </div>
-        <div className="profilePic__icon profilePic__icon-repost" onClick={postRepostOnClick}>
-          <BiRepost size={20} color={"white"} />
-          <h3>{repostsCount} reposts</h3>
-        </div>
-      </div>
+      </RepostBox>
+      <Wrapper >
 
-      <div className="content">
-        <div className="content__headers">
-
-        <div className="content__headers-buttons">
-          <h2 className="content__headers-name"  onClick={(e)=>{navigate(`/user/${userId}`)}}> {name} </h2>
+        <div className="profilePic">
+          <img src={image} alt="profilePost" onClick={(e) => { navigate(`/user/${userId}`) }} />
           <div>
-            <TbEdit color="white" size={20} cursor="pointer" onClick={()=>{
-              if(name === userr){
-                setEditing(true)
-              }else{
-                alert("you are not allowed to edit!")
-              }
-              }}/>
-            <AiOutlineDelete color="white" size={20} cursor="pointer" onClick={openModal}/>
+            {usr ? (
+              <>
+                {tam ? (
+                  <>
+                    <AiFillHeart
+                      color="red"
+                      cursor="pointer"
+                      size={20}
+                      data-for="main"
+                      data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
+                      data-iscapture="true"
+                      onClick={() => likePost(id)}
+                    />
+                    <h4
+                      data-for="main"
+                      data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
+                      data-iscapture="true"
+                    >
+                      {size}
+                    </h4>{" "}
+                  </>) :
+                  (<>
+                    <AiFillHeart
+                      color="red"
+                      cursor="pointer"
+                      size={20}
+                      data-for="main"
+                      data-tip={`${first}`}
+                      data-iscapture="true"
+                      onClick={() => likePost(id)}
+                    />
+                    <h4
+                      data-for="main"
+                      data-tip={`${first}`}
+                      data-iscapture="true"
+                    >
+                      {size}
+                    </h4>{" "}
+                  </>)}
+
+              </>
+            ) : (
+              <>
+                {tam ?
+                  (<>
+                    <AiFillHeart
+                      color="white"
+                      cursor="pointer"
+                      size={20}
+                      data-for="main"
+                      data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
+                      data-iscapture="true"
+                      onClick={() => likePost(id)}
+                    />
+                    <h4
+                      data-for="main"
+                      data-tip={`${first}, ${sec} e outras ${tamanho} pessoas`}
+                      data-iscapture="true"
+                    >
+                      {size}
+                    </h4>
+                  </>)
+                  :
+                  (<>
+                    <AiFillHeart
+                      color="white"
+                      cursor="pointer"
+                      size={20}
+                      data-for="main"
+                      data-tip={`${first}`}
+                      data-iscapture="true"
+                      onClick={() => likePost(id)}
+                    />
+                    <h4
+                      data-for="main"
+                      data-tip={`${first}`}
+                      data-iscapture="true"
+                    >
+                      {size}
+                    </h4>
+                  </>)}
+
+              </>
+            )}
+            <ReactTooltip
+              id="main"
+              place="bottom"
+              type="light"
+              effect="float"
+              multiline={true}
+            />
+          </div>
+          <div className="profilePic__icon profilePic__icon-comentary">
+            <AiOutlineComment size={20} color={"white"} />
+            <h3>3 comment</h3>
+          </div>
+          <div className="profilePic__icon profilePic__icon-repost" onClick={postRepostOnClick}>
+            <BiRepost size={20} color={"white"} />
+            <h3>{repostsCount} reposts</h3>
           </div>
         </div>
-          {editing? 
-          <input 
-          onKeyDown={press}
-          ref={ref} 
-          onFocus={(e)=>e.persist()}
-          name="description"
-          onChange={newDescription}
-          value={descriptionEdited.description}
-          isDesabled={disable? true : false}
-          />
-          : 
-           <p className="content__headers-description">
-          
-              {description}
-            
-          </p>
-          }
-        
+
+        <div className="content">
+          <div className="content__headers">
+
+            <div className="content__headers-buttons">
+              <h2 className="content__headers-name" onClick={() => { navigate(`/user/${userId}`) }}> {name} </h2>
+              <div>
+                <TbEdit color="white" size={20} cursor="pointer" onClick={() => {
+                  if (name === userr) {
+                    setEditing(true)
+                  } else {
+                    alert("you are not allowed to edit!")
+                  }
+                }} />
+                <AiOutlineDelete color="white" size={20} cursor="pointer" onClick={openModal} />
+              </div>
+            </div>
+            {editing ?
+              <input
+                onKeyDown={press}
+                ref={ref}
+                onFocus={(event) => event.persist()}
+                name="description"
+                onChange={newDescription}
+                value={descriptionEdited.description}
+                disabled={disable ? true : false}
+              />
+              :
+              <p className="content__headers-description">
+
+                {descriptionState}
+
+              </p>
+            }
+
+          </div>
+          <LinkPreview url={url} urlInfo={urlInfo} />
         </div>
-        <LinkPreview url={url} urlInfo={urlInfo} />
-      </div>
-    </Wrapper>
+      </Wrapper>
     </>
   );
 }
-
 /*<ReactTagify
 tagStyle={tagStyle}
 tagClicked={(hashtag) =>
@@ -308,13 +321,13 @@ tagClicked={(hashtag) =>
 >
 </ReactTagify>*/
 const RepostBox = styled.div`
-background-color: #1E1E1E;
+    background-color: #1E1E1E;
 color: white;
 height: 3.5rem;
 margin-bottom: -.5rem;
 border-top-left-radius: 1rem;
 border-top-right-radius: 1rem;
-display: ${props=>props.isOriginalPost? "none": "flex"};
+display: ${props => props.isOriginalPost ? "none" : "flex"};
 padding: 1rem;
 align-items: center;
 font-size: 1.1rem;
@@ -326,10 +339,7 @@ span{
   margin-left: .2rem;
 
 }
-
-
-` 
-
+`
 const Wrapper = styled.div`
   box-sizing: border-box;
   min-height: 25vh;
@@ -401,8 +411,6 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     height: 20vh;
-
-
     &__icon{
       color: white;
       transition: all .3s;
@@ -411,9 +419,6 @@ const Wrapper = styled.div`
       transform: scale(1.05);
       }
     }
-
-
-
     h4 {
       color: white;
     }
@@ -431,5 +436,4 @@ const Wrapper = styled.div`
       justify-content: space-between;
     }
   }
-
 `
