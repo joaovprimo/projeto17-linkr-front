@@ -4,7 +4,7 @@ import { device } from "../../mediaqueries/devices";
 import { getTrendRanking } from "../../services/linkr";
 import { useNavigate } from "react-router-dom";
 
-export default function Trending() {
+export default function Trending({attTrending}) {
   const [trends, setTrends] = useState([]);
 
   useEffect(()=>{
@@ -12,7 +12,7 @@ export default function Trending() {
     promisse.then((res) => {
       setTrends(res.data);
     });
-  },[])
+  },[attTrending])
 
   const navigate = useNavigate();
 

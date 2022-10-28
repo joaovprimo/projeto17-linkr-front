@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
+import useInterval from 'use-interval'
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
 import { getPosts, postPublicate, getUserInfo } from "../../services/linkr";
 import Post from "./Post.js";
 import Trending from "./Trending";
+import { FiRefreshCcw } from "react-icons/fi";
+import Modal from "../../pages/Modal.js";
 
 export default function Timeline() {
   const { user, setUser } = useContext(UserContext);
@@ -19,7 +22,13 @@ export default function Timeline() {
   const [isPublicating, setIsPublicating] = useState(false);
   const [loading, setLoading] = useState(true);
   const [postMessage, setPostMessage] = useState("Message");
+  const [newsPosts, setNewsPosts] = useState(0);
+  const [findPosts, setFindPosts] = useState(false);
+  let lastPosts =  posts.length;
+  let pts = [];
   const [attTrending, setAttTrending] = useState(0);
+  const [isOpenedRepost, setIsOpenedRepost] = useState(false)
+  const [bodyToRepost, setBodyToRepost] = useState({})
 
   useEffect(() => {
     if (!user) {
@@ -50,6 +59,25 @@ export default function Timeline() {
     setNewPost({ ...newPost, userId: user?.userId });
   }, [user]);
 
+  function getNewPosts(){
+    setNewsPosts(0)
+    getPosts().then((res)=>{
+      pts = res.data;
+      if(pts==='no posts'){
+        pts = '';
+      }
+      setNewsPosts(pts.length - lastPosts) ;
+      setFindPosts(true);
+      console.log(newsPosts);
+    }).catch((err)=> console.log(err))}
+
+  useInterval(()=>getNewPosts() ,5000)
+
+  function loadNewPosts(){
+    setFindPosts(false);
+    getTimelinePosts();
+  }
+
   useEffect(() => {
     getTimelinePosts();
   }, []);
@@ -70,6 +98,7 @@ export default function Timeline() {
         setPostMessage('No posts found from your friends')
         return
       }
+        console.log(res.data);
         setPosts(res.data);
         setLoading(false);
     });
@@ -94,7 +123,7 @@ export default function Timeline() {
         description: "",
         userId: user?.userId,
       });
-      getTimelinePosts();
+      //getTimelinePosts();
       setIsPublicating(false);
       setAttTrending(attTrending+1);
     });
@@ -105,7 +134,12 @@ export default function Timeline() {
     });
   }
 
+  const openModalRepost = () => setIsOpenedRepost(true);
+  const closeModalRepost = () => setIsOpenedRepost(false);
+
   return (
+    <>
+    <Modal type="repost" isOpenedRepost={isOpenedRepost} setIsOpenedRepost={setIsOpenedRepost} closeModalRepost={closeModalRepost} bodyToRepost={bodyToRepost}/>
     <Wrapper>
       {" "}
       <h1 className="timeline__title">timeline</h1>
@@ -138,6 +172,12 @@ export default function Timeline() {
             <button type="submit" disabled={isPublicating}>{isPublicating ? " Publishing..." : "Publish"} </button>
           </form>
         </Publicate>
+        {findPosts ? 
+        ( <NewPosts onClick={loadNewPosts}>
+           <p> {newsPosts} new posts, load more! <FiRefreshCcw/></p>
+          </NewPosts>): 
+          (<>
+          </>) } 
         <div className="content">
           {loading ? (
             <div className="content__search">
@@ -168,6 +208,11 @@ export default function Timeline() {
                 userId={value.userId}
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
+                openModalRepost={openModalRepost}
+                setBodyToRepost={setBodyToRepost}
+                newsPosts={newsPosts}
+                setAttTrending={setAttTrending}
+                attTrending={attTrending}
               />
             ))
           )}
@@ -177,8 +222,30 @@ export default function Timeline() {
         <Trending attTrending={attTrending}/>
       </aside>
     </Wrapper>
+    </>
   );
 };
+
+const NewPosts = styled.button`
+width:100%;
+height:61px;
+background: #1877F2;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 16px;
+margin-bottom:20px;
+margin-top:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+p{
+  font-family: 'Lato';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+color: #FFFFFF;
+}
+`
 const Publicate = styled.div`
   height: 20rem;
   width: 100%;
