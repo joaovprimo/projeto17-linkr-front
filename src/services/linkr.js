@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "http://localhost:5000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));
@@ -11,7 +11,7 @@ function createHeaders() {
 
 function getPosts() {
   const headers = createHeaders();
-  let promisse = axios.get(`${BASE_URL}/posts`, headers);
+  let promisse =  axios.get(`${BASE_URL}/posts`, headers);
   return promisse;
 };
 
