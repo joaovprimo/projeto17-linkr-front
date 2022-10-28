@@ -3,7 +3,7 @@ import { MagnifyingGlass, ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
-import Post from "./Post.js";
+import Post from "../timeline/Post.js";
 import Trending from "./Trending";
 import { getIsFollowed, getNameUser, getUserId, updateFollowUnfollow } from "../../services/linkr";
 import { useParams } from "react-router-dom";
@@ -122,6 +122,8 @@ export default function TimelineUser() {
                 url={value.url}
                 id={value.id}
                 userId={value.userId}
+                reposterId={value.reposterId}
+                originPostId={value.originPostId}
               />
             ))
           )}
