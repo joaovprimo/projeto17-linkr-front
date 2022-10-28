@@ -60,6 +60,9 @@ export default function Timeline() {
     setNewsPosts(0)
     getPosts().then((res)=>{
       pts = res.data;
+      if(pts==='no posts'){
+        pts = '';
+      }
       setNewsPosts(pts.length - lastPosts) ;
       setFindPosts(true);
       console.log(newsPosts);
