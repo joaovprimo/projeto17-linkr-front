@@ -68,7 +68,7 @@ export default function Timeline() {
       console.log(newsPosts);
     }).catch((err)=> console.log(err))}
 
-  useInterval(()=>getNewPosts() ,15000)
+  useInterval(()=>getNewPosts() ,5000)
 
   function loadNewPosts(){
     setFindPosts(false);
