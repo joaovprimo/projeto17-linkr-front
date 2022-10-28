@@ -93,12 +93,12 @@ export default function Top() {
                 setUsers(e.data.users);
                 setFollowed(e.data.followed);
             }).catch((e) => {
-                console.log(e);
+                // console.log(e);
             });
             getAllUserSearch(search, header).then((e) => {
                 setSearchs(e.data);
             }).catch((e) => {
-                console.log(e);
+                // console.log(e);
             });
         }
     }, [search], [users]);
