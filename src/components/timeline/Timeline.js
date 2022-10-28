@@ -23,7 +23,7 @@ export default function Timeline() {
   const [postMessage, setPostMessage] = useState("Message");
   const [newsPosts, setNewsPosts] = useState(0);
   const [findPosts, setFindPosts] = useState(false);
-  let lastPosts = 0;
+  let lastPosts =  posts.length;
   let pts = [];
   const [attTrending, setAttTrending] = useState(0);
 
@@ -57,7 +57,7 @@ export default function Timeline() {
   }, [user]);
 
   function getNewPosts(){
-    lastPosts = posts.length
+    setNewsPosts(0)
     getPosts().then((res)=>{
       pts = res.data;
       setNewsPosts(pts.length - lastPosts) ;
@@ -65,10 +65,11 @@ export default function Timeline() {
       console.log(newsPosts);
     }).catch((err)=> console.log(err))}
 
-  useInterval(()=>getNewPosts() ,10000)
+  useInterval(()=>getNewPosts() ,15000)
 
   function loadNewPosts(){
     setFindPosts(false);
+    getTimelinePosts();
   }
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function Timeline() {
         description: "",
         userId: user?.userId,
       });
-      getTimelinePosts();
+      //getTimelinePosts();
       setIsPublicating(false);
       setAttTrending(attTrending+1);
     });
