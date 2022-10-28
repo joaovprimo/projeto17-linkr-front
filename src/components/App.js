@@ -29,7 +29,7 @@ export default function App() {
           loading,
           setLoading,
           searchs,
-          setSearchs
+          setSearchs,
         }}
       >
         <GlobalStyle />
@@ -39,8 +39,8 @@ export default function App() {
             <Route path="/sign-up" element={<SignupPage />} />
             <Route path="/main" element={<Main />} />
             <Route path="/hashtag/:hashtag" element={<Trendpage />} />
-            <Route path="/user/:id" element={<Users/>}/>
-            <Route path="/search" element={<Search/>}/>
+            <Route path="/user/:id" element={<Users />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>

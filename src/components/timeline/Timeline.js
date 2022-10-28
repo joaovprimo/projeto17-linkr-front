@@ -10,7 +10,12 @@ import Trending from "./Trending";
 export default function Timeline() {
   const { user, setUser } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
-  const [userInfo, setUserInfo] = useState({ email: "", id: null, pictureUrl: "", username: "" })
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    id: null,
+    pictureUrl: "",
+    username: "",
+  });
   const [newPost, setNewPost] = useState({
     url: "",
     description: "",
@@ -35,8 +40,8 @@ export default function Timeline() {
       const promisse = getUserInfo(user.headers);
       promisse.then(authorized);
       promisse.catch(unauthorized);
-    };
-  }, [user])
+    }
+  }, [user]);
 
   function authorized(response) {
     setUserInfo(response.data);
@@ -54,24 +59,24 @@ export default function Timeline() {
     getTimelinePosts();
   }, []);
 
-  function getTimelinePosts(){
+  function getTimelinePosts() {
     const promisse = getPosts();
     promisse.then((res) => {
-      console.log(res.data)
-      if (res.data === 'no follows') {
+      console.log(res.data);
+      if (res.data === "no follows") {
         setPosts([]);
         setLoading(false);
-        setPostMessage('You dont follow anyone yet. Search for new friends')
-        return
+        setPostMessage("You dont follow anyone yet. Search for new friends");
+        return;
       }
-      if (res.data === 'no posts') {
+      if (res.data === "no posts") {
         setPosts([]);
         setLoading(false);
-        setPostMessage('No posts found from your friends')
-        return
+        setPostMessage("No posts found from your friends");
+        return;
       }
-        setPosts(res.data);
-        setLoading(false);
+      setPosts(res.data);
+      setLoading(false);
     });
     promisse.catch((error) =>
       alert(
@@ -96,7 +101,7 @@ export default function Timeline() {
       });
       getTimelinePosts();
       setIsPublicating(false);
-      setAttTrending(attTrending+1);
+      setAttTrending(attTrending + 1);
     });
 
     promisse.catch((e) => {
@@ -113,10 +118,7 @@ export default function Timeline() {
         <Publicate>
           <div>
             {" "}
-            <img
-              src={userInfo.pictureUrl}
-              alt="postOwnerImage"
-            />
+            <img src={userInfo.pictureUrl} alt="postOwnerImage" />
           </div>
 
           <form onSubmit={publicate}>
@@ -135,7 +137,9 @@ export default function Timeline() {
               value={newPost.description}
               disabled={isPublicating}
             ></textarea>
-            <button type="submit" disabled={isPublicating}>{isPublicating ? " Publishing..." : "Publish"} </button>
+            <button type="submit" disabled={isPublicating}>
+              {isPublicating ? " Publishing..." : "Publish"}{" "}
+            </button>
           </form>
         </Publicate>
         <div className="content">
@@ -168,17 +172,18 @@ export default function Timeline() {
                 userId={value.userId}
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
+                comments={value.postComments}
               />
             ))
           )}
         </div>
       </main>
       <aside>
-        <Trending attTrending={attTrending}/>
+        <Trending attTrending={attTrending} />
       </aside>
     </Wrapper>
   );
-};
+}
 const Publicate = styled.div`
   height: 20rem;
   width: 100%;

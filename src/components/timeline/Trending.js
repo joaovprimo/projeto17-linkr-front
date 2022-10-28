@@ -1,20 +1,18 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { device } from "../../mediaqueries/devices";
 import { getTrendRanking } from "../../services/linkr";
 import { useNavigate } from "react-router-dom";
 
-export default function Trending({attTrending}) {
+export default function Trending({ attTrending }) {
   const [trends, setTrends] = useState([]);
 
-  useEffect(()=>{
-    console.log("entrou")
+  useEffect(() => {
     const promisse = getTrendRanking();
     promisse.then((res) => {
-      console.log(res.data);
       setTrends(res.data);
     });
-  },[attTrending])
+  }, [attTrending]);
 
   const navigate = useNavigate();
 
