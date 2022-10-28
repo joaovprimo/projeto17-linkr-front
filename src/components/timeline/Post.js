@@ -26,7 +26,8 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   const [disable, setDisable] = useState(false);
   const [reposterName, setReposterName] = useState("")
   const { user, setIsOpened, setIdPost } = useContext(UserContext);
-  let likes, usr, sec, tamanho, tam;
+
+  let likes, sec, tamanho, tam, usr;
   let first = 0;
   const navigate = useNavigate();
   const ref = useRef();
@@ -95,24 +96,29 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     }).catch((err) => console.log(err.message))
   }, []);
 
+  console.log(likesPost)
+  console.log(size)
   function likePost(id) {
     if (!isOriginalPost()) return
     postLike(id, user.userId).then((resp) => {
       setLikesPost(resp.data.likesarray)
       setSize(resp.data.likeslength)
     }).catch((err) => console.log(err.message))
+   
+  }
 
+  function type(){
     if (typeof likesPost === "object") {
       likes = likesPost.map(lik => lik.username);
       let find = (likes.filter((ele) => ele === userr))
       if (find.length > 0) {
-        usr = userr;
+        usr=(userr);
       }
       if (typeof likesPost === "object") {
         likes = likesPost.map(lik => lik.username);
         let find = (likes.filter((ele) => ele === userr))
         if (find.length > 0) {
-          usr = userr;
+          usr= (userr);
         }
         if (size - 2 < 0) {
           if (size === 0) {
@@ -131,6 +137,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
       }
     }
   }
+ type()
   //  const tagStyle = {
   //   color: "white",
   //   fontWeight: 700,
@@ -155,18 +162,17 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
       setEditing(false)
     }
   }
-
+  
   return (
     <>
-      <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}>
-        <BiRepost size={20} color={"white"} />
-        {user ? <h3>Re-posted by
-          <span>
-            {reposterId === user.userId ? "you" : reposterName ? reposterName : "Loading.."}
-          </span></h3> : <></>}
-      </RepostBox>
+    <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}>
+  <BiRepost size={20} color={"white"} />
+  {user ? <h3>Re-posted by
+    <span>
+      {reposterId === user.userId ? "you" : reposterName ? reposterName : "Loading.."}
+    </span></h3> : <></>}
+</RepostBox>
       <Wrapper >
-
         <div className="profilePic">
           <img src={image} alt="profilePost" onClick={(e) => { navigate(`/user/${userId}`) }} />
           <div>
@@ -310,7 +316,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
           <LinkPreview url={url} urlInfo={urlInfo} />
         </div>
       </Wrapper>
-    </>
+      </>
   );
 }
 /*<ReactTagify
