@@ -8,7 +8,6 @@ export default function Trending({attTrending}) {
   const [trends, setTrends] = useState([]);
 
   useEffect(()=>{
-    console.log("entrou")
     const promisse = getTrendRanking();
     promisse.then((res) => {
       console.log(res.data);

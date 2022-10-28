@@ -13,7 +13,9 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId }) {
+export default function Post(
+  { name, description, image, urlInfo, url, id, userId,
+    reposterId, originPostId, setAttTrending, attTrending }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -142,6 +144,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
       const promisse = editPost(id, descriptionEdited);
       setDisable(true)
       promisse.then(() => {
+        setAttTrending(attTrending+1)
         setDisable(false)
         setEditing(false)
         setDescriptionState(descriptionEdited.description);

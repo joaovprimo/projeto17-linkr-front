@@ -65,7 +65,7 @@ export default function Timeline() {
       console.log(newsPosts);
     }).catch((err)=> console.log(err))}
 
-  useInterval(()=>getNewPosts() ,15000)
+  useInterval(()=>getNewPosts() ,5000)
 
   function loadNewPosts(){
     setFindPosts(false);
@@ -127,6 +127,7 @@ export default function Timeline() {
       setIsPublicating(false);
     });
   }
+
 
   return (
     <>
@@ -198,6 +199,8 @@ export default function Timeline() {
                 userId={value.userId}
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
+                setAttTrending={setAttTrending}
+                attTrending={attTrending}
               />
             ))
           )}
