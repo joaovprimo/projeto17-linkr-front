@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { getComments, GetUser, postComment } from "../../services/linkr";
 import { FiSend } from "react-icons/fi";
 
-/* GetUser;
- */ export default function CommentBox({ postId, setComments }) {
+export default function CommentBox({ postId, setComments }) {
   const storageUserInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [picture, setPicture] = useState("");
   const [comment, setComment] = useState("");

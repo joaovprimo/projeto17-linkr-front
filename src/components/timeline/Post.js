@@ -21,34 +21,6 @@ import UserContext from "../../context/UserContext";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Comments from "./Comments";
-import CommentBox from "./CommentBox";
-
-const commentslist = [
-  {
-    pictureUrl:
-      "https://i.pinimg.com/originals/e4/2a/57/e42a57ad5659ea5f5b977aa0a75871f3.jpg",
-    username: "Roger Alves",
-    comment: "Legal",
-  },
-  {
-    pictureUrl:
-      "https://i.pinimg.com/originals/e4/2a/57/e42a57ad5659ea5f5b977aa0a75871f3.jpg",
-    username: "Roger Alves",
-    comment: "Legal",
-  },
-  {
-    pictureUrl:
-      "https://i.pinimg.com/originals/e4/2a/57/e42a57ad5659ea5f5b977aa0a75871f3.jpg",
-    username: "Roger Alves",
-    comment: "Legal",
-  },
-  {
-    pictureUrl:
-      "https://i.pinimg.com/originals/e4/2a/57/e42a57ad5659ea5f5b977aa0a75871f3.jpg",
-    username: "Roger Alves",
-    comment: "Legal",
-  },
-];
 
 export default function Post({
   name,
