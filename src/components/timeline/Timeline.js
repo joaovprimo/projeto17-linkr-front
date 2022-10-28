@@ -8,6 +8,7 @@ import { getPosts, postPublicate, getUserInfo } from "../../services/linkr";
 import Post from "./Post.js";
 import Trending from "./Trending";
 import { FiRefreshCcw } from "react-icons/fi";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Modal from "../../pages/Modal.js";
 
 export default function Timeline() {
@@ -29,6 +30,7 @@ export default function Timeline() {
   const [attTrending, setAttTrending] = useState(0);
   const [isOpenedRepost, setIsOpenedRepost] = useState(false)
   const [bodyToRepost, setBodyToRepost] = useState({})
+
 
   useEffect(() => {
     if (!user) {
@@ -71,7 +73,8 @@ export default function Timeline() {
       console.log(newsPosts);
     }).catch((err)=> console.log(err))}
 
-  useInterval(()=>getNewPosts() ,5000)
+  useInterval(()=>getNewPosts() ,15000)
+
 
   function loadNewPosts(){
     setFindPosts(false);
@@ -196,7 +199,8 @@ export default function Timeline() {
           ) : posts.length === 0 ? (
             <div className="content__empty">{postMessage}</div>
           ) : (
-            posts.map((value, index) => (
+            <>
+            {posts.map((value, index) => (
               <Post
                 key={index}
                 name={value.name}
@@ -214,7 +218,8 @@ export default function Timeline() {
                 setAttTrending={setAttTrending}
                 attTrending={attTrending}
               />
-            ))
+            ))}
+            </>
           )}
         </div>
       </main>
