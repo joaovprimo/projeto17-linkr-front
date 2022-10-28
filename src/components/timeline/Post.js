@@ -21,7 +21,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   const [descriptionEdited, setDescriptionEdited] = useState({
     description: ""
   });
-  const [descriptionState,setDescriptionState] = useState(description);
+  const [descriptionState, setDescriptionState] = useState(description);
   const [repostsCount, setRepostsCount] = useState(0)
   const [disable, setDisable] = useState(false);
   const [reposterName, setReposterName] = useState("")
@@ -34,10 +34,11 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   const isOriginalPost = () => { return originPostId === null }
 
   useEffect(() => {
+
     let idToFetch
     isOriginalPost() ? idToFetch = id : idToFetch = originPostId
     const repostsCountPromisse = getRepostsCountById(idToFetch);
-    repostsCountPromisse.then(res => setRepostsCount(res.data.repostsNumber)).catch(error => alert(error.response.data))
+    repostsCountPromisse.then(res => setRepostsCount(res.data.repostsNumber)).catch(error => setRepostsCount(0))
 
   }, [])
 
@@ -49,9 +50,9 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
 
 
   }, [])
-  useEffect(()=>{
+  useEffect(() => {
     setDescriptionState(description)
-  },[description])
+  }, [description])
 
   function postRepostOnClick() {
     let body = { idPost: "", reposterId: user.userId };
@@ -95,33 +96,41 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   }, []);
 
   function likePost(id) {
+    if (!isOriginalPost()) return
     postLike(id, user.userId).then((resp) => {
       setLikesPost(resp.data.likesarray)
       setSize(resp.data.likeslength)
     }).catch((err) => console.log(err.message))
-  }
-  if (typeof likesPost === "object") {
-    likes = likesPost.map(lik => lik.username);
-    let find = (likes.filter((ele) => ele === userr))
-    if (find.length > 0) {
-      usr = userr;
-    }
-    if (size - 2 < 0) {
-      if (size === 0) {
-        first = 0;
-      } else {
-        first = likes[0];
-      }
-      tamanho = 0;
-      sec = null
-    } else {
-      tam = size;
-      first = likes[0];
-      tamanho = (size - 2);
-      sec = likes[1]
-    }
-  }
 
+    if (typeof likesPost === "object") {
+      likes = likesPost.map(lik => lik.username);
+      let find = (likes.filter((ele) => ele === userr))
+      if (find.length > 0) {
+        usr = userr;
+      }
+      if (typeof likesPost === "object") {
+        likes = likesPost.map(lik => lik.username);
+        let find = (likes.filter((ele) => ele === userr))
+        if (find.length > 0) {
+          usr = userr;
+        }
+        if (size - 2 < 0) {
+          if (size === 0) {
+            first = 0;
+          } else {
+            first = likes[0];
+          }
+          tamanho = 0;
+          sec = null
+        } else {
+          tam = size;
+          first = likes[0];
+          tamanho = (size - 2);
+          sec = likes[1]
+        }
+      }
+    }
+  }
   //  const tagStyle = {
   //   color: "white",
   //   fontWeight: 700,
@@ -304,7 +313,6 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     </>
   );
 }
-
 /*<ReactTagify
 tagStyle={tagStyle}
 tagClicked={(hashtag) =>
@@ -313,7 +321,7 @@ tagClicked={(hashtag) =>
 >
 </ReactTagify>*/
 const RepostBox = styled.div`
-background-color: #1E1E1E;
+    background-color: #1E1E1E;
 color: white;
 height: 3.5rem;
 margin-bottom: -.5rem;
@@ -328,12 +336,10 @@ h3{
 }
 span{
   font-weight: 900;
+  margin-left: .2rem;
 
 }
-
-
 `
-
 const Wrapper = styled.div`
   box-sizing: border-box;
   min-height: 25vh;
@@ -405,8 +411,6 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     height: 20vh;
-
-
     &__icon{
       color: white;
       transition: all .3s;
@@ -415,9 +419,6 @@ const Wrapper = styled.div`
       transform: scale(1.05);
       }
     }
-
-
-
     h4 {
       color: white;
     }
@@ -435,5 +436,4 @@ const Wrapper = styled.div`
       justify-content: space-between;
     }
   }
-
 `

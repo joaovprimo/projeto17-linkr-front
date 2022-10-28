@@ -15,7 +15,7 @@ export default function App() {
   const [idPost, setIdPost] = useState();
   const [loading, setLoading] = useState(false);
   const [searchs, setSearchs] = useState(undefined);
-
+  const [search, setSearch] = useState("");
   return (
     <>
       <UserContext.Provider
@@ -29,7 +29,9 @@ export default function App() {
           loading,
           setLoading,
           searchs,
-          setSearchs
+          setSearchs,
+          search,
+          setSearch
         }}
       >
         <GlobalStyle />
