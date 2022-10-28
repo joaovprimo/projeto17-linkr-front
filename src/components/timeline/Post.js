@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AiFillHeart, AiOutlineComment, AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineComment } from "react-icons/ai";
 import LinkPreview from "./Linkpreview";
 import { TbEdit } from "react-icons/tb";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -7,15 +7,13 @@ import {BiRepost} from "react-icons/bi"
 import { device } from "../../mediaqueries/devices.js";
 import ReactTooltip from "react-tooltip";
 import { useEffect, useState,useContext} from "react";
-import { getLikesPost, GetUser, postLike, editPost} from "../../services/linkr";
+import { getLikesPost, GetUser, postLike, editPost, getRepostsCountById, postRepost, getNameUser} from "../../services/linkr";
 import UserContext from "../../context/UserContext";
-import Modal from '../../pages/Modal';
 import { useRef } from "react";
-import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Post({ name, description, image, urlInfo, url, id, userId }) {
+export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId}) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -23,12 +21,49 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   const [descriptionEdited, setDescriptionEdited] = useState ({
     description: ""
   });
+  const [repostsCount, setRepostsCount] = useState(0)
   const [disable, setDisable] = useState(false);
-  const { user, setUser, isOpened, setIsOpened, idPost, setIdPost } = useContext(UserContext);
-  let likes,usr, indice, sec,tamanho, lisklength, tam;
+  const [reposterName, setReposterName] = useState("")
+  const { user, setIsOpened, setIdPost } = useContext(UserContext);
+  let likes,usr, sec,tamanho, tam;
   let first = 0;
     const navigate = useNavigate();
   const ref = useRef();
+
+  const isOriginalPost = () => { return originPostId === null}
+
+  useEffect(()=>{
+ 
+    let idToFetch
+    isOriginalPost()? idToFetch = id : idToFetch = originPostId
+    const repostsCountPromisse = getRepostsCountById(idToFetch);
+repostsCountPromisse.then(res=>setRepostsCount(res.data.repostsNumber)).catch(error=> setRepostsCount(0))
+
+  },[])
+
+useEffect(()=>{
+if(!isOriginalPost()){
+  const promisse = getNameUser(reposterId, user.token);
+  promisse.then(res=>{setReposterName(res.data[0].username)}).catch(error=>console.log(error))
+}
+
+
+},[])
+
+  function postRepostOnClick(){
+    let body = {idPost: "", reposterId: user.userId};
+if(!originPostId && !reposterId) { //POST ORIGINAL
+  body = {...body, idPost: id }
+}
+   else{
+    body = {...body, idPost: originPostId}
+   }
+   
+    if(window.confirm("Are you sure to repost this?")) { 
+      const promisse = postRepost(body);
+      promisse.then(res=>console.log("repost feito com sucesso")).catch(error=>console.log(error.response.data))}
+   
+  }
 
   useEffect(()=>{
     ref.current?.focus();
@@ -44,8 +79,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   };
  
  useEffect(()=> {
-  getLikesPost(id).then((resp)=> {
-  console.log(resp.data);   
+  getLikesPost(id).then((resp)=> { 
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
   }).catch((err)=>console.log(err.message));
@@ -56,6 +90,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
  }, []);
 
 function likePost(id){
+  if(!isOriginalPost())return
   postLike(id, user.userId).then((resp)=>{
     setLikesPost(resp.data.likesarray)
     setSize(resp.data.likeslength)
@@ -83,11 +118,11 @@ function likePost(id){
   }
  }
  
- const tagStyle = {
-  color: "white",
-  fontWeight: 700,
-  cursor: "pointer",
-};
+//  const tagStyle = {
+//   color: "white",
+//   fontWeight: 700,
+//   cursor: "pointer",
+// };
 
 function press(e){
 
@@ -108,7 +143,16 @@ if(e.key === 'Escape'){
 }
 
   return (
+    <>
+    <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}> 
+        <BiRepost size={20} color={"white"}/>
+        {user ? <h3>Re-posted by 
+          <span>
+            {reposterId === user.userId? "you": reposterName? reposterName : "Loading.."}
+          </span></h3> : <></>}
+    </RepostBox>
     <Wrapper >
+      
       <div className="profilePic">
         <img src={image} alt="profilePost" onClick={(e)=>{navigate(`/user/${userId}`)}} />
         <div>
@@ -208,9 +252,9 @@ if(e.key === 'Escape'){
         <AiOutlineComment size={20} color={"white"}/>
         <h3>3 comment</h3>
         </div>
-        <div className="profilePic__icon profilePic__icon-repost">
-          <BiRepost size={20} color={"white"}/>
-          <h3>3 repost</h3>
+        <div className="profilePic__icon profilePic__icon-repost" onClick={postRepostOnClick}>
+          <BiRepost size={20} color={"white"} />
+          <h3>{repostsCount} reposts</h3>
         </div>
       </div>
 
@@ -252,6 +296,7 @@ if(e.key === 'Escape'){
         <LinkPreview url={url} urlInfo={urlInfo} />
       </div>
     </Wrapper>
+    </>
   );
 }
 
@@ -262,6 +307,29 @@ tagClicked={(hashtag) =>
 }
 >
 </ReactTagify>*/
+const RepostBox = styled.div`
+background-color: #1E1E1E;
+color: white;
+height: 3.5rem;
+margin-bottom: -.5rem;
+border-top-left-radius: 1rem;
+border-top-right-radius: 1rem;
+display: ${props=>props.isOriginalPost? "none": "flex"};
+padding: 1rem;
+align-items: center;
+font-size: 1.1rem;
+h3{
+  margin-left: .4rem;
+}
+span{
+  font-weight: 900;
+  margin-left: .2rem;
+
+}
+
+
+` 
+
 const Wrapper = styled.div`
   box-sizing: border-box;
   min-height: 25vh;

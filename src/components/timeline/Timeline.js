@@ -19,6 +19,7 @@ export default function Timeline() {
   const [isPublicating, setIsPublicating] = useState(false);
   const [loading, setLoading] = useState(true);
   const [postMessage, setPostMessage] = useState("Message");
+  const [attTrending, setAttTrending] = useState(0);
 
   useEffect(() => {
     if (!user) {
@@ -28,10 +29,6 @@ export default function Timeline() {
       }
     }
   }, []);
-
-  useEffect(() => {
-    console.log(posts)
-  }, [posts])
 
   useEffect(() => {
     if (user) {
@@ -54,6 +51,10 @@ export default function Timeline() {
   }, [user]);
 
   useEffect(() => {
+    getTimelinePosts();
+  }, []);
+
+  function getTimelinePosts(){
     const promisse = getPosts();
     promisse.then((res) => {
       console.log(res.data)
@@ -77,7 +78,7 @@ export default function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       )
     );
-  }, []);
+  }
 
   function handleNewPost(e) {
     setNewPost({ ...newPost, [e.target.name]: e.target.value });
@@ -93,7 +94,9 @@ export default function Timeline() {
         description: "",
         userId: user?.userId,
       });
+      getTimelinePosts();
       setIsPublicating(false);
+      setAttTrending(attTrending+1);
     });
 
     promisse.catch((e) => {
@@ -164,13 +167,14 @@ export default function Timeline() {
                 id={value.id}
                 userId={value.userId}
                 reposterId={value.reposterId}
+                originPostId={value.originPostId}
               />
             ))
           )}
         </div>
       </main>
       <aside>
-        <Trending />
+        <Trending attTrending={attTrending}/>
       </aside>
     </Wrapper>
   );
