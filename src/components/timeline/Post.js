@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId, openModalRepost, setBodyToRepost }) {
+export default function Post({ name, description, image, urlInfo, url, id, userId, reposterId, originPostId, openModalRepost, setBodyToRepost,newsPosts }) {
   const [likesPost, setLikesPost] = useState("");
   const [userr, setUserr] = useState("");
   const [size, setSize] = useState(0);
@@ -90,6 +90,7 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
   };
 
   useEffect(() => {
+    if (!isOriginalPost()) id = originPostId;
     getLikesPost(id).then((resp) => {
       console.log(resp.data);
       setLikesPost(resp.data.likesarray)
@@ -99,10 +100,10 @@ export default function Post({ name, description, image, urlInfo, url, id, userI
     GetUser(user?.userId).then((resp) => {
       setUserr(resp.data.username)
     }).catch((err) => console.log(err.message))
-  }, []);
+  }, [newsPosts]);
 
   function likePost(id) {
-    if (!isOriginalPost()) return
+    if (!isOriginalPost()) id = originPostId;
     postLike(id, user.userId).then((resp) => {
       setLikesPost(resp.data.likesarray)
       setSize(resp.data.likeslength)

@@ -207,6 +207,7 @@ export default function Timeline() {
                 originPostId={value.originPostId}
                 openModalRepost={openModalRepost}
                 setBodyToRepost={setBodyToRepost}
+                newsPosts={newsPosts}
               />
             ))
           )}
