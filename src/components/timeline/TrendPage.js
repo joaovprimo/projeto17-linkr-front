@@ -6,7 +6,7 @@ import Trending from "./Trending";
 import { MagnifyingGlass } from "react-loader-spinner";
 import Post from "./Post.js";
 import { getTrendPosts } from "../../services/linkr";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Top from "../../pages/Top.js";
 import Modal from "../../pages/Modal.js";
 
@@ -16,24 +16,53 @@ export default function Trendpage() {
   const { isOpened } = useContext(UserContext);
   const { user, setUser } = useContext(UserContext);
   const { hashtag } = useParams();
+  const [trandingMsg, setTrandingMsg] = useState('Loading...');
+  const navigate = useNavigate();
+  const [attTrending,setAttTrending] = useState(0);
 
   useEffect(() => {
     const promisse = getTrendPosts(hashtag);
     promisse
       .then((res) => {
+        console.log(res.data);
+        if(res.data.length>0){
+          setTrandingMsg('#'+res.data[0].hashtag)
+        }
         setPosts(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error.message);
+        if(error.message.indexOf('404')>=0){
+          navigate('/main');
+        }
       });
-  }, []);
+  }, [attTrending]);
+
+  useEffect(() => {
+    const promisse = getTrendPosts(hashtag);
+    promisse
+      .then((res) => {
+        console.log(res.data);
+        if(res.data.length>0){
+          setTrandingMsg('#'+res.data[0].hashtag)
+        }
+        setPosts(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.message);
+        if(error.message.indexOf('404')>=0){
+          navigate('/main');
+        }
+      });
+  }, [hashtag]);
 
   return (
     <Container>
       {isOpened ? (
         <>
-          <Modal />
+          <Modal attTrending={attTrending} setAttTrending={setAttTrending} />
           <Top />
         </>
       ) : (
@@ -43,7 +72,7 @@ export default function Trendpage() {
       )}
       <Wrapper>
         {" "}
-        <h1 className="timeline__title">timeline</h1>
+        <h1 className="timeline__title">{trandingMsg}</h1>
         <main className="container">
           <div className="content">
             {loading ? (
@@ -75,6 +104,8 @@ export default function Trendpage() {
                   userId={value.userId}
                   reposterId={value.reposterId}
                   originPostId={value.originPostId}
+                  setAttTrending={setAttTrending}
+                  attTrending={attTrending}
                 />
               ))
             )}

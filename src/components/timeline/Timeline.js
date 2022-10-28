@@ -60,12 +60,15 @@ export default function Timeline() {
     setNewsPosts(0)
     getPosts().then((res)=>{
       pts = res.data;
+      if(pts==='no posts'){
+        pts = '';
+      }
       setNewsPosts(pts.length - lastPosts) ;
       setFindPosts(true);
       console.log(newsPosts);
     }).catch((err)=> console.log(err))}
 
-  useInterval(()=>getNewPosts() ,15000)
+  useInterval(()=>getNewPosts() ,5000)
 
   function loadNewPosts(){
     setFindPosts(false);
@@ -127,6 +130,7 @@ export default function Timeline() {
       setIsPublicating(false);
     });
   }
+
 
   return (
     <>
@@ -198,6 +202,8 @@ export default function Timeline() {
                 userId={value.userId}
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
+                setAttTrending={setAttTrending}
+                attTrending={attTrending}
               />
             ))
           )}

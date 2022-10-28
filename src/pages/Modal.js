@@ -4,7 +4,7 @@ import UserContext from "../context/UserContext";
 import { deletePost } from "../services/linkr";
 import { RotatingLines } from "react-loader-spinner";
 
-export default function Modal (){
+export default function Modal ({attTrending, setAttTrending}){
     const {isOpened, setIsOpened, idPost, setIdPost,  loading, setLoading } = useContext(UserContext);
     const closeModal = ()=>setIsOpened(false);
     console.log(idPost)
@@ -12,6 +12,10 @@ export default function Modal (){
        const promisse = deletePost(idPost);
        setLoading(true);
        promisse.then(()=>{
+            if(attTrending!== undefined && setAttTrending!== undefined){
+                console.log('entrou')
+                setAttTrending(attTrending+1);
+            }
             setLoading(false)
             closeModal()
         }).catch(()=>{
