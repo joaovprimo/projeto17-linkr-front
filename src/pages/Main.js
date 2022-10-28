@@ -9,11 +9,12 @@ import Modal from "./Modal"
 
 export default function Main() {
   const {isOpened, setIsOpened } = useContext(UserContext);
+  const { search, setSearch } = useContext(UserContext);
   
   
 return (
     <>
-      <Container>
+      <Container onClick={()=>{setSearch("")}}>
         {isOpened? 
         <>
         <Modal/>

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "http://localhost:4000";
 
 function createHeaders() {
   const config = JSON.parse(localStorage.getItem("userInfo"));
@@ -71,11 +71,11 @@ async function postLike(id, idusr) {
   return response;
 }
 
-function getUserSearch(search,token){
+function getUserSearch(id,search,token){
   const config = {
     headers: token
   };   
-  return axios.get(`${BASE_URL}/search?search=${search}`,config);
+  return axios.get(`${BASE_URL}/${id}/search?search=${search}`,config);
 };
 
 async function getUserInfo(token) {

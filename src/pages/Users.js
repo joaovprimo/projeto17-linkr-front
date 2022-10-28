@@ -2,13 +2,16 @@ import styled from "styled-components";
 import TimelineUser from "../components/timelineUser/TimelineUser";
 import { device } from "../mediaqueries/devices";
 import Top from "./Top";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 
 
 export default function Users() {
+  const { search, setSearch } = useContext(UserContext);
 
   return (
     <>
-      <Container>
+      <Container onClick={()=>{setSearch("")}}>
         <Top/>
         <TimelineUser/>
       </Container>
