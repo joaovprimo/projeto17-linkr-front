@@ -4,7 +4,7 @@ import styled from "styled-components";
 import UserContext from "../../context/UserContext.js";
 import { device } from "../../mediaqueries/devices";
 import Post from "../timeline/Post.js";
-import Trending from "./Trending";
+import Trending from "../timeline/Trending";
 import { getIsFollowed, getNameUser, getUserId, updateFollowUnfollow } from "../../services/linkr";
 import { useParams } from "react-router-dom";
 
