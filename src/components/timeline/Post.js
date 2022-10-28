@@ -217,7 +217,7 @@ export default function Post({
   }
 
   return (
-    <>
+    <Container>
       <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}>
         <BiRepost size={20} color={"white"} />
         {user ? (
@@ -407,7 +407,7 @@ export default function Post({
       {showComments ? (
         <Comments comments={comments} postId={id} setComments={setComments} />
       ) : null}
-    </>
+    </Container>
   );
 }
 /*<ReactTagify
@@ -417,6 +417,12 @@ tagClicked={(hashtag) =>
 }
 >
 </ReactTagify>*/
+
+const Container = styled.div`
+  background-color: #1e1e1e;
+  border-radius: 16px;
+  margin-bottom: 44px;
+`;
 const RepostBox = styled.div`
   background-color: #1e1e1e;
   color: white;
