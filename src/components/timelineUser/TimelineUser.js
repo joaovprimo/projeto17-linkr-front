@@ -18,6 +18,7 @@ export default function TimelineUser() {
   const [disableFollow, setDisableFollow] = useState(true);
   const [follow, setFollow] = useState('Loading...');
   const [displayFollow,setDisplayFollow] = useState('auto');
+  const [attTrending, setAttTrending] = useState(0);
 
   useEffect(() => {
     console.log(user)
@@ -124,13 +125,15 @@ export default function TimelineUser() {
                 userId={value.userId}
                 reposterId={value.reposterId}
                 originPostId={value.originPostId}
+                setAttTrending={setAttTrending}
+                attTrending={attTrending}
               />
             ))
           )}
         </div>
       </main>
       <aside>
-        <Trending />
+        <Trending attTrending={attTrending}/>
       </aside>
     </Wrapper>
   );

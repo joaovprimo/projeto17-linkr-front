@@ -5,7 +5,8 @@ import { deletePost, postRepost } from "../services/linkr";
 import { RotatingLines } from "react-loader-spinner";
 
 
-export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeModalRepost, bodyToRepost}){
+export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeModalRepost, bodyToRepost,attTrending,setAttTrending}){
+
     const {isOpened, setIsOpened, idPost, setIdPost,  loading, setLoading } = useContext(UserContext);
     const closeModal = ()=>setIsOpened(false);
 
@@ -17,6 +18,10 @@ export default function Modal ({type, isOpenedRepost, setIsOpenedRepost ,closeMo
        const promisse = deletePost(idPost);
        setLoading(true);
        promisse.then(()=>{
+            if(attTrending!== undefined && setAttTrending!== undefined){
+                console.log('entrou')
+                setAttTrending(attTrending+1);
+            }
             setLoading(false)
             closeModal()
         }).catch(()=>{

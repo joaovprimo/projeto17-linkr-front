@@ -4,18 +4,27 @@ import { device } from "../mediaqueries/devices";
 import Top from "./Top";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
+import Modal from "./Modal.js";
 
 
 export default function Users() {
-  const { search, setSearch } = useContext(UserContext);
+  const { search, setSearch, isOpened } = useContext(UserContext);
 
   return (
-    <>
-      <Container onClick={()=>{setSearch("")}}>
-        <Top/>
-        <TimelineUser/>
-      </Container>
-    </>
+
+    <Container onClick={() => { setSearch("") }}>
+      {isOpened ?
+        <>
+          <Modal />
+          <Top />
+          <TimelineUser />
+        </>
+        :
+        <>
+          <Top />
+          <TimelineUser />
+        </>}
+    </Container>
   );
 };
 
