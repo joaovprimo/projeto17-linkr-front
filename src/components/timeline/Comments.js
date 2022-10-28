@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Comment from "./Comment";
+import CommentBox from "./CommentBox";
 
-export default function Comments({ comments }) {
+export default function Comments({ comments, postId, setComments }) {
   return (
     <Wrapper>
-      {comments.map((comment) => {
-        return <Comment comment={comment} />;
+      {comments.map((comment, i) => {
+        return <Comment key={i} comment={comment} />;
       })}{" "}
+      <CommentBox postId={postId} setComments={setComments} />
     </Wrapper>
   );
 }

@@ -217,7 +217,7 @@ export default function Post({
   console.log(showComments);
 
   return (
-    <>
+    <Container>
       <RepostBox className="repostBox" isOriginalPost={isOriginalPost()}>
         <BiRepost size={20} color={"white"} />
         {user ? (
@@ -404,9 +404,10 @@ export default function Post({
           <LinkPreview url={url} urlInfo={urlInfo} />
         </div>
       </Wrapper>
-      {showComments ? <Comments comments={comments} /> : null}
-      {showComments ? <CommentBox /> : null}
-    </>
+      {showComments ? (
+        <Comments comments={comments} postId={id} setComments={setComments} />
+      ) : null}
+    </Container>
   );
 }
 
@@ -417,6 +418,10 @@ tagClicked={(hashtag) =>
 }
 >
 </ReactTagify>*/
+const Container = styled.div`
+  background-color: #1e1e1e;
+  border-radius: 16px;
+`;
 const RepostBox = styled.div`
   background-color: #1e1e1e;
   color: white;

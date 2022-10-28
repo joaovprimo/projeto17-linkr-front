@@ -15,6 +15,12 @@ function getPosts() {
   return promisse;
 }
 
+function postComment(body) {
+  const headers = createHeaders();
+  let promisse = axios.post(`${BASE_URL}/comments`, body, headers);
+  return promisse;
+}
+
 function getComments(postId) {
   let promisse = axios.get(`${BASE_URL}/comments/${postId}`);
   return promisse;
@@ -174,4 +180,5 @@ export {
   getIsFollowed,
   updateFollowUnfollow,
   getComments,
+  postComment,
 };
